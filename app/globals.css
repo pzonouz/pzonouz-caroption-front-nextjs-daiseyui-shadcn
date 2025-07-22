@@ -1,0 +1,24 @@
+@import "tailwindcss";
+@plugin "daisyui";
+
+.btn_tiptap {
+  padding: 0.25 0.3rem;
+  border: 1px solid #ccc;
+  background: white;
+  cursor: pointer;
+  border-radius: 4px;
+  font-weight: bold;
+}
+
+.btn_tiptap:hover {
+  background: #f3f3f3;
+}
+.ProseMirror ul {
+  list-style-type: disc !important;
+}
+.ProseMirror ol {
+  list-style-type: decimal !important;
+}
+.ProseMirror {
+  outline: none;
+}
