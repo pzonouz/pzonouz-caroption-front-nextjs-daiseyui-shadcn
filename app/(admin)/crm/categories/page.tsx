@@ -1,7 +1,7 @@
 "use client";
-import { DataTable } from "@/app/components/Categories/CategoriesList";
 import { columns } from "@/app/components/Categories/Columns";
 import { CreateCategory } from "@/app/components/Categories/CreateCategory";
+import { DataTable } from "@/app/components/Shared/DataTable";
 import {
   useGetCategoriesQuery,
   useGetParentCategoriesQuery,
@@ -13,11 +13,19 @@ const Page = () => {
 
   return (
     <div className="pt-20 flex flex-col items-center justify-center w-full">
-      <CreateCategory categories={parentCategories} />
+      {!parentCategories ? (
+        <div className="loading loading-spinner w-24 h-24 text-center"></div>
+      ) : (
+        <CreateCategory categories={parentCategories} />
+      )}
       {!categories ? (
         <div className="loading loading-spinner w-24 h-24 text-center"></div>
       ) : (
-        <DataTable columns={columns} data={categories} />
+        <DataTable
+          columns={columns}
+          data={categories}
+          filterColumns={[{ title: "نام", column: "name" }]}
+        />
       )}
     </div>
   );

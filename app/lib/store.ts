@@ -2,6 +2,7 @@ import { combineReducers, configureStore } from "@reduxjs/toolkit";
 import { CrmMenuSlice } from "./features/CrmMenuSlice";
 import { api } from "./features/api";
 import SessionSlice from "./features/SessionSlice";
+import DataSlice from "./features/data";
 
 export const makeStore = () => {
   return configureStore({

@@ -6,7 +6,7 @@ import Editor from "../Utils/Tiptop";
 import { toast } from "sonner";
 import LeveledCategoryList from "../Categories/LeveledCategoryList";
 import {
-  formatStringToCommaSepratedNumber,
+  formatStringToCommaSeparatedNumber,
   replacePersianDigits,
   translateRTKFetchBaseQueryErrors,
 } from "@/app/lib/utils";
@@ -47,13 +47,13 @@ export function CreateProduct({
   function handleChangePrice(e: any) {
     setValue(
       "price",
-      formatStringToCommaSepratedNumber(replacePersianDigits(e.target.value)),
+      formatStringToCommaSeparatedNumber(replacePersianDigits(e.target.value))
     );
   }
   function handleChangeCount(e: any) {
     setValue(
       "count",
-      formatStringToCommaSepratedNumber(replacePersianDigits(e.target.value)),
+      formatStringToCommaSeparatedNumber(replacePersianDigits(e.target.value))
     );
   }
   return (

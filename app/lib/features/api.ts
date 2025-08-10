@@ -19,6 +19,9 @@ export const api: any = createApi({
       query: () => `invoices/`,
       providesTags: ["invoices"],
     }),
+    getInvoice: build.query<Invoice, Partial<Invoice> & Pick<Invoice, "id">>({
+      query: (id) => `invoices/${id}/`,
+    }),
     createInvoice: build.mutation<Invoice, Invoice>({
       query: (data) => ({
         url: "invoices/",
@@ -34,7 +37,7 @@ export const api: any = createApi({
           method: "DELETE",
         }),
         invalidatesTags: ["invoices"],
-      },
+      }
     ),
     editInvoice: build.mutation<void, Partial<Invoice>>({
       query: (data) => ({
@@ -85,7 +88,7 @@ export const api: any = createApi({
           method: "DELETE",
         }),
         invalidatesTags: ["products"],
-      },
+      }
     ),
     editProduct: build.mutation<void, Partial<Product>>({
       query: (data) => ({
@@ -174,6 +177,7 @@ export const {
   useDeleteProductMutation,
   useEditProductMutation,
   useGetInvoicesQuery,
+  useGetInvoiceQuery,
   useCreateInvoiceMutation,
   useDeleteInvoiceMutation,
   useEditInvoiceMutation,

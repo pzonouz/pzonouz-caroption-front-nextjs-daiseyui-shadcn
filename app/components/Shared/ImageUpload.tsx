@@ -8,7 +8,7 @@ const ImageUpload = ({
   setImageUrl: Function;
 }) => {
   const [uploadProgress, setUploadProgress] = useState(0);
-  const [image, setImage] = useState<File | null>(null);
+  const [_image, setImage] = useState<File | null>(null);
   return (
     <>
       <input

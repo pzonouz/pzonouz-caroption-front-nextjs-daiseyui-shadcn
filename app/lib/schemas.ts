@@ -46,6 +46,7 @@ export const invoiceSchema = z.object({
   description: z.string().min(1, { message: "توضیح را وارد کنید" }),
   total: z.string(),
   invoiceitems: z.array(invoiceItemSchema),
+  type: z.string().nullish(),
 });
 export type Person = z.infer<typeof personSchema>;
 export type Category = z.infer<typeof categorySchema>;

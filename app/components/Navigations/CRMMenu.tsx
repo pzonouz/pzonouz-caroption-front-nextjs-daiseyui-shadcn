@@ -14,22 +14,16 @@ import {
 import Link from "next/link";
 import { User } from "next-auth";
 import { signOut, useSession } from "next-auth/react";
-import { useEffect, useMemo } from "react";
+import { useEffect } from "react";
 import { useAppDispatch } from "@/app/lib/hooks";
 import { setAccess } from "@/app/lib/features/SessionSlice";
 
-const CRMMenu = ({
-  user,
-  access,
-}: {
-  user: User | undefined;
-  access: string | undefined;
-}) => {
+const CRMMenu = ({ user }: { user: User | undefined }) => {
+  const { data, status } = useSession();
   const dispatch = useAppDispatch();
-
   useEffect(() => {
-    if (access) dispatch(setAccess(access));
-  }, [access]);
+    if (status == "authenticated") dispatch(setAccess(data?.access));
+  }, [status]);
   const menuList = [
     { text: "خانه", link: "/crm" },
     { text: "افراد", link: "/crm/persons" },

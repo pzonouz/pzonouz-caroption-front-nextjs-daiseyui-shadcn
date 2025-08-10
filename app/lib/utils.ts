@@ -1,16 +1,6 @@
-export const formatStringToCommaSepratedNumber = (value: string) => {
-  const str = String(value || "");
-  const num = str.replace(/,/g, "").replace(/\D/g, "");
-  return num.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-};
-export function replacePersianDigits(str: string): string {
-  const persianDigits = ["۰", "۱", "۲", "۳", "۴", "۵", "۶", "۷", "۸", "۹"];
-  return str?.replace(/[۰-۹]/g, (d) => {
-    const index = persianDigits.indexOf(d);
-    return index >= 0 ? index.toString() : d;
-  });
-}
 import { FetchBaseQueryError } from "@reduxjs/toolkit/query";
+import { Person, Product } from "@/app/lib/schemas";
+import { SuccessToast } from "./Toasts";
 
 export const translate = (input: string): string => {
   switch (input?.trim()) {
@@ -31,4 +21,82 @@ export const translateRTKFetchBaseQueryErrors = (
     return `${pre}\n${translate(value)}`;
   }, "");
   return output;
+};
+
+export const formatStringToCommaSeparatedNumber = (
+  value: string | number | undefined,
+): string => {
+  if (!value && value !== 0) return "";
+  const stringValue = value.toString();
+  return stringValue.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+};
+
+export const replacePersianDigits = (value: string | undefined): string => {
+  value = value?.replace(/\D/g, "");
+  if (!value) return "";
+  const persianDigits = "۰۱۲۳۴۵۶۷۸۹";
+  const englishDigits = "0123456789";
+
+  return value.replace(/[۰-۹]/g, (char) => {
+    return englishDigits[persianDigits.indexOf(char)];
+  });
+};
+
+export const formatPersonDisplay = (person: Person): string => {
+  const parts = [person.lastname, person.firstname, person.phone].filter(
+    Boolean,
+  );
+
+  return parts.join(" ");
+};
+
+export const formatProductDisplay = (product: Product): string => {
+  return product.name || "";
+};
+
+export const formatCurrency = (amount: string | number): string => {
+  const formatted = formatStringToCommaSeparatedNumber(amount);
+  return formatted ? `${formatted} تومان` : "";
+};
+
+export const formatDate = (date: string | Date): string => {
+  if (!date) return "";
+  const dateObj = typeof date === "string" ? new Date(date) : date;
+  return dateObj.toLocaleDateString("fa-IR");
+};
+
+export const cleanNumericInput = (value: string): string => {
+  return replacePersianDigits(value).replace(/[^0-9]/g, "");
+};
+interface SubmitHandlerProps {
+  action: Function;
+  handleSubmit: Function;
+  setError: Function;
+  reset?: Function;
+  setObject?: Function;
+}
+export function submitHandler<T>({
+  action,
+  handleSubmit,
+  setError,
+  reset,
+  setObject,
+}: SubmitHandlerProps) {
+  return handleSubmit((data: T) => {
+    console.log(data);
+    action(data)
+      .unwrap()
+      .then(() => {
+        setError("");
+        if (reset) reset();
+        SuccessToast();
+        if (setObject) setObject(null);
+      })
+      .catch((err: FetchBaseQueryError) => {
+        setError(translateRTKFetchBaseQueryErrors(err));
+      });
+  });
+}
+export const toggle = (open: boolean, setOpen: Function) => {
+  open ? setOpen(false) : setOpen(true);
 };

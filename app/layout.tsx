@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import iransans from "./fonts/IranSans";
-import StoreProvider from "./components/Utils/StoreProvider";
 import { SessionProvider } from "next-auth/react";
+import StoreProvider from "./components/Shared/StoreProvider";
 
 export const metadata: Metadata = {
   title: "Caroption",

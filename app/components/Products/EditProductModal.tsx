@@ -11,7 +11,7 @@ import ImageUpload from "../Utils/ImageUpload";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import {
-  formatStringToCommaSepratedNumber,
+  formatStringToCommaSeparatedNumber,
   replacePersianDigits,
   translateRTKFetchBaseQueryErrors,
 } from "@/app/lib/utils";
@@ -51,15 +51,15 @@ const EditProductModal = ({
     reset(product);
     setValue(
       "count",
-      formatStringToCommaSepratedNumber(
-        replacePersianDigits(product?.count?.toString()),
-      ),
+      formatStringToCommaSeparatedNumber(
+        replacePersianDigits(product?.count?.toString())
+      )
     );
     setValue(
       "price",
-      formatStringToCommaSepratedNumber(
-        replacePersianDigits(product?.price?.toString()),
-      ),
+      formatStringToCommaSeparatedNumber(
+        replacePersianDigits(product?.price?.toString())
+      )
     );
     setValue("category", product?.category?.toString());
     setImageUrl(product?.image_url!);
@@ -85,13 +85,13 @@ const EditProductModal = ({
   function handleChangePrice(e: any) {
     setValue(
       "price",
-      formatStringToCommaSepratedNumber(replacePersianDigits(e.target.value)),
+      formatStringToCommaSeparatedNumber(replacePersianDigits(e.target.value))
     );
   }
   function handleChangeCount(e: any) {
     setValue(
       "count",
-      formatStringToCommaSepratedNumber(replacePersianDigits(e.target.value)),
+      formatStringToCommaSeparatedNumber(replacePersianDigits(e.target.value))
     );
   }
   const { data: parentCategories } = useGetParentCategoriesQuery();

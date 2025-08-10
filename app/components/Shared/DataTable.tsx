@@ -32,11 +32,13 @@ import { Input } from "@/components/ui/input";
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
+  filterColumns: { title: string; column: string }[];
 }
 
 export function DataTable<TData, TValue>({
   columns,
   data,
+  filterColumns,
 }: DataTableProps<TData, TValue>) {
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
@@ -56,16 +58,21 @@ export function DataTable<TData, TValue>({
   });
 
   return (
-    <div className="rounded-md border mx-2">
-      <div className="flex items-center py-4 w-1/2 mx-3">
-        <Input
-          placeholder="فیلتر تلفن"
-          value={(table.getColumn("phone")?.getFilterValue() as string) ?? ""}
-          onChange={(event) =>
-            table.getColumn("phone")?.setFilterValue(event.target.value)
-          }
-          className="max-w-sm"
-        />
+    <div className="rounded-md border w-5/6 px-2">
+      <div className="flex flex-col items-center py-4 mx-3 gap-2">
+        {filterColumns?.map((f) => (
+          <Input
+            key={f.title}
+            placeholder={f.title}
+            value={
+              (table.getColumn(f.column)?.getFilterValue() as string) ?? ""
+            }
+            onChange={(event) =>
+              table.getColumn(f.column)?.setFilterValue(event.target.value)
+            }
+            className=""
+          />
+        ))}
       </div>
       <Table>
         <TableHeader>
@@ -109,7 +116,7 @@ export function DataTable<TData, TValue>({
           )}
         </TableBody>
       </Table>
-      <div className="flex items-center justify-end space-x-2 py-4 ml-4">
+      <div className="flex items-center justify-end space-x-2 py-4 ml-4 gap-2">
         <Button
           variant="outline"
           size="sm"

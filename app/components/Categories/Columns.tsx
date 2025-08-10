@@ -1,23 +1,15 @@
 "use client";
 
-import { Category } from "@/app/lib/types";
-import { Button } from "@/components/ui/button";
-import {
-  DropdownMenu,
-  DropdownMenuTrigger,
-  DropdownMenuContent,
-  DropdownMenuItem,
-} from "@/components/ui/dropdown-menu";
 import { ColumnDef } from "@tanstack/react-table";
-import { MoreHorizontal } from "lucide-react";
 import { useEffect, useState } from "react";
 import {
   useDeleteCategoryMutation,
   useGetParentCategoriesQuery,
 } from "@/app/lib/features/api";
-import { toast } from "sonner";
-import EditCategoryModal from "./EditCategoryModal";
 import { FetchBaseQueryError } from "@reduxjs/toolkit/query";
+import { Category } from "@/app/lib/schemas";
+import DataTableActions from "../Shared/DataTableActions";
+import { ErrorToast, SuccessToast } from "@/app/lib/Toasts";
 
 export const columns: ColumnDef<Category>[] = [
   {
@@ -62,74 +54,23 @@ export const columns: ColumnDef<Category>[] = [
           deleteCategoryAction(selectedId)
             .unwrap()
             .then(() => {
-              toast("با موفقیت انجام شد", {
-                position: "top-center",
-                duration: 3000,
-                style: {
-                  backgroundColor: "green",
-                  color: "white",
-                  padding: "1rem",
-                  fontFamily: "IranSans",
-                  fontWeight: "bold",
-                },
-              });
+              SuccessToast();
             })
             .catch((err: FetchBaseQueryError) => {
               if (err?.status == "PARSING_ERROR")
-                toast("برای این دسته بندی کالا یا زیرمجموعه تعریف شده است", {
-                  position: "top-center",
-                  duration: 3000,
-                  style: {
-                    backgroundColor: "red",
-                    color: "white",
-                    padding: "1rem",
-                    fontFamily: "IranSans",
-                    fontWeight: "bold",
-                  },
-                });
+                ErrorToast(
+                  "برای این دسته بندی کالا یا زیرمجموعه تعریف شده است",
+                );
             });
       }, [selectedId]);
 
       return (
-        <>
-          {category && (
-            <EditCategoryModal
-              parentCategories={parentCategories}
-              category={category}
-              setCategory={setCategory}
-            />
-          )}
-          <DropdownMenu dir="rtl">
-            <DropdownMenuTrigger asChild>
-              <Button variant="ghost" className="h-8 w-8 p-0 cursor-pointer">
-                <span className="sr-only">Open menu</span>
-                {deleteCategoryIsLoading ? (
-                  <div className="loading loading-spinner"></div>
-                ) : (
-                  <MoreHorizontal className="h-4 w-4" />
-                )}
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent className="bg-white" align="end">
-              <DropdownMenuItem
-                className="cursor-pointer text-error"
-                onClick={() => {
-                  setSelectedId(row.original?.id);
-                }}
-              >
-                حذف
-              </DropdownMenuItem>
-              <DropdownMenuItem
-                className="bg-white cursor-pointer text-primary"
-                onClick={() => {
-                  setCategory(row?.original);
-                }}
-              >
-                ویرایش
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
-        </>
+        <DataTableActions
+          setSelectedId={setSelectedId}
+          setObject={setCategory}
+          isLoading={deleteCategoryIsLoading}
+          row={row}
+        />
       );
     },
   },
