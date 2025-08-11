@@ -15,10 +15,12 @@ import Link from "next/link";
 import { User } from "next-auth";
 import { signOut, useSession } from "next-auth/react";
 import { useEffect } from "react";
-import { useAppDispatch } from "@/app/lib/hooks";
+import { useAppDispatch, useAppSelector } from "@/app/lib/hooks";
 import { setAccess } from "@/app/lib/features/SessionSlice";
+import Loading from "../Shared/Loading";
 
 const CRMMenu = ({ user }: { user: User | undefined }) => {
+  const loading = useAppSelector((state) => state?.loading?.show);
   const { data, status } = useSession();
   const dispatch = useAppDispatch();
   useEffect(() => {
@@ -38,61 +40,69 @@ const CRMMenu = ({ user }: { user: User | undefined }) => {
     },
   ];
   return (
-    <DropdownMenu>
-      <DropdownMenuTrigger className="absolute top-0 left-0" asChild>
-        <Button variant="link">
-          <LucideMenu />
-        </Button>
-      </DropdownMenuTrigger>
-      <DropdownMenuContent className="w-32 bg-white" align="start">
-        <Link
-          href={"profile"}
-          key={user?.id}
-          className="text-xs cursor-pointer"
-        >
-          <DropdownMenuItem>{user?.name}</DropdownMenuItem>
-        </Link>
-        {menuList?.map((item) => {
-          if (item.submenu?.length) {
-            return (
-              <DropdownMenuSub key={item.text}>
-                <DropdownMenuSubTrigger>{item?.text}</DropdownMenuSubTrigger>
-                <DropdownMenuSubContent className="bg-white w-32">
-                  {item?.submenu?.map((subItem) => (
-                    <Link
-                      href={`${subItem?.link}`}
-                      key={subItem.text}
-                      className="cursor-pointer"
-                    >
-                      <DropdownMenuItem>{subItem?.text}</DropdownMenuItem>
-                    </Link>
-                  ))}
-                </DropdownMenuSubContent>
-              </DropdownMenuSub>
-            );
-          } else {
-            return (
-              <Link
-                href={item?.link!}
-                key={item?.text}
-                className="cursor-pointer"
-              >
-                <DropdownMenuItem>{item?.text}</DropdownMenuItem>
-              </Link>
-            );
-          }
-        })}
-        <DropdownMenuItem
-          className="cursor-pointer"
-          key={"signout"}
-          onClick={() => {
-            signOut();
-          }}
-        >
-          خروج
-        </DropdownMenuItem>
-      </DropdownMenuContent>
-    </DropdownMenu>
+    <>
+      {loading ? (
+        <Loading />
+      ) : (
+        <DropdownMenu>
+          <DropdownMenuTrigger className="absolute top-0 left-0" asChild>
+            <Button variant="link">
+              <LucideMenu />
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent className="w-32 bg-white" align="start">
+            <Link
+              href={"profile"}
+              key={user?.id}
+              className="text-xs cursor-pointer"
+            >
+              <DropdownMenuItem>{user?.name}</DropdownMenuItem>
+            </Link>
+            {menuList?.map((item) => {
+              if (item.submenu?.length) {
+                return (
+                  <DropdownMenuSub key={item.text}>
+                    <DropdownMenuSubTrigger>
+                      {item?.text}
+                    </DropdownMenuSubTrigger>
+                    <DropdownMenuSubContent className="bg-white w-32">
+                      {item?.submenu?.map((subItem) => (
+                        <Link
+                          href={`${subItem?.link}`}
+                          key={subItem.text}
+                          className="cursor-pointer"
+                        >
+                          <DropdownMenuItem>{subItem?.text}</DropdownMenuItem>
+                        </Link>
+                      ))}
+                    </DropdownMenuSubContent>
+                  </DropdownMenuSub>
+                );
+              } else {
+                return (
+                  <Link
+                    href={item?.link!}
+                    key={item?.text}
+                    className="cursor-pointer"
+                  >
+                    <DropdownMenuItem>{item?.text}</DropdownMenuItem>
+                  </Link>
+                );
+              }
+            })}
+            <DropdownMenuItem
+              className="cursor-pointer"
+              key={"signout"}
+              onClick={() => {
+                signOut();
+              }}
+            >
+              خروج
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
+      )}
+    </>
   );
 };
 

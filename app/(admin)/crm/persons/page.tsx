@@ -4,28 +4,34 @@ import { columns } from "@/app/components/Persons/Columns";
 import { CreatePerson } from "@/app/components/Persons/CreatePerson";
 import { DataTable } from "@/app/components/Shared/DataTable";
 import { useGetPersonsQuery } from "@/app/lib/features/api";
-import { useAppSelector } from "@/app/lib/hooks";
+import { LoadingHide, LoadingShow } from "@/app/lib/features/LoadingSlice";
+import { useAppDispatch, useAppSelector } from "@/app/lib/hooks";
+import { useEffect } from "react";
 
 const Page = () => {
+  const dispatch = useAppDispatch();
   const access = useAppSelector((state) => state?.access?.access);
   const { data: persons } = useGetPersonsQuery(undefined, {
     skip: !access,
   });
+  useEffect(() => {
+    if (persons) {
+      dispatch(LoadingShow());
+    } else {
+      dispatch(LoadingHide());
+    }
+  }, [persons]);
   return (
     <div className="pt-20 flex flex-col items-center justify-center w-full">
       <CreatePerson />
-      {!persons ? (
-        <div className="loading loading-spinner w-24 h-24 text-center"></div>
-      ) : (
-        <DataTable
-          columns={columns}
-          data={persons}
-          filterColumns={[
-            { title: "تلفن", column: "phone" },
-            { title: "نام خانوادگی", column: "lastname" },
-          ]}
-        />
-      )}
+      <DataTable
+        columns={columns}
+        data={persons}
+        filterColumns={[
+          { title: "تلفن", column: "phone" },
+          { title: "نام خانوادگی", column: "lastname" },
+        ]}
+      />
     </div>
   );
 };

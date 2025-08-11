@@ -6,27 +6,31 @@ import {
   useGetCategoriesQuery,
   useGetParentCategoriesQuery,
 } from "@/app/lib/features/api";
+import { LoadingHide, LoadingShow } from "@/app/lib/features/LoadingSlice";
+import { useAppDispatch } from "@/app/lib/hooks";
+import { useEffect } from "react";
 
 const Page = () => {
+  const dispatch = useAppDispatch();
+
   const { data: categories } = useGetCategoriesQuery();
   const { data: parentCategories } = useGetParentCategoriesQuery();
+  useEffect(() => {
+    if (categories && parentCategories) {
+      dispatch(LoadingShow());
+    } else {
+      dispatch(LoadingHide());
+    }
+  }, [categories, parentCategories]);
 
   return (
     <div className="pt-20 flex flex-col items-center justify-center w-full">
-      {!parentCategories ? (
-        <div className="loading loading-spinner w-24 h-24 text-center"></div>
-      ) : (
-        <CreateCategory categories={parentCategories} />
-      )}
-      {!categories ? (
-        <div className="loading loading-spinner w-24 h-24 text-center"></div>
-      ) : (
-        <DataTable
-          columns={columns}
-          data={categories}
-          filterColumns={[{ title: "نام", column: "name" }]}
-        />
-      )}
+      <CreateCategory categories={parentCategories} />
+      <DataTable
+        columns={columns}
+        data={categories}
+        filterColumns={[{ title: "نام", column: "name" }]}
+      />
     </div>
   );
 };
