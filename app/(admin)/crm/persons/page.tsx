@@ -11,22 +11,22 @@ import { useEffect } from "react";
 const Page = () => {
   const dispatch = useAppDispatch();
   const access = useAppSelector((state) => state?.access?.access);
-  const { data: persons } = useGetPersonsQuery(undefined, {
+  const { data: persons, isFetching } = useGetPersonsQuery(undefined, {
     skip: !access,
   });
   useEffect(() => {
-    if (persons) {
+    if (isFetching) {
       dispatch(LoadingShow());
     } else {
       dispatch(LoadingHide());
     }
-  }, [persons]);
+  }, [isFetching]);
   return (
     <div className="pt-20 flex flex-col items-center justify-center w-full">
       <CreatePerson />
       <DataTable
         columns={columns}
-        data={persons}
+        data={persons ? persons : []}
         filterColumns={[
           { title: "تلفن", column: "phone" },
           { title: "نام خانوادگی", column: "lastname" },

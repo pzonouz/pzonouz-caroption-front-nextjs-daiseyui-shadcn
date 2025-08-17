@@ -12,7 +12,7 @@ export const personSchema = z.object({
 export const categorySchema = z.object({
   id: z.number().nullish(),
   name: z.string().min(1, { message: "نام را وارد کنید" }),
-  description: z.string().min(1, { message: "توضیح را وارد کنید" }),
+  description: z.string().nullish(),
   image_url: z.string().nullish(),
   parent: z.string().nullish(),
   order: z.string().min(1, { message: "اولویت را وارد کنید" }),
@@ -21,7 +21,7 @@ export const categorySchema = z.object({
 export const productSchema = z.object({
   id: z.number().nullish(),
   name: z.string().min(1, { message: "نام را وارد کنید" }),
-  description: z.string().min(1, { message: "توضیح را وارد کنید" }),
+  description: z.string().nullish(),
   image_url: z.string().nullish(),
   category: z.string().min(1, { message: "نام را وارد کنید" }),
   info: z.string().min(1, { message: "وارد کنید" }),

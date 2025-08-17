@@ -5,16 +5,17 @@ import { LoadingButton } from "../Shared/LoadingButton";
 import { FieldErrors } from "react-hook-form";
 import ImageUpload from "../Shared/ImageUpload";
 import { Category } from "@/app/lib/schemas";
-export interface CategoryFormValues {
+import Tiptop from "../Shared/Tiptop";
+export interface ProductFormValues {
   name: string;
   image_url: string;
   description: string;
-  order: string;
+  info: string;
   parent: string;
 }
-interface CategoryFormProp {
+interface ProductFormProp {
   register: Function;
-  errors: FieldErrors<CategoryFormValues>;
+  errors: FieldErrors<ProductFormValues>;
   submitHandler: FormEventHandler<HTMLFormElement>;
   setValue: Function;
   watch: Function;
@@ -25,7 +26,7 @@ interface CategoryFormProp {
   categories: Category[];
 }
 
-const CategoryForm = ({
+const ProductForm = ({
   register,
   errors,
   submitHandler,
@@ -34,9 +35,10 @@ const CategoryForm = ({
   error,
   getValues,
   categories,
-}: CategoryFormProp) => {
+}: ProductFormProp) => {
   //Image
   const [imageUrl, setImageUrl] = useState("");
+  const [description, setDescription] = useState("");
   useEffect(() => {
     if (getValues("image_url")) setImageUrl(getValues("image_url"));
   }, [getValues("image_url")]);
@@ -47,6 +49,10 @@ const CategoryForm = ({
       setValue("image_url", imageUrl);
     }
   }, [imageUrl, getValues]);
+
+  useEffect(() => {
+    console.log(errors);
+  }, [errors]);
 
   return (
     <form
@@ -61,18 +67,14 @@ const CategoryForm = ({
         error={errors?.name?.message}
       />
       <FormField
-        label="توضیح"
-        title="description"
+        label="توضیح کوتاه"
+        title="info"
         register={register}
-        error={errors?.description?.message}
+        error={errors?.info?.message}
       />
-      <FormField
-        label="ترتیب"
-        title="order"
-        register={register}
-        error={errors?.order?.message}
-      />
+      <Tiptop state={description} setState={setDescription} />
       <FormField register={register} title="image_url" hidden />
+      <FormField register={register} title="description" hidden />
       <ImageUpload imageUrl={imageUrl} setImageUrl={setImageUrl} />
       {error && <p className="text-sm text-red-500">{error}</p>}
       <LoadingButton className="btn btn-primary" isLoading={isLoading}>
@@ -81,4 +83,4 @@ const CategoryForm = ({
     </form>
   );
 };
-export default CategoryForm;
+export default ProductForm;

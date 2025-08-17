@@ -2,10 +2,10 @@
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useCreateCategoryMutation } from "@/app/lib/features/api";
-import { Category, categorySchema } from "@/app/lib/schemas";
+import { Product, productSchema } from "@/app/lib/schemas";
+import { useCreateProductMutation } from "@/app/lib/features/api";
 
-export const useCreateCategory = () => {
+export const useCreateProduct = () => {
   const {
     register,
     handleSubmit,
@@ -15,13 +15,13 @@ export const useCreateCategory = () => {
     watch,
     control,
     getValues,
-  } = useForm<Category>({
-    resolver: zodResolver(categorySchema),
+  } = useForm<Product>({
+    resolver: zodResolver(productSchema),
   });
   const [open, setOpen] = useState(false);
   const [error, setError] = useState("");
-  const [createCategoryAction, { isLoading: createCategoryIsLoading }] =
-    useCreateCategoryMutation();
+  const [createProductAction, { isLoading: createProductIsLoading }] =
+    useCreateProductMutation();
   return {
     register,
     handleSubmit,
@@ -35,7 +35,7 @@ export const useCreateCategory = () => {
     setError,
     control,
     getValues,
-    createCategoryAction,
-    createCategoryIsLoading,
+    createProductAction,
+    createProductIsLoading,
   };
 };

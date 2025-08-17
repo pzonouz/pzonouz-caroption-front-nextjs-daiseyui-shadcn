@@ -10,6 +10,7 @@ import { FetchBaseQueryError } from "@reduxjs/toolkit/query";
 import { Category } from "@/app/lib/schemas";
 import DataTableActions from "../Shared/DataTableActions";
 import { ErrorToast, SuccessToast } from "@/app/lib/Toasts";
+import EditCategoryModal from "./EditCategoryModal";
 
 export const columns: ColumnDef<Category>[] = [
   {
@@ -65,12 +66,15 @@ export const columns: ColumnDef<Category>[] = [
       }, [selectedId]);
 
       return (
-        <DataTableActions
-          setSelectedId={setSelectedId}
-          setObject={setCategory}
-          isLoading={deleteCategoryIsLoading}
-          row={row}
-        />
+        <>
+          <EditCategoryModal category={category} setCategory={setCategory} />
+          <DataTableActions
+            setSelectedId={setSelectedId}
+            setObject={setCategory}
+            isLoading={deleteCategoryIsLoading}
+            row={row}
+          />
+        </>
       );
     },
   },

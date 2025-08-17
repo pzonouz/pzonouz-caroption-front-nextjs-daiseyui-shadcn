@@ -1,15 +1,11 @@
 "use client";
-import { useEditCategoryMutation } from "@/app/lib/features/api";
-import { Category, categorySchema } from "@/app/lib/schemas";
+import { useEditProductMutation } from "@/app/lib/features/api";
+import { Product, productSchema } from "@/app/lib/schemas";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 
-export function useEditCategory({
-  category,
-}: {
-  category: Category | undefined;
-}) {
+export function useEditProduct({ product }: { product: Product | undefined }) {
   const {
     register,
     handleSubmit,
@@ -19,17 +15,17 @@ export function useEditCategory({
     control,
     getValues,
     formState: { errors },
-  } = useForm<Category>({ resolver: zodResolver(categorySchema) });
+  } = useForm<Product>({ resolver: zodResolver(productSchema) });
 
   useEffect(() => {
-    if (category) {
-      reset(category);
+    if (product) {
+      reset(product);
     }
-  }, [category]);
+  }, [product]);
 
   const [error, setError] = useState("");
-  const [editCategoryAction, { isLoading: editCategoryIsLoading }] =
-    useEditCategoryMutation();
+  const [editProductAction, { isLoading: editProductIsLoading }] =
+    useEditProductMutation();
 
   return {
     register,
@@ -40,8 +36,8 @@ export function useEditCategory({
     errors,
     error,
     setError,
-    editCategoryAction,
-    editCategoryIsLoading,
+    editProductAction,
+    editProductIsLoading,
     control,
     getValues,
   };

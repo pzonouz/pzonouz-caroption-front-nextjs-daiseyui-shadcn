@@ -1,7 +1,6 @@
 "use client";
 
 import { useDeleteProductMutation } from "@/app/lib/features/api";
-import { Product } from "@/app/lib/types";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -15,6 +14,7 @@ import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import EditProductModal from "./EditProductModal";
 import { FetchBaseQueryError } from "@reduxjs/toolkit/query";
+import { Product } from "@/app/lib/schemas";
 
 export const columns: ColumnDef<Product>[] = [
   {
@@ -98,7 +98,7 @@ export const columns: ColumnDef<Product>[] = [
       }, [selectedId]);
       return (
         <>
-          <EditProductModal product={product} setProduct={setProduct} />
+          {/* <EditProductModal product={product} setProduct={setProduct} /> */}
           <DropdownMenu dir="rtl">
             <DropdownMenuTrigger asChild>
               <Button variant="ghost" className="h-8 w-8 p-0 cursor-pointer">

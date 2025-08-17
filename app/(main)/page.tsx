@@ -1,7 +1,7 @@
 "use server";
 import Blocks from "../components/Navigations/Blocks";
 import ProductCard from "../components/Products/ProductCard";
-import { Product } from "../lib/types";
+import { Product } from "../lib/schemas";
 
 const page = async () => {
   const productsRes = await fetch(`${process.env.BACKEND_URL}/products/`);

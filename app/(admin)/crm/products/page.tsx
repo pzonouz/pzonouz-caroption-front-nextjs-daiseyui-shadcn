@@ -1,7 +1,7 @@
 "use client";
 import { columns } from "@/app/components/Products/Columns";
 import { CreateProduct } from "@/app/components/Products/CreateProduct";
-import { DataTable } from "@/app/components/Products/ProductsList";
+import { DataTable } from "@/app/components/Shared/DataTable";
 import {
   useGetParentCategoriesQuery,
   useGetProductsQuery,
@@ -12,11 +12,13 @@ const Page = () => {
   const { data: parentCategories } = useGetParentCategoriesQuery();
   return (
     <div className="pt-20 flex flex-col items-center justify-center w-full">
-      {parentCategories && (
-        <CreateProduct parentCategories={parentCategories} />
-      )}
+      {parentCategories && <CreateProduct categories={parentCategories} />}
       {products && parentCategories ? (
-        <DataTable columns={columns} data={products} />
+        <DataTable
+          filterColumns={[{ title: "نام", column: "name" }]}
+          columns={columns}
+          data={products}
+        />
       ) : (
         <div className="loading loading-spinner w-24 h-24 text-center"></div>
       )}

@@ -1,4 +1,4 @@
-import { Product } from "@/app/lib/types";
+import { Product } from "@/app/lib/schemas";
 import Image from "next/image";
 import Link from "next/link";
 

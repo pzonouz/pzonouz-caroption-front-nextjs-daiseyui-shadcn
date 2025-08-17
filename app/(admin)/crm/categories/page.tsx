@@ -13,22 +13,24 @@ import { useEffect } from "react";
 const Page = () => {
   const dispatch = useAppDispatch();
 
-  const { data: categories } = useGetCategoriesQuery();
-  const { data: parentCategories } = useGetParentCategoriesQuery();
+  const { data: categories, isFetching: categoriesIsFetching } =
+    useGetCategoriesQuery();
+  const { data: parentCategories, isFetching: parentCategoriesIsFetching } =
+    useGetParentCategoriesQuery();
   useEffect(() => {
-    if (categories && parentCategories) {
+    if (categoriesIsFetching && parentCategoriesIsFetching) {
       dispatch(LoadingShow());
     } else {
       dispatch(LoadingHide());
     }
-  }, [categories, parentCategories]);
+  }, [categoriesIsFetching, parentCategoriesIsFetching]);
 
   return (
     <div className="pt-20 flex flex-col items-center justify-center w-full">
       <CreateCategory categories={parentCategories} />
       <DataTable
         columns={columns}
-        data={categories}
+        data={categories ? categories : []}
         filterColumns={[{ title: "نام", column: "name" }]}
       />
     </div>

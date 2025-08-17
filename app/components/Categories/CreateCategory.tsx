@@ -21,6 +21,7 @@ export function CreateCategory({ categories }: { categories: Category[] }) {
     control,
     handleSubmit,
     createCategoryAction,
+    getValues,
   } = useCreateCategory();
   return (
     <div className="w-full flex flex-col items-center justify-center  relative">
@@ -37,6 +38,7 @@ export function CreateCategory({ categories }: { categories: Category[] }) {
           isLoading={createCategoryIsLoading}
           watch={watch}
           setValue={setValue}
+          getValues={getValues}
           submitHandler={submitHandler<CategoryFormValues>({
             action: createCategoryAction,
             handleSubmit,
