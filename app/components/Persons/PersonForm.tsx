@@ -29,7 +29,7 @@ const PersonForm = ({
   error,
 }: PersonFormProp) => {
   const phoneValue = watch("phone", "");
-  const handlePhoneChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const updatePhone = (e: React.ChangeEvent<HTMLInputElement>) => {
     const replaced = replacePersianDigits(e.target.value);
     setValue("phone", replaced, { shouldValidate: true, shouldDirty: true });
   };
@@ -56,7 +56,7 @@ const PersonForm = ({
         title="phone"
         register={register}
         value={phoneValue}
-        onChange={handlePhoneChange}
+        onChange={updatePhone}
         error={errors?.phone?.message}
       />
 

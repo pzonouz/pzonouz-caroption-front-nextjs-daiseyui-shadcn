@@ -1,5 +1,5 @@
 "use client";
-import { FormEventHandler, useEffect, useState } from "react";
+import { FormEventHandler } from "react";
 import { FormField } from "../Shared/FormField";
 import { LoadingButton } from "../Shared/LoadingButton";
 import { FieldErrors } from "react-hook-form";
@@ -32,22 +32,12 @@ const CategoryForm = ({
   setValue,
   isLoading,
   error,
-  getValues,
+  watch,
   categories,
 }: CategoryFormProp) => {
-  //Image
-  const [imageUrl, setImageUrl] = useState("");
-  useEffect(() => {
-    if (getValues("image_url")) setImageUrl(getValues("image_url"));
-  }, [getValues("image_url")]);
+  const imageUrl = watch("image_url");
 
-  useEffect(() => {
-    const currentFormImage = getValues("image_url");
-    if (imageUrl && imageUrl !== currentFormImage) {
-      setValue("image_url", imageUrl);
-    }
-  }, [imageUrl, getValues]);
-
+  const updateImageUrl = (url: string) => setValue("image_url", url);
   return (
     <form
       lang="fa"
@@ -73,7 +63,7 @@ const CategoryForm = ({
         error={errors?.order?.message}
       />
       <FormField register={register} title="image_url" hidden />
-      <ImageUpload imageUrl={imageUrl} setImageUrl={setImageUrl} />
+      <ImageUpload imageUrl={imageUrl} setImageUrl={updateImageUrl} />
       {error && <p className="text-sm text-red-500">{error}</p>}
       <LoadingButton className="btn btn-primary" isLoading={isLoading}>
         ثبت

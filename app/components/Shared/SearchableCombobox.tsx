@@ -1,7 +1,9 @@
-//By Claude AI
 "use client";
-import React, { useState } from "react";
+
+import * as React from "react";
 import { Check, ChevronsUpDown } from "lucide-react";
+
+import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import {
   Command,
@@ -17,93 +19,84 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 
-export interface ComboboxOption {
-  id: string;
+interface ComboBoxOption {
+  value: string;
   label: string;
-  value: string;
 }
+type SearchableComboboxProps = {
+  options: ComboBoxOption[];
+};
 
-interface SearchableComboboxProps {
-  options: ComboboxOption[];
-  value: string;
-  onValueChange: (value: string) => void;
-  placeholder: string;
-  searchPlaceholder: string;
-  emptyText: string;
-  disabled?: boolean;
-  width?: string;
-  isLoading?: boolean;
-  className?: string;
-}
+const frameworks = [
+  {
+    value: "next.js",
+    label: "Next.js",
+  },
+  {
+    value: "sveltekit",
+    label: "SvelteKit",
+  },
+  {
+    value: "nuxt.js",
+    label: "Nuxt.js",
+  },
+  {
+    value: "remix",
+    label: "Remix",
+  },
+  {
+    value: "astro",
+    label: "Astro",
+  },
+];
 
-export const SearchableCombobox: React.FC<SearchableComboboxProps> = ({
-  options = [],
-  value,
-  onValueChange,
-  placeholder,
-  searchPlaceholder,
-  emptyText,
-  disabled = false,
-  width = "w-[300px]",
-  isLoading = false,
-  className = "",
-}) => {
-  const [isOpen, setIsOpen] = useState(false);
-
-  const selectedOption = options.find((option) => option.value === value);
-
-  const handleSelect = (selectedValue: string) => {
-    onValueChange(selectedValue === value ? "" : selectedValue);
-    setIsOpen(false);
-  };
+export function SearchableCombobox({ options }: SearchableComboboxProps) {
+  const [open, setOpen] = React.useState(false);
+  const [value, setValue] = React.useState("");
 
   return (
-    <Popover open={isOpen} onOpenChange={!disabled ? setIsOpen : undefined}>
+    <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>
         <Button
           variant="outline"
           role="combobox"
-          aria-expanded={isOpen}
-          disabled={disabled || isLoading}
-          className={`${width} justify-between ${className}`}
+          aria-expanded={open}
+          className="w-[200px] justify-between"
         >
-          {selectedOption ? selectedOption.label : placeholder}
+          {value
+            ? frameworks.find((framework) => framework.value === value)?.label
+            : "Select framework..."}
           <ChevronsUpDown className="opacity-50" />
         </Button>
       </PopoverTrigger>
-      <PopoverContent className={`${width} p-0 bg-white`}>
+      <PopoverContent className="w-[200px] p-0">
         <Command>
-          <CommandInput placeholder={searchPlaceholder} className="h-9" />
+          <CommandInput placeholder="Search framework..." className="h-9" />
           <CommandList>
-            {isLoading ? (
-              <div className="p-4 text-center text-sm text-gray-500">
-                در حال بارگذاری...
-              </div>
-            ) : (
-              <>
-                <CommandEmpty>{emptyText}</CommandEmpty>
-                <CommandGroup>
-                  {options.map((option) => (
-                    <CommandItem
-                      key={option.id}
-                      value={option.value}
-                      onSelect={() => handleSelect(option.value)}
-                      className="cursor-pointer"
-                    >
-                      {option.label}
-                      <Check
-                        className={`ml-auto ${
-                          value === option.value ? "opacity-100" : "opacity-0"
-                        }`}
-                      />
-                    </CommandItem>
-                  ))}
-                </CommandGroup>
-              </>
-            )}
+            <CommandEmpty>No framework found.</CommandEmpty>
+            <CommandGroup>
+              {frameworks.map((framework) => (
+                <CommandItem
+                  key={framework.value}
+                  value={framework.value}
+                  onSelect={(currentValue) => {
+                    setValue(currentValue === value ? "" : currentValue);
+                    setOpen(false);
+                  }}
+                >
+                  {framework.label}
+                  <Check
+                    className={cn(
+                      "ml-auto",
+                      value === framework.value ? "opacity-100" : "opacity-0",
+                    )}
+                  />
+                </CommandItem>
+              ))}
+            </CommandGroup>
           </CommandList>
         </Command>
       </PopoverContent>
     </Popover>
   );
-};
+}

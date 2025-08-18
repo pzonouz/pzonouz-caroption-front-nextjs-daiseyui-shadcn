@@ -1,17 +1,22 @@
 "use client";
-import { FormEventHandler, useEffect, useState } from "react";
+import { FormEventHandler, useState } from "react";
 import { FormField } from "../Shared/FormField";
 import { LoadingButton } from "../Shared/LoadingButton";
 import { FieldErrors } from "react-hook-form";
 import ImageUpload from "../Shared/ImageUpload";
 import { Category } from "@/app/lib/schemas";
 import Tiptop from "../Shared/Tiptop";
+import {
+  formatStringToCommaSeparatedNumber,
+  replacePersianDigits,
+} from "@/app/lib/utils";
 export interface ProductFormValues {
   name: string;
   image_url: string;
   description: string;
   info: string;
-  parent: string;
+  price: string;
+  count: string;
 }
 interface ProductFormProp {
   register: Function;
@@ -22,7 +27,6 @@ interface ProductFormProp {
   isLoading: boolean;
   error: string;
   control: any;
-  getValues: Function;
   categories: Category[];
 }
 
@@ -33,26 +37,31 @@ const ProductForm = ({
   setValue,
   isLoading,
   error,
-  getValues,
   categories,
+  watch,
 }: ProductFormProp) => {
-  //Image
-  const [imageUrl, setImageUrl] = useState("");
+  // Image
+  const imageUrl = watch("image_url");
   const [description, setDescription] = useState("");
-  useEffect(() => {
-    if (getValues("image_url")) setImageUrl(getValues("image_url"));
-  }, [getValues("image_url")]);
+  const updateImageUrl = (url: string) => setValue("image_url", url);
 
-  useEffect(() => {
-    const currentFormImage = getValues("image_url");
-    if (imageUrl && imageUrl !== currentFormImage) {
-      setValue("image_url", imageUrl);
-    }
-  }, [imageUrl, getValues]);
+  //Price
+  const price = watch("price");
+  const updatePrice = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const replaced = formatStringToCommaSeparatedNumber(
+      replacePersianDigits(e.target.value),
+    );
+    setValue("price", replaced, { shouldValidate: true, shouldDirty: true });
+  };
 
-  useEffect(() => {
-    console.log(errors);
-  }, [errors]);
+  //Count
+  const count = watch("count");
+  const updateCount = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const replaced = formatStringToCommaSeparatedNumber(
+      replacePersianDigits(e.target.value),
+    );
+    setValue("count", replaced, { shouldValidate: true, shouldDirty: true });
+  };
 
   return (
     <form
@@ -73,9 +82,25 @@ const ProductForm = ({
         error={errors?.info?.message}
       />
       <Tiptop state={description} setState={setDescription} />
+      <FormField
+        label="قیمت"
+        title="price"
+        value={price}
+        onChange={updatePrice}
+        register={register}
+        error={errors?.price?.message}
+      />
+      <FormField
+        label="تعداد"
+        title="count"
+        value={count}
+        onChange={updateCount}
+        register={register}
+        error={errors?.count?.message}
+      />
       <FormField register={register} title="image_url" hidden />
       <FormField register={register} title="description" hidden />
-      <ImageUpload imageUrl={imageUrl} setImageUrl={setImageUrl} />
+      <ImageUpload imageUrl={imageUrl} setImageUrl={updateImageUrl} />
       {error && <p className="text-sm text-red-500">{error}</p>}
       <LoadingButton className="btn btn-primary" isLoading={isLoading}>
         ثبت
