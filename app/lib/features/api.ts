@@ -1,11 +1,12 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { Category, Invoice, InvoiceItem, Person, Product } from "../schemas";
 
-export const api: any = createApi({
+export const api = createApi({
   reducerPath: "api",
   baseQuery: fetchBaseQuery({
     baseUrl: "/backend",
     prepareHeaders(headers, { getState }) {
+      // @ts-ignore
       const access = getState()?.access?.access;
       if (access) {
         headers.set("Authorization", `JWT ${access}`);
@@ -37,7 +38,7 @@ export const api: any = createApi({
           method: "DELETE",
         }),
         invalidatesTags: ["invoices"],
-      }
+      },
     ),
     editInvoice: build.mutation<void, Partial<Invoice>>({
       query: (data) => ({
@@ -88,7 +89,7 @@ export const api: any = createApi({
           method: "DELETE",
         }),
         invalidatesTags: ["products"],
-      }
+      },
     ),
     editProduct: build.mutation<void, Partial<Product>>({
       query: (data) => ({

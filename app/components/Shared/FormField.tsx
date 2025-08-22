@@ -1,15 +1,16 @@
 "use client";
 import classNames from "classnames";
 import React from "react";
+import { UseFormRegister } from "react-hook-form";
 
 interface FormFieldProps {
   label?: string;
   title?: string;
   error?: string | undefined;
   className?: string;
-  register: Function;
+  register: UseFormRegister<any>;
   value?: string;
-  onChange?: Function;
+  onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
   hidden?: boolean;
   defaultValue?: string;
 }

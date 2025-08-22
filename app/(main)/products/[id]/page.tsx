@@ -1,5 +1,5 @@
-import { Product } from "@/app/lib/types";
 import Image from "next/image";
+import { Product } from "../../../lib/schemas";
 
 const page = async ({ params }: { params: Promise<{ id: string }> }) => {
   const { id } = await params;
@@ -16,7 +16,7 @@ const page = async ({ params }: { params: Promise<{ id: string }> }) => {
       <h1 className="font-bold px-4">{product?.name}</h1>
       <div
         className="mt-4 [&_li]:list-disc px-6"
-        dangerouslySetInnerHTML={{ __html: product?.description }}
+        dangerouslySetInnerHTML={{ __html: product?.description ?? "" }}
       ></div>
       <div className="px-4 font-bold" style={{ color: "red" }}>
         این محصول کاملا اورجینال میباشد و دارای ضمانت و اصالت کالا می باشد

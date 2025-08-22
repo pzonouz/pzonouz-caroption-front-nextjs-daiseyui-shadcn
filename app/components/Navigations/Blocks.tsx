@@ -1,7 +1,7 @@
 "use server";
 import Link from "next/link";
 import Image from "next/image";
-import { Category } from "@/app/lib/types";
+import { Category } from "../../lib/schemas";
 
 const Blocks = async () => {
   const categoriesRes = await fetch(

@@ -3,18 +3,23 @@ import { FormEventHandler } from "react";
 import { FormField } from "../Shared/FormField";
 import { replacePersianDigits } from "@/app/lib/utils";
 import { LoadingButton } from "../Shared/LoadingButton";
-import { FieldErrors } from "react-hook-form";
+import {
+  FieldErrors,
+  UseFormRegister,
+  UseFormSetValue,
+  UseFormWatch,
+} from "react-hook-form";
 export interface PersonFormValues {
   firstname: string;
   lastname: string;
   phone: string;
 }
 interface PersonFormProp {
-  register: Function;
+  register: UseFormRegister<PersonFormValues>;
   errors: FieldErrors<PersonFormValues>;
   submitHandler: FormEventHandler<HTMLFormElement>;
-  setValue: Function;
-  watch: Function;
+  setValue: UseFormSetValue<PersonFormValues>;
+  watch: UseFormWatch<PersonFormValues>;
   isLoading: boolean;
   error: string;
 }

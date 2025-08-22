@@ -1,7 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 export interface CrmMenu {
-  show: Boolean;
+  show: boolean;
 }
 const initialState: CrmMenu = { show: false };
 export const CrmMenuSlice = createSlice({

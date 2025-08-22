@@ -9,6 +9,7 @@ const layout = async ({ children }: { children: ReactNode }) => {
   if (!session) {
     redirect("/signin?callback=crm");
   }
+  //@ts-ignore
   if (session?.user?.isAdmin) {
     return (
       <div className="">

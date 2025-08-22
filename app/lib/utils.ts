@@ -1,6 +1,8 @@
 import { FetchBaseQueryError } from "@reduxjs/toolkit/query";
 import { Person, Product } from "@/app/lib/schemas";
 import { SuccessToast } from "./Toasts";
+import { FieldValues, UseFormHandleSubmit } from "react-hook-form";
+import { SetStateAction } from "react";
 
 export const translate = (input: string): string => {
   switch (input?.trim()) {
@@ -68,22 +70,21 @@ export const formatDate = (date: string | Date): string => {
 export const cleanNumericInput = (value: string): string => {
   return replacePersianDigits(value).replace(/[^0-9]/g, "");
 };
-interface SubmitHandlerProps {
-  action: Function;
-  handleSubmit: Function;
-  setError: Function;
-  reset?: Function;
-  setObject?: Function;
+interface SubmitHandlerProps<T extends FieldValues> {
+  action: (arg: T) => { unwrap: () => Promise<any> };
+  handleSubmit: UseFormHandleSubmit<T>;
+  setError: (error: string) => void;
+  reset?: () => void;
+  setObject?: (obj: T | null) => void;
 }
-export function submitHandler<T>({
+export function submitHandler<T extends FieldValues>({
   action,
   handleSubmit,
   setError,
   reset,
   setObject,
-}: SubmitHandlerProps) {
+}: SubmitHandlerProps<T>) {
   return handleSubmit((data: T) => {
-    console.log(data);
     action(data)
       .unwrap()
       .then(() => {
@@ -97,6 +98,9 @@ export function submitHandler<T>({
       });
   });
 }
-export const toggle = (open: boolean, setOpen: Function) => {
+export const toggle = (
+  open: boolean,
+  setOpen: React.Dispatch<SetStateAction<boolean>>,
+) => {
   open ? setOpen(false) : setOpen(true);
 };

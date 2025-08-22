@@ -1,6 +1,6 @@
-import { Product } from "@/app/lib/types";
 import Image from "next/image";
 import Link from "next/link";
+import { Product } from "../../lib/schemas";
 
 const ProductCard = ({ product }: { product: Product }) => {
   return (

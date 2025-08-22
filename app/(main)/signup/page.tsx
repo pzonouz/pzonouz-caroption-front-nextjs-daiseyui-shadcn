@@ -1,22 +1,24 @@
 "use client";
 
-import { signupAction } from "@/app/lib/actions";
 import classNames from "classnames";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useActionState, useEffect } from "react";
+import { signupAction } from "../../lib/actions";
+import { SignResponse } from "../../lib/schemas";
 
 export default function SignUp() {
   const [messages, signupFormAction, ispending] = useActionState(
     signupAction,
     null,
   );
+  const msg = messages as SignResponse | null;
   const router = useRouter();
   useEffect(() => {
-    if (messages?.success) {
+    if (msg?.success) {
       router.push("/profile");
     }
-  }, [messages]);
+  }, [msg, router]);
   return (
     <form
       className="w-1/2 mx-auto mt-10 flex flex-col justify-center items-start gap-3 "
@@ -26,16 +28,16 @@ export default function SignUp() {
       <label className="floating-label w-full">
         <span>ایمیل</span>
         <input
-          defaultValue={messages?.data?.email?.toString()}
+          defaultValue={msg?.data?.email?.toString()}
           name="email"
           type="text"
           placeholder="mail@site.com"
           className={classNames("input input-md", {
-            "input-error": messages?.errors?.email?.length,
+            "input-error": msg?.errors?.email?.length,
           })}
         />
-        {messages?.errors?.email && (
-          <p className="text-sm text-red-500">{messages?.errors?.email?.[0]}</p>
+        {msg?.errors?.email && (
+          <p className="text-sm text-red-500">{msg?.errors?.email?.[0]}</p>
         )}
       </label>
 
@@ -46,14 +48,12 @@ export default function SignUp() {
           type="password"
           className={classNames("input input-md", {
             "input-error":
-              messages?.errors?.password?.length ||
-              messages?.errors?.confirmPassword?.length,
+              msg?.errors?.password?.length ||
+              msg?.errors?.confirmPassword?.length,
           })}
         />
-        {messages?.errors?.password && (
-          <p className="text-sm text-red-500">
-            {messages?.errors?.password?.[0]}
-          </p>
+        {msg?.errors?.password && (
+          <p className="text-sm text-red-500">{msg?.errors?.password?.[0]}</p>
         )}
       </label>
       <label className="floating-label w-full">
@@ -62,26 +62,24 @@ export default function SignUp() {
           name="password2"
           className={classNames("input input-md", {
             "input-error":
-              messages?.errors?.password2?.length ||
-              messages?.errors?.confirmPassword?.length,
+              msg?.errors?.password2?.length ||
+              msg?.errors?.confirmPassword?.length,
           })}
           placeholder="*******"
           type="password"
         />
-        {messages?.errors?.password2 && (
-          <p className="text-sm text-red-500">
-            {messages?.errors?.password2?.[0]}
-          </p>
+        {msg?.errors?.password2 && (
+          <p className="text-sm text-red-500">{msg?.errors?.password2?.[0]}</p>
         )}
       </label>
-      {messages?.errors?.confirmPassword?.length && (
+      {msg?.errors?.confirmPassword?.length && (
         <p className="text-sm text-red-500 -mt-2">
-          {messages?.errors.confirmPassword?.[0]}
+          {msg?.errors.confirmPassword?.[0]}
         </p>
       )}
-      {messages?.error && (
+      {msg?.error && (
         <p className="text-sm text-red-500">
-          {messages?.error ? "ایمیل قبلا ثبت شده است" : null}
+          {msg?.error ? "ایمیل قبلا ثبت شده است" : null}
         </p>
       )}
 

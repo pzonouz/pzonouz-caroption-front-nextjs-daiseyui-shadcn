@@ -2,14 +2,20 @@
 import { FormEventHandler, useState } from "react";
 import { FormField } from "../Shared/FormField";
 import { LoadingButton } from "../Shared/LoadingButton";
-import { FieldErrors } from "react-hook-form";
+import {
+  Control,
+  FieldErrors,
+  UseFormRegister,
+  UseFormSetValue,
+  UseFormWatch,
+} from "react-hook-form";
 import ImageUpload from "../Shared/ImageUpload";
-import { Category } from "@/app/lib/schemas";
 import Tiptop from "../Shared/Tiptop";
+import { Category, Product } from "../../lib/schemas";
 import {
   formatStringToCommaSeparatedNumber,
   replacePersianDigits,
-} from "@/app/lib/utils";
+} from "../../lib/utils";
 export interface ProductFormValues {
   name: string;
   image_url: string;
@@ -19,14 +25,13 @@ export interface ProductFormValues {
   count: string;
 }
 interface ProductFormProp {
-  register: Function;
-  errors: FieldErrors<ProductFormValues>;
+  register: UseFormRegister<Product>;
+  errors: FieldErrors<Product>;
   submitHandler: FormEventHandler<HTMLFormElement>;
-  setValue: Function;
-  watch: Function;
+  setValue: UseFormSetValue<Product>;
+  watch: UseFormWatch<Product>;
   isLoading: boolean;
   error: string;
-  control: any;
   categories: Category[];
 }
 
@@ -37,13 +42,13 @@ const ProductForm = ({
   setValue,
   isLoading,
   error,
-  categories,
+  // categories,
   watch,
 }: ProductFormProp) => {
   // Image
   const imageUrl = watch("image_url");
-  const [description, setDescription] = useState("");
-  const updateImageUrl = (url: string) => setValue("image_url", url);
+  const [description, setDescription] = useState<string | null | undefined>("");
+  const updateImageUrl = (value: string) => setValue("image_url", value);
 
   //Price
   const price = watch("price");

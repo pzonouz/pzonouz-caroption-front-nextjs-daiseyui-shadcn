@@ -1,5 +1,5 @@
-import { Category } from "@/app/lib/types";
 import { JSX } from "react";
+import { Category } from "../../lib/schemas";
 
 interface Props {
   categories: Category[];

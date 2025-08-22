@@ -2,9 +2,12 @@
 
 import { z } from "zod/v4";
 import { signIn, signOut } from "../auth";
-import { userSchema } from "./schemas";
+import { ActionResult, userSchema } from "./schemas";
 
-export const signinAction = async (_prevState: any, data: FormData) => {
+export const signinAction = async (
+  _prevState: unknown,
+  data: FormData,
+): Promise<ActionResult> => {
   const rawData = Object.fromEntries(data);
   const result = userSchema.safeParse(rawData);
   if (result?.success) {
@@ -17,6 +20,7 @@ export const signinAction = async (_prevState: any, data: FormData) => {
       });
       return { success: true, error: "", errors: {}, data: {} };
     } catch (error) {
+      console.log(error);
       return {
         success: false,
         error: "نام کابری و پسورد مطابقت ندارد",
@@ -34,7 +38,7 @@ export const signinAction = async (_prevState: any, data: FormData) => {
     };
 };
 
-export const signupAction = async (_prevState: any, data: FormData) => {
+export const signupAction = async (_prevState: unknown, data: FormData) => {
   const rawData = Object.fromEntries(data);
   const userSchema = z
     .object({

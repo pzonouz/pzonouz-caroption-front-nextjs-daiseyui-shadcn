@@ -23,7 +23,7 @@ const Page = () => {
     } else {
       dispatch(LoadingHide());
     }
-  }, [categoriesIsFetching, parentCategoriesIsFetching]);
+  }, [categoriesIsFetching, parentCategoriesIsFetching, dispatch]);
 
   return (
     <div className="pt-20 flex flex-col items-center justify-center w-full">

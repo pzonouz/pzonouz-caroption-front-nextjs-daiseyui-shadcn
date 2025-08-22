@@ -7,7 +7,6 @@ import { faClose } from "@fortawesome/free-solid-svg-icons";
 import { zodResolver } from "@hookform/resolvers/zod";
 import classNames from "classnames";
 import { useForm } from "react-hook-form";
-import ImageUpload from "../Utils/ImageUpload";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import {
@@ -16,28 +15,23 @@ import {
   translateRTKFetchBaseQueryErrors,
 } from "@/app/lib/utils";
 import LeveledCategoryList from "../Categories/LeveledCategoryList";
-import Editor from "../Utils/Tiptop";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { FetchBaseQueryError } from "@reduxjs/toolkit/query";
+import ImageUpload from "../Shared/ImageUpload";
+import Editor from "../Shared/Tiptop";
 
 const EditProductModal = ({
   product,
   setProduct,
 }: {
   product: Product | undefined;
-  setProduct: Function;
+  setProduct: React.Dispatch<React.SetStateAction<Product | null | undefined>>;
 }) => {
   const [editProductAction, { isLoading: editProductIsLoading }] =
     useEditProductMutation();
   const [error, setError] = useState("");
   const [html, setHtml] = useState("");
   const [imageUrl, setImageUrl] = useState("");
-  useEffect(() => {
-    setValue("description", html);
-  }, [html]);
-  useEffect(() => {
-    setValue("image_url", imageUrl);
-  }, [imageUrl]);
   const {
     handleSubmit,
     register,
@@ -47,24 +41,30 @@ const EditProductModal = ({
     formState: { errors },
   } = useForm<Product>({ resolver: zodResolver(productSchema) });
   useEffect(() => {
+    setValue("description", html);
+  }, [html, setValue]);
+  useEffect(() => {
+    setValue("image_url", imageUrl);
+  }, [imageUrl, setValue]);
+  useEffect(() => {
     if (!product) return;
     reset(product);
     setValue(
       "count",
       formatStringToCommaSeparatedNumber(
-        replacePersianDigits(product?.count?.toString())
-      )
+        replacePersianDigits(product?.count?.toString()),
+      ),
     );
     setValue(
       "price",
       formatStringToCommaSeparatedNumber(
-        replacePersianDigits(product?.price?.toString())
-      )
+        replacePersianDigits(product?.price?.toString()),
+      ),
     );
     setValue("category", product?.category?.toString());
-    setImageUrl(product?.image_url!);
-    setHtml(product?.description!);
-  }, [product]);
+    setImageUrl(product?.image_url ?? "");
+    setHtml(product?.description ?? "");
+  }, [product, setValue, setHtml, reset, setImageUrl]);
 
   useEffect(() => {}, [errors]);
   useEffect(() => {
@@ -82,16 +82,16 @@ const EditProductModal = ({
     }
     setError("");
   }, [error]);
-  function handleChangePrice(e: any) {
+  function handleChangePrice(e: React.ChangeEvent<HTMLInputElement>) {
     setValue(
       "price",
-      formatStringToCommaSeparatedNumber(replacePersianDigits(e.target.value))
+      formatStringToCommaSeparatedNumber(replacePersianDigits(e.target.value)),
     );
   }
-  function handleChangeCount(e: any) {
+  function handleChangeCount(e: React.ChangeEvent<HTMLInputElement>) {
     setValue(
       "count",
-      formatStringToCommaSeparatedNumber(replacePersianDigits(e.target.value))
+      formatStringToCommaSeparatedNumber(replacePersianDigits(e.target.value)),
     );
   }
   const { data: parentCategories } = useGetParentCategoriesQuery();
@@ -114,7 +114,7 @@ const EditProductModal = ({
                 editProductAction(data)
                   .unwrap()
                   .then(() => {
-                    setProduct("");
+                    setProduct(null);
                     toast("با موفقیت انجام شد", {
                       position: "top-center",
                       duration: 3000,

@@ -1,10 +1,10 @@
 "use client";
 
-import { submitHandler, toggle } from "@/app/lib/utils";
 import { CollapsibleSection } from "../Shared/CollapsibleSection";
 import { useCreateCategory } from "./hooks/useCreateCategory";
-import CategoryForm, { CategoryFormValues } from "./CategoryForm";
-import { Category } from "@/app/lib/schemas";
+import { Category } from "../../lib/schemas";
+import { submitHandler, toggle } from "../../lib/utils";
+import CategoryForm from "./CategoryForm";
 
 export function CreateCategory({ categories }: { categories: Category[] }) {
   const {
@@ -18,7 +18,6 @@ export function CreateCategory({ categories }: { categories: Category[] }) {
     register,
     reset,
     setError,
-    control,
     handleSubmit,
     createCategoryAction,
     getValues,
@@ -33,13 +32,12 @@ export function CreateCategory({ categories }: { categories: Category[] }) {
         <label className=" text-3xl text-center w-5/6">ایجاد دسته بندی</label>
         <CategoryForm
           categories={categories}
-          control={control}
           error={error}
           isLoading={createCategoryIsLoading}
           watch={watch}
           setValue={setValue}
           getValues={getValues}
-          submitHandler={submitHandler<CategoryFormValues>({
+          submitHandler={submitHandler<Category>({
             action: createCategoryAction,
             handleSubmit,
             setError,

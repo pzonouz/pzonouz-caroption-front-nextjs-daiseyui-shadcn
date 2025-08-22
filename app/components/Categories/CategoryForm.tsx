@@ -2,26 +2,31 @@
 import { FormEventHandler } from "react";
 import { FormField } from "../Shared/FormField";
 import { LoadingButton } from "../Shared/LoadingButton";
-import { FieldErrors } from "react-hook-form";
+import {
+  FieldErrors,
+  UseFormGetValues,
+  UseFormRegister,
+  UseFormSetValue,
+  UseFormWatch,
+} from "react-hook-form";
 import ImageUpload from "../Shared/ImageUpload";
-import { Category } from "@/app/lib/schemas";
-export interface CategoryFormValues {
-  name: string;
-  image_url: string;
-  description: string;
-  order: string;
-  parent: string;
-}
+import { Category } from "../../lib/schemas";
+// export interface CategoryFormValues {
+//   name: string;
+//   image_url?: string;
+//   description?: string;
+//   order: string;
+//   parent: string;
+// }
 interface CategoryFormProp {
-  register: Function;
-  errors: FieldErrors<CategoryFormValues>;
+  register: UseFormRegister<Category>;
+  errors: FieldErrors<Category>;
   submitHandler: FormEventHandler<HTMLFormElement>;
-  setValue: Function;
-  watch: Function;
+  setValue: UseFormSetValue<Category>;
+  watch: UseFormWatch<Category>;
   isLoading: boolean;
   error: string;
-  control: any;
-  getValues: Function;
+  getValues: UseFormGetValues<Category>;
   categories: Category[];
 }
 
@@ -33,7 +38,7 @@ const CategoryForm = ({
   isLoading,
   error,
   watch,
-  categories,
+  // categories,
 }: CategoryFormProp) => {
   const imageUrl = watch("image_url");
 
@@ -48,19 +53,19 @@ const CategoryForm = ({
         label="نام"
         title="name"
         register={register}
-        error={errors?.name?.message}
+        error={errors?.name?.message?.toString()}
       />
       <FormField
         label="توضیح"
         title="description"
         register={register}
-        error={errors?.description?.message}
+        error={errors?.description?.message?.toString()}
       />
       <FormField
         label="ترتیب"
         title="order"
         register={register}
-        error={errors?.order?.message}
+        error={errors?.order?.message?.toString()}
       />
       <FormField register={register} title="image_url" hidden />
       <ImageUpload imageUrl={imageUrl} setImageUrl={updateImageUrl} />

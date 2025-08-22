@@ -11,10 +11,9 @@ const EditPersonModal = ({
   person,
   setPerson,
 }: {
-  person: Person | undefined;
-  setPerson: Function;
+  person: Person | null | undefined;
+  setPerson: React.Dispatch<React.SetStateAction<Person | null | undefined>>;
 }) => {
-  if (!person) return null;
   const {
     register,
     setError,
@@ -26,7 +25,8 @@ const EditPersonModal = ({
     reset,
     editPersonIsLoading,
     editPersonAction,
-  } = useEditPerson({ person: person });
+  } = useEditPerson({ person: person ?? undefined });
+  if (!person) return null;
   return (
     person && (
       <dialog open className="modal w-full">

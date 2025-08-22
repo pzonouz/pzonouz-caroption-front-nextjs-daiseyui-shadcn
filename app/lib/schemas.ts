@@ -8,15 +8,18 @@ export const personSchema = z.object({
     .string()
     .regex(/^09\d{9}$/, { message: "شماره را به درستی وارد کنید" }),
 });
-
-export const categorySchema = z.object({
-  id: z.number().nullish(),
-  name: z.string().min(1, { message: "نام را وارد کنید" }),
-  description: z.string().nullish(),
-  image_url: z.string().nullish(),
-  parent: z.string().nullish(),
-  order: z.string().min(1, { message: "اولویت را وارد کنید" }),
-});
+export const categorySchema: z.ZodType<any> = z.lazy(() =>
+  z.object({
+    id: z.number().nullish(),
+    name: z.string().min(1, { message: "نام را وارد کنید" }),
+    description: z.string().nullish(),
+    image_url: z.string().nullish(),
+    parent: z.string().nullish(),
+    order: z.string().min(1, { message: "اولویت را وارد کنید" }),
+    parent_name: z.string().nullish(),
+    children: z.array(categorySchema).optional(),
+  }),
+);
 
 export const productSchema = z.object({
   id: z.number().nullish(),
@@ -53,3 +56,17 @@ export type Category = z.infer<typeof categorySchema>;
 export type Product = z.infer<typeof productSchema>;
 export type InvoiceItem = z.infer<typeof invoiceItemSchema>;
 export type Invoice = z.infer<typeof invoiceSchema>;
+export interface SignResponse {
+  success: boolean;
+  error?: string;
+  errors?: Record<string, string[]>;
+  data?: {
+    email?: string;
+  };
+}
+export type ActionResult = {
+  success: boolean;
+  error: string | null;
+  errors: Record<string, string[]> | null;
+  data: Record<string, unknown>;
+};

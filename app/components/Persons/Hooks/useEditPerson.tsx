@@ -19,7 +19,7 @@ export function useEditPerson({ person }: { person: Person | undefined }) {
     if (person) {
       reset(person);
     }
-  }, [person]);
+  }, [person, reset]);
 
   const [error, setError] = useState("");
   const [editPersonAction, { isLoading: editPersonIsLoading }] =

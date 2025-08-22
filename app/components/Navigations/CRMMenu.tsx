@@ -1,6 +1,11 @@
 "use client";
-import { Button } from "@/components/ui/button";
 import { LucideMenu } from "lucide-react";
+
+import Link from "next/link";
+import { User } from "next-auth";
+import { signOut, useSession } from "next-auth/react";
+import { useEffect } from "react";
+import Loading from "../Shared/Loading";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -9,23 +14,18 @@ import {
   DropdownMenuSubContent,
   DropdownMenuSubTrigger,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-
-import Link from "next/link";
-import { User } from "next-auth";
-import { signOut, useSession } from "next-auth/react";
-import { useEffect } from "react";
-import { useAppDispatch, useAppSelector } from "@/app/lib/hooks";
-import { setAccess } from "@/app/lib/features/SessionSlice";
-import Loading from "../Shared/Loading";
+} from "../../../components/ui/dropdown-menu";
+import { Button } from "../../../components/ui/button";
+import { useAppDispatch, useAppSelector } from "../../lib/hooks";
+import { setAccess } from "../../lib/features/SessionSlice";
 
 const CRMMenu = ({ user }: { user: User | undefined }) => {
   const loading = useAppSelector((state) => state?.loading?.show);
   const { data, status } = useSession();
   const dispatch = useAppDispatch();
   useEffect(() => {
-    if (status == "authenticated") dispatch(setAccess(data?.access));
-  }, [status]);
+    if (status == "authenticated") dispatch(setAccess((data as any)?.access));
+  }, [status, data, dispatch]);
   const menuList = [
     { text: "خانه", link: "/crm" },
     { text: "افراد", link: "/crm/persons" },
@@ -79,9 +79,10 @@ const CRMMenu = ({ user }: { user: User | undefined }) => {
                   </DropdownMenuSub>
                 );
               } else {
+                if (!item?.link || !item?.text) return null;
                 return (
                   <Link
-                    href={item?.link!}
+                    href={item?.link}
                     key={item?.text}
                     className="cursor-pointer"
                   >

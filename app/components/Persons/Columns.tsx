@@ -3,12 +3,8 @@
 import { Button } from "@/components/ui/button";
 import { ColumnDef } from "@tanstack/react-table";
 import { ArrowUpDown } from "lucide-react";
-import { useEffect, useState } from "react";
-import { useDeletePersonMutation } from "@/app/lib/features/api";
-import EditPersonModal from "./EditPersonModal";
 import { Person } from "@/app/lib/schemas";
-import DataTableActions from "../Shared/DataTableActions";
-import { ErrorToast, SuccessToast } from "@/app/lib/Toasts";
+import PersonActionsCell from "./PersonActionsCell";
 
 export const columns: ColumnDef<Person>[] = [
   {
@@ -52,32 +48,7 @@ export const columns: ColumnDef<Person>[] = [
   {
     id: "actions",
     cell: ({ row }) => {
-      const [deletePersonAction, { isLoading: deletePersonIsLoading }] =
-        useDeletePersonMutation();
-      const [person, setPerson] = useState<Person>();
-      const [selectedId, setSelectedId] = useState<string>();
-
-      useEffect(() => {
-        if (selectedId) {
-          deletePersonAction(selectedId)
-            .unwrap()
-            .then(() => SuccessToast())
-
-            .catch(() => ErrorToast("برای این شخص فاکتور ثبت شده است"));
-        }
-      }, [selectedId]);
-
-      return (
-        <>
-          <EditPersonModal person={person} setPerson={setPerson} />
-          <DataTableActions<Person>
-            row={row}
-            setObject={setPerson}
-            isLoading={deletePersonIsLoading}
-            setSelectedId={setSelectedId}
-          />
-        </>
-      );
+      <PersonActionsCell row={row} />;
     },
   },
 ];

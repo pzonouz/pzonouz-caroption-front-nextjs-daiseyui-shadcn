@@ -11,9 +11,10 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { Button } from "@/components/ui/button";
+import DateObject from "react-date-object";
 
 export function PersianDatePicker() {
-  const [date, setDate] = useState<any>(null);
+  const [date, setDate] = useState<DateObject | null | undefined>(null);
 
   return (
     <Popover>

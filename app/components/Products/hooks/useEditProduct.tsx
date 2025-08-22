@@ -21,7 +21,7 @@ export function useEditProduct({ product }: { product: Product | undefined }) {
     if (product) {
       reset(product);
     }
-  }, [product]);
+  }, [product, reset]);
 
   const [error, setError] = useState("");
   const [editProductAction, { isLoading: editProductIsLoading }] =

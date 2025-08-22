@@ -1,14 +1,14 @@
-import { useState } from "react";
+import React, { SetStateAction, useState } from "react";
 
 const ImageUpload = ({
   imageUrl,
   setImageUrl,
 }: {
-  imageUrl: string | null | undefined;
-  setImageUrl: Function;
+  imageUrl: string;
+  setImageUrl: (value: string) => void; // plain function
 }) => {
   const [uploadProgress, setUploadProgress] = useState(0);
-  const [_image, setImage] = useState<File | null>(null);
+  const [, setImage] = useState<File | null>(null);
   return (
     <>
       <input

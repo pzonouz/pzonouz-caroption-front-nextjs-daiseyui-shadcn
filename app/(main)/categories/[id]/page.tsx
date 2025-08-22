@@ -1,5 +1,5 @@
-import ProductCard from "@/app/components/Products/ProductCard";
-import { Product } from "@/app/lib/types";
+import ProductCard from "../../../components/Products/ProductCard";
+import { Product } from "../../../lib/schemas";
 
 const page = async ({ params }: { params: Promise<{ id: string }> }) => {
   const { id } = await params;

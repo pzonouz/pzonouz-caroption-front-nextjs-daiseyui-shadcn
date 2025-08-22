@@ -14,7 +14,6 @@ interface DataTableActionsProps<T> {
   isLoading: boolean;
   row: Row<T>;
 }
-
 const DataTableActions = <T,>({
   setSelectedId,
   isLoading,
@@ -36,6 +35,7 @@ const DataTableActions = <T,>({
       <DropdownMenuItem
         className="cursor-pointer text-error"
         onClick={() => {
+          // @ts-ignore
           setSelectedId(row?.original?.id?.toString());
         }}
       >

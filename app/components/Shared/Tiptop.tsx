@@ -1,6 +1,6 @@
 "use client";
 
-import styles from "./tiptop.module.css";
+// import styles from "./tiptop.module.css";
 import { useEditor, EditorContent } from "@tiptap/react";
 import Document from "@tiptap/extension-document";
 import Paragraph from "@tiptap/extension-paragraph";
@@ -15,14 +15,14 @@ import ListItem from "@tiptap/extension-list-item";
 import Text from "@tiptap/extension-text";
 import Image from "@tiptap/extension-image";
 
-import { useEffect, useState } from "react";
+import { SetStateAction, useEffect, useState } from "react";
 
 export default function Editor({
   state,
   setState,
 }: {
-  state: string;
-  setState: Function;
+  state: string | null | undefined;
+  setState: React.Dispatch<SetStateAction<string | null | undefined>>;
 }) {
   const [color, setColor] = useState("#000000");
 

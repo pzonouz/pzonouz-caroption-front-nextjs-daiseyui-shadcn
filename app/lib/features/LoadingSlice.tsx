@@ -1,7 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 export interface Loading {
-  show: Boolean;
+  show: boolean;
 }
 const initialState: Loading = { show: false };
 export const LoadingSlice = createSlice({

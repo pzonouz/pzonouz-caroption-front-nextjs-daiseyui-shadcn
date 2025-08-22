@@ -25,7 +25,7 @@ export function useEditCategory({
     if (category) {
       reset(category);
     }
-  }, [category]);
+  }, [category, reset]);
 
   const [error, setError] = useState("");
   const [editCategoryAction, { isLoading: editCategoryIsLoading }] =

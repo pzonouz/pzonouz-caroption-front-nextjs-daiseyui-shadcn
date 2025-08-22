@@ -1,10 +1,10 @@
 "use client";
 
-import { submitHandler, toggle } from "@/app/lib/utils";
+import { Category, Product } from "../../lib/schemas";
 import { CollapsibleSection } from "../Shared/CollapsibleSection";
-import { Category } from "@/app/lib/schemas";
 import { useCreateProduct } from "./hooks/useCreateProduct";
-import ProductForm, { ProductFormValues } from "./ProductForm";
+import ProductForm from "./ProductForm";
+import { submitHandler, toggle } from "../../lib/utils";
 
 export function CreateProduct({ categories }: { categories: Category[] }) {
   const {
@@ -18,10 +18,8 @@ export function CreateProduct({ categories }: { categories: Category[] }) {
     register,
     reset,
     setError,
-    control,
     handleSubmit,
     createProductAction,
-    getValues,
   } = useCreateProduct();
   return (
     <div className="w-full flex flex-col items-center justify-center  relative">
@@ -33,13 +31,11 @@ export function CreateProduct({ categories }: { categories: Category[] }) {
         <label className=" text-3xl text-center w-5/6">ایجاد کالا</label>
         <ProductForm
           categories={categories}
-          control={control}
           error={error}
           isLoading={createProductIsLoading}
           watch={watch}
           setValue={setValue}
-          getValues={getValues}
-          submitHandler={submitHandler<ProductFormValues>({
+          submitHandler={submitHandler<Product>({
             action: createProductAction,
             handleSubmit,
             setError,
