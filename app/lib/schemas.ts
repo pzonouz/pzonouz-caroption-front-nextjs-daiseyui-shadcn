@@ -18,6 +18,8 @@ export const categorySchema: z.ZodType<any> = z.lazy(() =>
     order: z.string().min(1, { message: "اولویت را وارد کنید" }),
     parent_name: z.string().nullish(),
     children: z.array(categorySchema).optional(),
+    created: z.date().nullish(),
+    updated: z.date().nullish(),
   }),
 );
 
@@ -30,6 +32,8 @@ export const productSchema = z.object({
   info: z.string().min(1, { message: "وارد کنید" }),
   count: z.string().min(1, { message: "تعداد را وارد کنید" }),
   price: z.string().min(1, { message: "قیمت را وارد کنید" }),
+  created: z.date().nullish(),
+  updated: z.date().nullish(),
 });
 export const userSchema = z.object({
   email: z.string().min(1, "ایمیل را وارد کنید"),
@@ -50,6 +54,8 @@ export const invoiceSchema = z.object({
   total: z.string(),
   invoiceitems: z.array(invoiceItemSchema),
   type: z.string().nullish(),
+  created: z.date().nullish(),
+  updated: z.date().nullish(),
 });
 export type Person = z.infer<typeof personSchema>;
 export type Category = z.infer<typeof categorySchema>;

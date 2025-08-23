@@ -1,5 +1,27 @@
 import Image from "next/image";
-import { Product } from "../../../lib/schemas";
+import { Category, Product } from "../../../lib/schemas";
+import { Metadata } from "next";
+
+export async function generateStaticParams() {
+  const productsRes = await fetch(`${process.env.BACKEND_URL}products/`);
+  const products: Product[] = await productsRes.json();
+  return products.map((category) => ({
+    id: category.id.toString(),
+  }));
+}
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ id: string }>;
+}): Promise<Metadata> {
+  const { id } = await params;
+  const productRes = await fetch(`${process.env.BACKEND_URL}products/${id}/`);
+  const product: Product = await productRes.json();
+  return {
+    title: product?.name,
+    description: product?.description,
+  };
+}
 
 const page = async ({ params }: { params: Promise<{ id: string }> }) => {
   const { id } = await params;
