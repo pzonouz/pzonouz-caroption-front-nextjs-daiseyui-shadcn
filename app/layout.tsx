@@ -5,8 +5,11 @@ import { SessionProvider } from "next-auth/react";
 import StoreProvider from "./components/Shared/StoreProvider";
 
 export const metadata: Metadata = {
-  title: "Caroption",
-  description: "caroption",
+  title: {
+    default: "کارآپشن",
+    template: "%s - کارآپشن",
+  },
+  description: "مرکز تخصصی آپشن خودرو",
 };
 
 export default function RootLayout({

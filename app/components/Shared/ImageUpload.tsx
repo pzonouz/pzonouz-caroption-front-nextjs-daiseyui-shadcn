@@ -1,4 +1,5 @@
-import React, { SetStateAction, useState } from "react";
+import Image from "next/image";
+import React, { useState } from "react";
 
 const ImageUpload = ({
   imageUrl,
@@ -56,10 +57,12 @@ const ImageUpload = ({
         <div className="text-sm text-blue-500">{uploadProgress}%</div>
       )}
       {imageUrl && (
-        <img
+        <Image
           src={`${process.env.NEXT_PUBLIC_BACKEND_URL}/${imageUrl}`}
           alt="Uploaded"
           className="w-32 h-auto mt-2 rounded-md"
+          width={800}
+          height={800}
         />
       )}
     </>
