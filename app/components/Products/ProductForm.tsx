@@ -1,9 +1,8 @@
 "use client";
-import { FormEventHandler, useState } from "react";
+import { FormEventHandler, useEffect, useState } from "react";
 import { FormField } from "../Shared/FormField";
 import { LoadingButton } from "../Shared/LoadingButton";
 import {
-  Control,
   FieldErrors,
   UseFormRegister,
   UseFormSetValue,
@@ -16,6 +15,10 @@ import {
   formatStringToCommaSeparatedNumber,
   replacePersianDigits,
 } from "../../lib/utils";
+import { Combobox } from "../Shared/ComboBox";
+import { useGetCategoriesQuery } from "@/app/lib/features/api";
+import { useAppDispatch } from "@/app/lib/hooks";
+import { LoadingHide, LoadingShow } from "@/app/lib/features/LoadingSlice";
 export interface ProductFormValues {
   name: string;
   image_url: string;
@@ -45,9 +48,21 @@ const ProductForm = ({
   // categories,
   watch,
 }: ProductFormProp) => {
+  const dispatch = useAppDispatch();
+  const { data: categories, isFetching: categoryIsLoading } =
+    useGetCategoriesQuery();
+  useEffect(() => {
+    if (isLoading || categoryIsLoading) {
+      dispatch(LoadingShow());
+    } else {
+      dispatch(LoadingHide());
+    }
+  }, [isLoading, categoryIsLoading, dispatch]);
+
+  const [description, setDescription] = useState<string | null | undefined>("");
+
   // Image
   const imageUrl = watch("image_url");
-  const [description, setDescription] = useState<string | null | undefined>("");
   const updateImageUrl = (value: string) => setValue("image_url", value);
 
   //Price
@@ -68,6 +83,10 @@ const ProductForm = ({
     setValue("count", replaced, { shouldValidate: true, shouldDirty: true });
   };
 
+  // category
+  const category = watch("category")?.toString() ?? "";
+
+  const updateCategory = (catgoryId: string) => setValue("category", catgoryId);
   return (
     <form
       lang="fa"
@@ -105,6 +124,11 @@ const ProductForm = ({
       />
       <FormField register={register} title="image_url" hidden />
       <FormField register={register} title="description" hidden />
+      <Combobox<Category>
+        value={category}
+        setValue={updateCategory}
+        array={categories ?? []}
+      />
       <ImageUpload imageUrl={imageUrl} setImageUrl={updateImageUrl} />
       {error && <p className="text-sm text-red-500">{error}</p>}
       <LoadingButton className="btn btn-primary" isLoading={isLoading}>

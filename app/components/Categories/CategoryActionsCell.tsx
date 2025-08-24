@@ -14,7 +14,7 @@ const CategoryActionsCell = ({ row }: { row: Row<Category> }) => {
   const [selectedId, setSelectedId] = useState<string | null | undefined>("");
   useEffect(() => {
     if (selectedId)
-      deleteCategoryAction({ id: Number(selectedId) })
+      deleteCategoryAction(selectedId)
         .unwrap()
         .then(() => {
           SuccessToast();

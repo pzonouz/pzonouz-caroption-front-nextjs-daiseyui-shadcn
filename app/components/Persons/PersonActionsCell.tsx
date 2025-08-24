@@ -14,7 +14,7 @@ const PersonActionsCell = ({ row }: { row: Row<Person> }) => {
 
   useEffect(() => {
     if (selectedId) {
-      deletePersonAction({ id: Number(selectedId) })
+      deletePersonAction(selectedId)
         .unwrap()
         .then(() => SuccessToast())
 

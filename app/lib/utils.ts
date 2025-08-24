@@ -17,6 +17,7 @@ export const translate = (input: string): string => {
 export const translateRTKFetchBaseQueryErrors = (
   error: FetchBaseQueryError,
 ) => {
+  console.log(error);
   const errorData = error?.data as Record<string, string[]>;
   const allMessages = Object?.values(errorData)?.flat();
   const output = allMessages?.reduce((pre, value) => {
@@ -44,38 +45,19 @@ export const replacePersianDigits = (value: string | undefined): string => {
   });
 };
 
-export const formatPersonDisplay = (person: Person): string => {
-  const parts = [person.lastname, person.firstname, person.phone].filter(
-    Boolean,
-  );
-
-  return parts.join(" ");
-};
-
-export const formatProductDisplay = (product: Product): string => {
-  return product.name || "";
-};
-
-export const formatCurrency = (amount: string | number): string => {
-  const formatted = formatStringToCommaSeparatedNumber(amount);
-  return formatted ? `${formatted} تومان` : "";
-};
-
 export const formatDate = (date: string | Date): string => {
   if (!date) return "";
   const dateObj = typeof date === "string" ? new Date(date) : date;
   return dateObj.toLocaleDateString("fa-IR");
 };
 
-export const cleanNumericInput = (value: string): string => {
-  return replacePersianDigits(value).replace(/[^0-9]/g, "");
-};
 interface SubmitHandlerProps<T extends FieldValues> {
   action: (arg: T) => { unwrap: () => Promise<any> };
   handleSubmit: UseFormHandleSubmit<T>;
   setError: (error: string) => void;
   reset?: () => void;
   setObject?: (obj: T | null) => void;
+  transform?: (data: T) => T;
 }
 export function submitHandler<T extends FieldValues>({
   action,
@@ -83,9 +65,12 @@ export function submitHandler<T extends FieldValues>({
   setError,
   reset,
   setObject,
+  transform,
 }: SubmitHandlerProps<T>) {
   return handleSubmit((data: T) => {
-    action(data)
+    const transformedData = transform ? transform(data) : data;
+    console.log(transformedData);
+    action(transformedData)
       .unwrap()
       .then(() => {
         setError("");

@@ -2,8 +2,9 @@
 
 import { submitHandler, toggle } from "@/app/lib/utils";
 import { CollapsibleSection } from "../Shared/CollapsibleSection";
-import PersonForm, { PersonFormValues } from "./PersonForm";
+import PersonForm from "./PersonForm";
 import { useCreatePerson } from "./Hooks/useCreatePerson";
+import { Person } from "@/app/lib/schemas";
 
 export function CreatePerson() {
   const {
@@ -33,7 +34,7 @@ export function CreatePerson() {
           isLoading={createPersonIsLoading}
           watch={watch}
           setValue={setValue}
-          submitHandler={submitHandler<PersonFormValues>({
+          submitHandler={submitHandler<Person>({
             action: createPersonAction,
             handleSubmit,
             setError,

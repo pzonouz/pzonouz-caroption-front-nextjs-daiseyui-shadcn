@@ -9,17 +9,13 @@ import {
   UseFormSetValue,
   UseFormWatch,
 } from "react-hook-form";
-export interface PersonFormValues {
-  firstname: string;
-  lastname: string;
-  phone: string;
-}
+import { Person } from "@/app/lib/schemas";
 interface PersonFormProp {
-  register: UseFormRegister<PersonFormValues>;
-  errors: FieldErrors<PersonFormValues>;
+  register: UseFormRegister<Person>;
+  errors: FieldErrors<Person>;
   submitHandler: FormEventHandler<HTMLFormElement>;
-  setValue: UseFormSetValue<PersonFormValues>;
-  watch: UseFormWatch<PersonFormValues>;
+  setValue: UseFormSetValue<Person>;
+  watch: UseFormWatch<Person>;
   isLoading: boolean;
   error: string;
 }

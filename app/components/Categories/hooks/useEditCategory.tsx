@@ -17,7 +17,6 @@ export function useEditCategory({
     setValue,
     watch,
     control,
-    getValues,
     formState: { errors },
   } = useForm<Category>({ resolver: zodResolver(categorySchema) });
 
@@ -43,6 +42,5 @@ export function useEditCategory({
     editCategoryAction,
     editCategoryIsLoading,
     control,
-    getValues,
   };
 }

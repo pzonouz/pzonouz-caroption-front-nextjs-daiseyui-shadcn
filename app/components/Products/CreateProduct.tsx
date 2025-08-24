@@ -5,6 +5,7 @@ import { CollapsibleSection } from "../Shared/CollapsibleSection";
 import { useCreateProduct } from "./hooks/useCreateProduct";
 import ProductForm from "./ProductForm";
 import { submitHandler, toggle } from "../../lib/utils";
+import { useEffect } from "react";
 
 export function CreateProduct({ categories }: { categories: Category[] }) {
   const {
@@ -40,6 +41,11 @@ export function CreateProduct({ categories }: { categories: Category[] }) {
             handleSubmit,
             setError,
             reset,
+            transform: (data) => ({
+              ...data,
+              count: data.count?.replaceAll(",", ""),
+              price: data?.price?.replaceAll(",", ""),
+            }),
           })}
           errors={errors}
           register={register}

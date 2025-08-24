@@ -4,7 +4,7 @@ import { Person } from "@/app/lib/schemas";
 import { submitHandler } from "@/app/lib/utils";
 import { faClose } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import PersonForm, { PersonFormValues } from "./PersonForm";
+import PersonForm from "./PersonForm";
 import { useEditPerson } from "./Hooks/useEditPerson";
 
 const EditPersonModal = ({
@@ -43,7 +43,7 @@ const EditPersonModal = ({
               ویرایش طرف حساب
             </label>
             <PersonForm
-              submitHandler={submitHandler<PersonFormValues>({
+              submitHandler={submitHandler<Person>({
                 action: editPersonAction,
                 handleSubmit,
                 setError,

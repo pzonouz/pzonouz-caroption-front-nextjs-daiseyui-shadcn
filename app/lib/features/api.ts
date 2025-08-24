@@ -31,15 +31,13 @@ export const api = createApi({
       }),
       invalidatesTags: ["invoices"],
     }),
-    deleteInvoice: build.mutation<void, Partial<Invoice> & Pick<Invoice, "id">>(
-      {
-        query: (id) => ({
-          url: `invoices/${id}/`,
-          method: "DELETE",
-        }),
-        invalidatesTags: ["invoices"],
-      },
-    ),
+    deleteInvoice: build.mutation<void, any>({
+      query: (id) => ({
+        url: `invoices/${id}/`,
+        method: "DELETE",
+      }),
+      invalidatesTags: ["invoices"],
+    }),
     editInvoice: build.mutation<void, Partial<Invoice>>({
       query: (data) => ({
         url: `invoices/${data?.id}/`,
@@ -82,15 +80,13 @@ export const api = createApi({
       }),
       invalidatesTags: ["products"],
     }),
-    deleteProduct: build.mutation<void, Partial<Product> & Pick<Product, "id">>(
-      {
-        query: (id) => ({
-          url: `products/${id}/`,
-          method: "DELETE",
-        }),
-        invalidatesTags: ["products"],
-      },
-    ),
+    deleteProduct: build.mutation<void, any>({
+      query: (id) => ({
+        url: `products/${id}/`,
+        method: "DELETE",
+      }),
+      invalidatesTags: ["products"],
+    }),
     editProduct: build.mutation<void, Partial<Product>>({
       query: (data) => ({
         url: `products/${data?.id}/`,
@@ -115,10 +111,7 @@ export const api = createApi({
       }),
       invalidatesTags: ["categories"],
     }),
-    deleteCategory: build.mutation<
-      void,
-      Partial<Category> & Pick<Category, "id">
-    >({
+    deleteCategory: build.mutation<void, any>({
       query: (id) => ({
         url: `categories/${id}/`,
         method: "DELETE",
@@ -145,7 +138,7 @@ export const api = createApi({
       }),
       invalidatesTags: ["persons"],
     }),
-    deletePerson: build.mutation<void, Partial<Person> & Pick<Person, "id">>({
+    deletePerson: build.mutation<void, any>({
       query: (id) => ({
         url: `persons/${id}/`,
         method: "DELETE",

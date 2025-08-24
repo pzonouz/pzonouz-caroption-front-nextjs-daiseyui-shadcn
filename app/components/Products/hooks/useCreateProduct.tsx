@@ -14,7 +14,6 @@ export const useCreateProduct = () => {
     reset,
     watch,
     control,
-    getValues,
   } = useForm<Product>({
     resolver: zodResolver(productSchema),
   });
@@ -34,7 +33,6 @@ export const useCreateProduct = () => {
     error,
     setError,
     control,
-    getValues,
     createProductAction,
     createProductIsLoading,
   };

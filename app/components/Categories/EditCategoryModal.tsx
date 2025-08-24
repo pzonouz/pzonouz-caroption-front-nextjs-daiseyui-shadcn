@@ -31,7 +31,6 @@ const EditCategoryModal = ({
     reset,
     editCategoryIsLoading,
     editCategoryAction,
-    getValues,
   } = useEditCategory({ category });
 
   const { data: categories, isLoading } = useGetCategoriesQuery();
@@ -76,7 +75,6 @@ const EditCategoryModal = ({
             setValue={setValue}
             watch={watch}
             categories={categories ?? []}
-            getValues={getValues}
           />
         </div>
       </div>
