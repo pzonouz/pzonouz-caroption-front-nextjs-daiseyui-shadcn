@@ -4,7 +4,7 @@ import { Category } from "../../lib/schemas";
 
 const Blocks = async () => {
   const categoriesRes = await fetch(
-    `${process.env.BACKEND_URL}/parent_categories`,
+    `${process.env.NEXT_PUBLIC_BACKEND_URL}/parent_categories`,
   );
   const categories: Category[] = await categoriesRes.json();
   return (
