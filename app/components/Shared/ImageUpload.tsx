@@ -58,7 +58,7 @@ const ImageUpload = ({
       )}
       {imageUrl && (
         <Image
-          src={`${process.env.NEXT_PUBLIC_BACKEND_URL}/${imageUrl}`}
+          src={`${process.env.NEXT_PUBLIC_BASE_URL}/${imageUrl}`}
           alt="Uploaded"
           className="w-32 h-auto mt-2 rounded-md"
           width={800}
