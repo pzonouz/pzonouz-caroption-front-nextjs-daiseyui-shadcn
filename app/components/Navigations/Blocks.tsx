@@ -1,4 +1,3 @@
-"use server";
 import Link from "next/link";
 import Image from "next/image";
 import { Category } from "../../lib/schemas";
