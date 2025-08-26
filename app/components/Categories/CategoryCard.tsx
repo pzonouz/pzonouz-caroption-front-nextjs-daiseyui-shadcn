@@ -1,11 +1,6 @@
 import { Product } from "@/app/lib/schemas";
-import { getBackendUrl } from "@/app/lib/utils";
-import { headers } from "next/headers";
 import Image from "next/image";
 import Link from "next/link";
-
-const h = await headers();
-const backendUrl = await getBackendUrl(h);
 
 const ProductCard = ({ product }: { product: Product }) => {
   return (

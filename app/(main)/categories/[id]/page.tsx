@@ -29,10 +29,10 @@ export async function generateMetadata({
   };
 }
 const page = async ({ params }: { params: Promise<{ id: string }> }) => {
-  const h = await headers();
-  const backendUrl = await getBackendUrl(h);
   const { id } = await params;
-  const productsRes = await fetch(`${backendUrl}/products_in_category/${id}`);
+  const productsRes = await fetch(
+    `${process.env.BACKEND_URL}/products_in_category/${id}`,
+  );
   const products: Product[] = (await productsRes.json()) ?? [];
   return (
     <div>

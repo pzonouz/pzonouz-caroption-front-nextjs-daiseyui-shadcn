@@ -3,8 +3,6 @@ export const revalidate = 60;
 import Image from "next/image";
 import { Product } from "../../../lib/schemas";
 import { Metadata } from "next";
-import { getBackendUrl } from "@/app/lib/utils";
-import { headers } from "next/headers";
 
 export async function generateStaticParams() {
   const productsRes = await fetch(`${process.env.BACKEND_URL}/products/`);
@@ -18,10 +16,8 @@ export async function generateMetadata({
 }: {
   params: Promise<{ id: string }>;
 }): Promise<Metadata> {
-  const h = await headers();
-  const backendUrl = await getBackendUrl(h);
   const { id } = await params;
-  const productRes = await fetch(`${backendUrl}/products/${id}/`);
+  const productRes = await fetch(`${process.env.BACKEND_URL}/products/${id}/`);
   const product: Product = await productRes.json();
   return {
     title: product?.name,
@@ -30,10 +26,8 @@ export async function generateMetadata({
 }
 
 const page = async ({ params }: { params: Promise<{ id: string }> }) => {
-  const h = await headers();
-  const backendUrl = await getBackendUrl(h);
   const { id } = await params;
-  const productRes = await fetch(`${backendUrl}/products/${id}/`);
+  const productRes = await fetch(`${process.env.BACKEND_URL}/products/${id}/`);
   const product: Product = await productRes.json();
   return (
     <div>

@@ -86,6 +86,3 @@ export const toggle = (
 ) => {
   open ? setOpen(false) : setOpen(true);
 };
-export const getBackendUrl = async (h: Headers) => {
-  return `${h.get("x-forwarded-proto")}://${h.get("host")}/backend`;
-};
