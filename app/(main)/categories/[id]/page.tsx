@@ -3,8 +3,6 @@ export const revalidate = 60;
 import { Metadata } from "next";
 import ProductCard from "../../../components/Products/ProductCard";
 import { Category, Product } from "../../../lib/schemas";
-import { getBackendUrl } from "@/app/lib/utils";
-import { headers } from "next/headers";
 
 export async function generateStaticParams() {
   const categoriesRes = await fetch(`${process.env.BACKEND_URL}/categories/`);

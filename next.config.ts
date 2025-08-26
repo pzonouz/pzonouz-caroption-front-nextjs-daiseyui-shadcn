@@ -11,7 +11,12 @@ const nextConfig: NextConfig = {
       },
       {
         protocol: "http",
-        hostname: "carroptin.ir",
+        hostname: "carroption.ir",
+        pathname: "**/media/**", // allows access to all media files
+      },
+      {
+        protocol: "https",
+        hostname: "carroption.ir",
         pathname: "**/media/**", // allows access to all media files
       },
     ],
