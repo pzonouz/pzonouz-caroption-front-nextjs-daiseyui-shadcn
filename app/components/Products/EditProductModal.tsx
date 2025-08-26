@@ -54,9 +54,6 @@ const EditProductModal = ({
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-    console.log(errors);
-  }, [errors]);
-  useEffect(() => {
     if (isFetching || editProductIsLoading) {
       dispatch(LoadingShow());
     } else {

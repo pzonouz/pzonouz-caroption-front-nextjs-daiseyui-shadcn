@@ -16,7 +16,6 @@ export const translate = (input: string): string => {
 export const translateRTKFetchBaseQueryErrors = (
   error: FetchBaseQueryError,
 ) => {
-  console.log(error);
   const errorData = error?.data as Record<string, string[]>;
   const allMessages = Object?.values(errorData)?.flat();
   const output = allMessages?.reduce((pre, value) => {

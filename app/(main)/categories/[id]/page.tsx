@@ -1,4 +1,4 @@
-"use server";
+export const revalidate = 60;
 
 import { Metadata } from "next";
 import ProductCard from "../../../components/Products/ProductCard";
