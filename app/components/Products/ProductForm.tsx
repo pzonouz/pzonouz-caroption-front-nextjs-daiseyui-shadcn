@@ -19,14 +19,6 @@ import { Combobox } from "../Shared/ComboBox";
 import { useGetCategoriesQuery } from "@/app/lib/features/api";
 import { useAppDispatch } from "@/app/lib/hooks";
 import { LoadingHide, LoadingShow } from "@/app/lib/features/LoadingSlice";
-export interface ProductFormValues {
-  name: string;
-  image_url: string;
-  description: string;
-  info: string;
-  price: string;
-  count: string;
-}
 interface ProductFormProp {
   register: UseFormRegister<Product>;
   errors: FieldErrors<Product>;

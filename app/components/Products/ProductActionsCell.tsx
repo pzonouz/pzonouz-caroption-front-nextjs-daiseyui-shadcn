@@ -14,12 +14,13 @@ import { Row } from "@tanstack/react-table";
 import { MoreHorizontal } from "lucide-react";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
+import EditProductModal from "./EditProductModal";
 
 const ProductActionsCell = ({ row }: { row: Row<Product> }) => {
   const [deleteProductAction, { isLoading: deleteProductIsLoading }] =
     useDeleteProductMutation();
   const [selectedId, setSelectedId] = useState<string | null | undefined>("");
-  const [, setProduct] = useState<Product>();
+  const [product, setProduct] = useState<Product>();
   useEffect(() => {
     if (selectedId) {
       deleteProductAction({ id: Number(selectedId) })
@@ -56,7 +57,7 @@ const ProductActionsCell = ({ row }: { row: Row<Product> }) => {
   }, [selectedId, deleteProductAction]);
   return (
     <>
-      {/* <EditProductModal product={product} setProduct={setProduct} /> */}
+      <EditProductModal product={product} setProduct={setProduct} />
       <DropdownMenu dir="rtl">
         <DropdownMenuTrigger asChild>
           <Button variant="ghost" className="h-8 w-8 p-0 cursor-pointer">

@@ -1,9 +1,13 @@
+"use server";
+
 import Image from "next/image";
-import { Category, Product } from "../../../lib/schemas";
+import { Product } from "../../../lib/schemas";
 import { Metadata } from "next";
+import { getBackendUrl } from "@/app/lib/utils";
+import { headers } from "next/headers";
 
 export async function generateStaticParams() {
-  const productsRes = await fetch(`${process.env.BACKEND_URL}products/`);
+  const productsRes = await fetch(`${process.env.BACKEND_URL}/products/`);
   const products: Product[] = await productsRes.json();
   return products.map((category) => ({
     id: category.id.toString(),
@@ -14,8 +18,10 @@ export async function generateMetadata({
 }: {
   params: Promise<{ id: string }>;
 }): Promise<Metadata> {
+  const h = await headers();
+  const backendUrl = await getBackendUrl(h);
   const { id } = await params;
-  const productRes = await fetch(`${process.env.BACKEND_URL}products/${id}/`);
+  const productRes = await fetch(`${backendUrl}/products/${id}/`);
   const product: Product = await productRes.json();
   return {
     title: product?.name,
@@ -24,13 +30,15 @@ export async function generateMetadata({
 }
 
 const page = async ({ params }: { params: Promise<{ id: string }> }) => {
+  const h = await headers();
+  const backendUrl = await getBackendUrl(h);
   const { id } = await params;
-  const productRes = await fetch(`${process.env.BACKEND_URL}/products/${id}/`);
+  const productRes = await fetch(`${backendUrl}/products/${id}/`);
   const product: Product = await productRes.json();
   return (
     <div>
       <Image
-        src={`${process.env.NEXT_PUBLIC_BACKEND_URL}${product?.image_url}`}
+        src={`${backendUrl}/${product?.image_url}`}
         alt={`${product?.name}`}
         width={400}
         height={400}

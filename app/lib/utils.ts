@@ -1,5 +1,4 @@
 import { FetchBaseQueryError } from "@reduxjs/toolkit/query";
-import { Person, Product } from "@/app/lib/schemas";
 import { SuccessToast } from "./Toasts";
 import { FieldValues, UseFormHandleSubmit } from "react-hook-form";
 import { SetStateAction } from "react";
@@ -69,7 +68,6 @@ export function submitHandler<T extends FieldValues>({
 }: SubmitHandlerProps<T>) {
   return handleSubmit((data: T) => {
     const transformedData = transform ? transform(data) : data;
-    console.log(transformedData);
     action(transformedData)
       .unwrap()
       .then(() => {
@@ -88,4 +86,7 @@ export const toggle = (
   setOpen: React.Dispatch<SetStateAction<boolean>>,
 ) => {
   open ? setOpen(false) : setOpen(true);
+};
+export const getBackendUrl = async (h: Headers) => {
+  return `${h.get("x-forwarded-proto")}://${h.get("host")}/backend`;
 };

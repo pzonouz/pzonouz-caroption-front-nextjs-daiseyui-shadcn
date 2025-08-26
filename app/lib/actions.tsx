@@ -3,6 +3,10 @@
 import { z } from "zod/v4";
 import { signIn, signOut } from "../auth";
 import { ActionResult, userSchema } from "./schemas";
+import { headers } from "next/headers";
+import { getBackendUrl } from "./utils";
+const h = await headers();
+const backendUrl = await getBackendUrl(h);
 
 export const signinAction = async (
   _prevState: unknown,
@@ -55,7 +59,7 @@ export const signupAction = async (_prevState: unknown, data: FormData) => {
   data.set("re_password", data.get("password")!);
   if (result.success) {
     try {
-      const res = await fetch(`${process.env.BACKEND_URL}/auth/signup`, {
+      const res = await fetch(`${backendUrl}/auth/signup`, {
         method: "POST",
         body: data,
       });

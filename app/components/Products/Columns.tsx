@@ -49,8 +49,6 @@ export const columns: ColumnDef<Product>[] = [
   },
   {
     id: "actions",
-    cell: ({ row }) => {
-      <ProductActionsCell row={row} />;
-    },
+    cell: ({ row }) => <ProductActionsCell row={row} />,
   },
 ];

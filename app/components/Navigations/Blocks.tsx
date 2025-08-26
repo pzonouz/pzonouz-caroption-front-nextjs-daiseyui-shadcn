@@ -1,12 +1,16 @@
+"use server";
 import Link from "next/link";
 import Image from "next/image";
 import { Category } from "../../lib/schemas";
+import { getBackendUrl } from "@/app/lib/utils";
+import { headers } from "next/headers";
 
 const Blocks = async () => {
-  const categoriesRes = await fetch(
-    `${process.env.NEXT_PUBLIC_BACKEND_URL}/parent_categories`,
-    { cache: "no-store" },
-  );
+  const h = await headers();
+  const url = await getBackendUrl(h);
+  const categoriesRes = await fetch(`${url}/parent_categories`, {
+    cache: "no-store",
+  });
   const categories: Category[] = await categoriesRes.json();
   return (
     <div className=" grid grid-cols-3 gap-2 sm:grid-cols-4 p-4">
@@ -19,7 +23,7 @@ const Blocks = async () => {
             <Image
               src={
                 category?.image_url
-                  ? `${process.env.NEXT_PUBLIC_BASE_URL}${category.image_url}`
+                  ? `${url}/${category.image_url}`
                   : "/images/logo.jpg"
               }
               width={50}

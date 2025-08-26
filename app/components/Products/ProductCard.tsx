@@ -1,8 +1,13 @@
+"use server";
 import Image from "next/image";
 import Link from "next/link";
 import { Product } from "../../lib/schemas";
+import { headers } from "next/headers";
+import { getBackendUrl } from "@/app/lib/utils";
 
-const ProductCard = ({ product }: { product: Product }) => {
+const ProductCard = async ({ product }: { product: Product }) => {
+  const h = await headers();
+  const backendUrl = await getBackendUrl(h);
   return (
     <Link
       href={`/products/${product?.id}`}
@@ -11,7 +16,7 @@ const ProductCard = ({ product }: { product: Product }) => {
       <Image
         src={
           product.image_url
-            ? `${process.env.BACKEND_URL}${product?.image_url}`
+            ? `${backendUrl}/${product?.image_url}`
             : "/images/logo.jpg"
         }
         alt={product.name}

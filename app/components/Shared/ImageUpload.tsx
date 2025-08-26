@@ -1,3 +1,4 @@
+"use client";
 import Image from "next/image";
 import React, { useState } from "react";
 
@@ -6,7 +7,7 @@ const ImageUpload = ({
   setImageUrl,
 }: {
   imageUrl: string;
-  setImageUrl: (value: string) => void; // plain function
+  setImageUrl: (value: string) => void;
 }) => {
   const [uploadProgress, setUploadProgress] = useState(0);
   const [, setImage] = useState<File | null>(null);
@@ -26,11 +27,7 @@ const ImageUpload = ({
           formData.append("image", file);
 
           const xhr = new XMLHttpRequest();
-          xhr.open(
-            "POST",
-            `${process.env.NEXT_PUBLIC_BACKEND_URL}/upload-image/`,
-            true,
-          );
+          xhr.open("POST", `/backend/upload-image/`, true);
 
           xhr.upload.onprogress = function (e) {
             if (e.lengthComputable) {

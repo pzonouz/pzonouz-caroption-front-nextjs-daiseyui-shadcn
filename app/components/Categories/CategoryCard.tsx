@@ -1,6 +1,11 @@
 import { Product } from "@/app/lib/schemas";
+import { getBackendUrl } from "@/app/lib/utils";
+import { headers } from "next/headers";
 import Image from "next/image";
 import Link from "next/link";
+
+const h = await headers();
+const backendUrl = await getBackendUrl(h);
 
 const ProductCard = ({ product }: { product: Product }) => {
   return (
@@ -11,7 +16,7 @@ const ProductCard = ({ product }: { product: Product }) => {
       <Image
         src={
           product.image_url
-            ? `${process.env.BACKEND_URL}${product?.image_url}`
+            ? `${backendUrl}/${product?.image_url}`
             : "/images/logo.jpg"
         }
         alt={product.name}

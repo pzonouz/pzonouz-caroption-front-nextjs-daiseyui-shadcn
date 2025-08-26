@@ -61,13 +61,10 @@ export default function Editor({
     const formData = new FormData();
     formData.append("image", file);
 
-    const res = await fetch(
-      `${process.env.NEXT_PUBLIC_BACKEND_URL}/upload-image/`,
-      {
-        method: "POST",
-        body: formData,
-      },
-    );
+    const res = await fetch(`/backend/upload-image/`, {
+      method: "POST",
+      body: formData,
+    });
 
     const data = await res.json();
     return data.url;
@@ -84,7 +81,7 @@ export default function Editor({
         editor
           ?.chain()
           .focus()
-          .setImage({ src: `${process.env.NEXT_PUBLIC_BACKEND_URL}/${url}` })
+          .setImage({ src: `/backend/${url}` })
           .run();
       }
     };

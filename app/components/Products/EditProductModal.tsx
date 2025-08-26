@@ -1,241 +1,110 @@
-import {
-  useEditProductMutation,
-  useGetParentCategoriesQuery,
-} from "@/app/lib/features/api";
-import { Product, productSchema } from "@/app/lib/schemas";
+"use client";
+
 import { faClose } from "@fortawesome/free-solid-svg-icons";
-import { zodResolver } from "@hookform/resolvers/zod";
-import classNames from "classnames";
-import { useForm } from "react-hook-form";
-import { useEffect, useState } from "react";
-import { toast } from "sonner";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { useEditProduct } from "./hooks/useEditProduct";
+import ProductForm from "./ProductForm";
+import React, { useEffect, useMemo } from "react";
+import { Product } from "../../lib/schemas";
+import { useAppDispatch } from "../../lib/hooks";
+import { LoadingHide, LoadingShow } from "../../lib/features/LoadingSlice";
 import {
   formatStringToCommaSeparatedNumber,
-  replacePersianDigits,
-  translateRTKFetchBaseQueryErrors,
-} from "@/app/lib/utils";
-import LeveledCategoryList from "../Categories/LeveledCategoryList";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { FetchBaseQueryError } from "@reduxjs/toolkit/query";
-import ImageUpload from "../Shared/ImageUpload";
-import Editor from "../Shared/Tiptop";
+  submitHandler,
+} from "../../lib/utils";
+import { useGetCategoriesQuery } from "@/app/lib/features/api";
 
 const EditProductModal = ({
   product,
   setProduct,
 }: {
-  product: Product | undefined;
+  product: Product | null | undefined;
   setProduct: React.Dispatch<React.SetStateAction<Product | null | undefined>>;
 }) => {
-  const [editProductAction, { isLoading: editProductIsLoading }] =
-    useEditProductMutation();
-  const [error, setError] = useState("");
-  const [html, setHtml] = useState("");
-  const [imageUrl, setImageUrl] = useState("");
+  const normalizedProduct = useMemo(
+    () =>
+      product
+        ? {
+            ...product,
+            category: product.category?.toString() ?? "",
+            count: formatStringToCommaSeparatedNumber(
+              product.count?.toString() ?? "",
+            ),
+            price: formatStringToCommaSeparatedNumber(
+              product.price?.toString() ?? "",
+            ),
+          }
+        : undefined,
+    [product],
+  );
   const {
-    handleSubmit,
     register,
+    setError,
+    error,
+    watch,
+    handleSubmit,
     setValue,
-    getValues,
+    errors,
     reset,
-    formState: { errors },
-  } = useForm<Product>({ resolver: zodResolver(productSchema) });
-  useEffect(() => {
-    setValue("description", html);
-  }, [html, setValue]);
-  useEffect(() => {
-    setValue("image_url", imageUrl);
-  }, [imageUrl, setValue]);
-  useEffect(() => {
-    if (!product) return;
-    reset(product);
-    setValue(
-      "count",
-      formatStringToCommaSeparatedNumber(
-        replacePersianDigits(product?.count?.toString()),
-      ),
-    );
-    setValue(
-      "price",
-      formatStringToCommaSeparatedNumber(
-        replacePersianDigits(product?.price?.toString()),
-      ),
-    );
-    setValue("category", product?.category?.toString());
-    setImageUrl(product?.image_url ?? "");
-    setHtml(product?.description ?? "");
-  }, [product, setValue, setHtml, reset, setImageUrl]);
+    editProductIsLoading,
+    editProductAction,
+  } = useEditProduct({ product: normalizedProduct });
 
-  useEffect(() => {}, [errors]);
+  const { data: categories, isFetching } = useGetCategoriesQuery();
+  const dispatch = useAppDispatch();
+
   useEffect(() => {
-    if (error == "400") {
-      toast("نام کالا تکراری است", {
-        position: "top-center",
-        duration: 3000,
-        style: {
-          backgroundColor: "red",
-          color: "white",
-          fontWeight: "bold",
-          fontFamily: "iransans",
-        },
-      });
+    console.log(errors);
+  }, [errors]);
+  useEffect(() => {
+    if (isFetching || editProductIsLoading) {
+      dispatch(LoadingShow());
+    } else {
+      dispatch(LoadingHide());
     }
-    setError("");
-  }, [error]);
-  function handleChangePrice(e: React.ChangeEvent<HTMLInputElement>) {
-    setValue(
-      "price",
-      formatStringToCommaSeparatedNumber(replacePersianDigits(e.target.value)),
-    );
-  }
-  function handleChangeCount(e: React.ChangeEvent<HTMLInputElement>) {
-    setValue(
-      "count",
-      formatStringToCommaSeparatedNumber(replacePersianDigits(e.target.value)),
-    );
-  }
-  const { data: parentCategories } = useGetParentCategoriesQuery();
+  }, [isFetching, dispatch, editProductIsLoading]);
+
+  if (!product) return null;
+
   return (
-    product && (
-      <dialog open className="modal">
-        <div className="modal-box">
-          <div className="modal-action ">
-            <FontAwesomeIcon
-              icon={faClose}
-              className="absolute text-error cursor-pointer top-4 right-4"
-              onClick={() => {
-                setProduct(null);
-              }}
-            />
-            <form
-              onSubmit={handleSubmit((data) => {
-                data["price"] = data["price"].replaceAll(",", "");
-                data["count"] = data["count"].replaceAll(",", "");
-                editProductAction(data)
-                  .unwrap()
-                  .then(() => {
-                    setProduct(null);
-                    toast("با موفقیت انجام شد", {
-                      position: "top-center",
-                      duration: 3000,
-                      style: {
-                        backgroundColor: "green",
-                        color: "white",
-                        fontWeight: "bold",
-                        fontFamily: "iransans",
-                      },
-                    });
-                  })
-                  .catch((err: FetchBaseQueryError) => {
-                    setError(translateRTKFetchBaseQueryErrors(err));
-                  });
-              })}
-              className="mx-auto mt-10 grid grid-cols-2 sm:grid-cols-3 gap-3 w-5/6 mb-4"
-              dir="rtl"
-            >
-              <input type="text" hidden readOnly />
-              <input type="text" hidden {...register("image_url")} readOnly />
-              <input type="text" hidden {...register("category")} readOnly />
-              <input type="text" hidden {...register("description")} readOnly />
-              <label className="floating-label w-full">
-                <span>نام کالا</span>
-                <input
-                  {...register("name")}
-                  type="text"
-                  className={classNames("input input-md w-full", {
-                    "input-error": errors?.name,
-                  })}
-                />
-                {errors?.name && (
-                  <p className="text-sm text-red-500">
-                    {errors?.name?.message}
-                  </p>
-                )}
-              </label>
-
-              <label className="floating-label w-full">
-                <span>زیر توضیح</span>
-                <input
-                  {...register("info")}
-                  type="text"
-                  className={classNames("input input-md w-full", {
-                    "input-error": errors?.info,
-                  })}
-                />
-                {errors?.info && (
-                  <p className="text-sm text-red-500">
-                    {errors?.info?.message}
-                  </p>
-                )}
-              </label>
-              <LeveledCategoryList
-                categories={parentCategories}
-                value={getValues("category")?.toString()}
-                onChange={(value) => {
-                  if (!value) return;
-                  setValue("category", value?.toString());
-                }}
-              />
-              <label className="floating-label w-full">
-                <span>قیمت</span>
-                <input
-                  lang="en"
-                  dir="rtl"
-                  {...register("price", { onChange: handleChangePrice })}
-                  className={classNames("input input-md w-full", {
-                    "input-error": errors?.price,
-                  })}
-                  type="text"
-                />
-                {errors?.price && (
-                  <p className="text-sm text-red-500">
-                    {errors?.price?.message}
-                  </p>
-                )}
-              </label>
-              <label className="floating-label w-full">
-                <span>تعداد</span>
-                <input
-                  {...register("count", { onChange: handleChangeCount })}
-                  lang="en"
-                  dir="ltr"
-                  className={classNames("input input-md w-full", {
-                    "input-error": errors?.count,
-                  })}
-                  type="text"
-                />
-                {errors?.count && (
-                  <p className="text-sm text-red-500">
-                    {errors?.count?.message}
-                  </p>
-                )}
-              </label>
-
-              <div className="col-span-2">
-                <Editor state={html} setState={setHtml} />
-              </div>
-              {errors?.description && (
-                <p className="text-sm text-red-500">
-                  {errors?.description?.message}
-                </p>
-              )}
-              <ImageUpload imageUrl={imageUrl} setImageUrl={setImageUrl} />
-              {error && (
-                <p className="text-sm text-red-500">
-                  {error == "Bad Request" ? "نام کالا تکراری است" : null}
-                </p>
-              )}
-              <button type="submit" className="btn btn-primary w-full">
-                {editProductIsLoading && (
-                  <span className="loading loading-spinner"></span>
-                )}
-                {!editProductIsLoading && <span>ثبت</span>}
-              </button>
-            </form>
-          </div>
+    <dialog open className="modal w-full">
+      <div className="modal-box w-full relative">
+        <div className="modal-action w-full flex flex-col items-center justify-center">
+          <FontAwesomeIcon
+            icon={faClose}
+            className="absolute text-error cursor-pointer top-4 right-4"
+            onClick={() => {
+              setProduct(undefined);
+            }}
+          />
+          <label className=" text-3xl text-center w-5/6">
+            ویرایش دسته بندی
+          </label>
+          <ProductForm
+            submitHandler={submitHandler<Product>({
+              action: editProductAction,
+              handleSubmit,
+              setError,
+              reset,
+              setObject: setProduct,
+              transform: (data) => ({
+                ...data,
+                count: data.count?.replaceAll(",", ""),
+                price: data?.price?.replaceAll(",", ""),
+                category: data?.category?.toString(),
+              }),
+            })}
+            error={error}
+            isLoading={editProductIsLoading}
+            register={register}
+            errors={errors}
+            setValue={setValue}
+            watch={watch}
+            categories={categories ?? []}
+          />
         </div>
-      </dialog>
-    )
+      </div>
+    </dialog>
   );
 };
 

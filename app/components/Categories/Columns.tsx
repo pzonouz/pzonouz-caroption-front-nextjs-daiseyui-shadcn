@@ -36,8 +36,6 @@ export const columns: ColumnDef<Category>[] = [
   },
   {
     id: "actions",
-    cell: ({ row }) => {
-      return <CategoryActionsCell row={row} />;
-    },
+    cell: ({ row }) => <CategoryActionsCell row={row} />,
   },
 ];

@@ -24,7 +24,7 @@ export const FormField: React.FC<FormFieldProps> = ({
   value = null,
   onChange = null,
   hidden = false,
-  defaultValue = undefined,
+  defaultValue = "",
 }) => {
   return (
     <label className={`floating-label w-full ${className}`}>
@@ -32,7 +32,6 @@ export const FormField: React.FC<FormFieldProps> = ({
       <input
         hidden={hidden}
         {...register(title)}
-        defaultValue={defaultValue}
         {...(value !== undefined && value !== null ? { value } : {})}
         {...(onChange ? { onChange } : {})}
         dir="rtl"
