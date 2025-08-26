@@ -38,7 +38,7 @@ const page = async ({ params }: { params: Promise<{ id: string }> }) => {
   return (
     <div>
       <Image
-        src={`${backendUrl}/${product?.image_url}`}
+        src={`${process.env.NEXT_PUBLIC_BASE_URL}${product?.image_url}`}
         alt={`${product?.name}`}
         width={400}
         height={400}

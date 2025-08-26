@@ -81,7 +81,7 @@ export default function Editor({
         editor
           ?.chain()
           .focus()
-          .setImage({ src: `/backend/${url}` })
+          .setImage({ src: `${url}` })
           .run();
       }
     };

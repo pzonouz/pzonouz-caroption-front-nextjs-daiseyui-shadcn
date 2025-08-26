@@ -16,7 +16,7 @@ const ProductCard = ({ product }: { product: Product }) => {
       <Image
         src={
           product.image_url
-            ? `${backendUrl}/${product?.image_url}`
+            ? `${process.env.NEXT_PUBLIC_BASE_URL}${product?.image_url}`
             : "/images/logo.jpg"
         }
         alt={product.name}
