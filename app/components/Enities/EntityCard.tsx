@@ -1,12 +1,11 @@
-"use server";
+import { Product } from "@/app/lib/schemas";
 import Image from "next/image";
 import Link from "next/link";
-import { Product } from "../../lib/schemas";
 
-const ProductCard = async ({ product }: { product: Product }) => {
+const ProductCard = ({ product }: { product: Product }) => {
   return (
     <Link
-      href={`/products/${product?.id}`}
+      href={`products/${product?.id}`}
       className="flex flex-row gap-3 items-center p-2 mt-2"
     >
       <Image
@@ -22,9 +21,7 @@ const ProductCard = async ({ product }: { product: Product }) => {
       />
       <div>
         <div>{product.name}</div>
-        <div className="text-xs text-gray-500">
-          {product?.generated ? product?.main_product?.info : product?.info}
-        </div>
+        <div className="text-xs text-gray-500">{product.info}</div>
         <div>{product.price}</div>
       </div>
     </Link>

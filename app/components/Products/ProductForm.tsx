@@ -10,15 +10,19 @@ import {
 } from "react-hook-form";
 import ImageUpload from "../Shared/ImageUpload";
 import Tiptop from "../Shared/Tiptop";
-import { Category, Product } from "../../lib/schemas";
+import { Brand, Category, Product } from "../../lib/schemas";
 import {
   formatStringToCommaSeparatedNumber,
   replacePersianDigits,
 } from "../../lib/utils";
 import { Combobox } from "../Shared/ComboBox";
-import { useGetCategoriesQuery } from "@/app/lib/features/api";
+import {
+  useGetBrandsQuery,
+  useGetCategoriesQuery,
+} from "@/app/lib/features/api";
 import { useAppDispatch } from "@/app/lib/hooks";
 import { LoadingHide, LoadingShow } from "@/app/lib/features/LoadingSlice";
+import { Checkbox } from "@/components/ui/checkbox";
 interface ProductFormProp {
   register: UseFormRegister<Product>;
   errors: FieldErrors<Product>;
@@ -27,7 +31,6 @@ interface ProductFormProp {
   watch: UseFormWatch<Product>;
   isLoading: boolean;
   error: string;
-  categories: Category[];
 }
 
 const ProductForm = ({
@@ -37,28 +40,30 @@ const ProductForm = ({
   setValue,
   isLoading,
   error,
-  // categories,
   watch,
 }: ProductFormProp) => {
   const dispatch = useAppDispatch();
   const { data: categories, isFetching: categoryIsLoading } =
     useGetCategoriesQuery();
+  const { data: brands, isFetching: brandIsLoading } = useGetBrandsQuery();
   useEffect(() => {
-    if (isLoading || categoryIsLoading) {
+    if (isLoading || categoryIsLoading || brandIsLoading) {
       dispatch(LoadingShow());
     } else {
       dispatch(LoadingHide());
     }
-  }, [isLoading, categoryIsLoading, dispatch]);
+  }, [isLoading, categoryIsLoading, dispatch, brandIsLoading]);
 
-  const [description, setDescription] = useState<string | null | undefined>("");
+  // Description
+  const description = watch("description") ?? "";
+  const updateDescription = (value: string) => setValue("description", value);
 
   // Image
-  const imageUrl = watch("image_url");
+  const imageUrl = watch("image_url") ?? "";
   const updateImageUrl = (value: string) => setValue("image_url", value);
 
   //Price
-  const price = watch("price");
+  const price = watch("price") ?? "";
   const updatePrice = (e: React.ChangeEvent<HTMLInputElement>) => {
     const replaced = formatStringToCommaSeparatedNumber(
       replacePersianDigits(e.target.value),
@@ -67,7 +72,7 @@ const ProductForm = ({
   };
 
   //Count
-  const count = watch("count");
+  const count = watch("count") ?? "";
   const updateCount = (e: React.ChangeEvent<HTMLInputElement>) => {
     const replaced = formatStringToCommaSeparatedNumber(
       replacePersianDigits(e.target.value),
@@ -75,10 +80,17 @@ const ProductForm = ({
     setValue("count", replaced, { shouldValidate: true, shouldDirty: true });
   };
 
-  // category
+  // Category
   const category = watch("category")?.toString() ?? "";
-
   const updateCategory = (catgoryId: string) => setValue("category", catgoryId);
+
+  // Brand
+  const brand = watch("brand")?.toString() ?? "";
+  const updateBrand = (brandId: string) => setValue("brand", brandId);
+
+  // Generatable
+  const generatable = watch("generatable") ?? false;
+  const updateGeneratable = (value: boolean) => setValue("generatable", value);
   return (
     <form
       lang="fa"
@@ -89,22 +101,22 @@ const ProductForm = ({
         label="نام"
         title="name"
         register={register}
-        error={errors?.name?.message}
+        error={errors?.name?.message?.toString()}
       />
       <FormField
         label="توضیح کوتاه"
         title="info"
         register={register}
-        error={errors?.info?.message}
+        error={errors?.info?.message?.toString()}
       />
-      <Tiptop state={description} setState={setDescription} />
+      <Tiptop state={description} setState={updateDescription} />
       <FormField
         label="قیمت"
         title="price"
         value={price}
         onChange={updatePrice}
         register={register}
-        error={errors?.price?.message}
+        error={errors?.price?.message?.toString()}
       />
       <FormField
         label="تعداد"
@@ -116,10 +128,21 @@ const ProductForm = ({
       />
       <FormField register={register} title="image_url" hidden />
       <FormField register={register} title="description" hidden />
+      <div className="flex flex-row gap-4 items-center">
+        <Checkbox checked={generatable} onCheckedChange={updateGeneratable} />
+        <p>بازتولید</p>
+      </div>
+      <Combobox<Brand>
+        value={brand}
+        setValue={updateBrand}
+        array={brands ?? []}
+        title="برند"
+      />
       <Combobox<Category>
         value={category}
         setValue={updateCategory}
         array={categories ?? []}
+        title="دسته بندی"
       />
       <ImageUpload imageUrl={imageUrl} setImageUrl={updateImageUrl} />
       {error && <p className="text-sm text-red-500">{error}</p>}

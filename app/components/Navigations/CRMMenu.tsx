@@ -31,6 +31,8 @@ const CRMMenu = ({ user }: { user: User | undefined }) => {
     { text: "افراد", link: "/crm/persons" },
     { text: "دسته بندی ها", link: "/crm/categories" },
     { text: "کالاها", link: "/crm/products" },
+    { text: "برندها", link: "/crm/brands" },
+    { text: "موجودیت ها", link: "/crm/entities" },
     {
       text: "فاکتورها",
       submenu: [

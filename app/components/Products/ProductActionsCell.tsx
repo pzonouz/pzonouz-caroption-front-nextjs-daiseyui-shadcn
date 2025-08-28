@@ -23,7 +23,7 @@ const ProductActionsCell = ({ row }: { row: Row<Product> }) => {
   const [product, setProduct] = useState<Product>();
   useEffect(() => {
     if (selectedId) {
-      deleteProductAction({ id: Number(selectedId) })
+      deleteProductAction(selectedId)
         .unwrap()
         .then(() => {
           toast("با موفقیت انجام شد", {

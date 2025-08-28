@@ -1,5 +1,13 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import { Category, Invoice, InvoiceItem, Person, Product } from "../schemas";
+import {
+  Brand,
+  Category,
+  Entity,
+  Invoice,
+  InvoiceItem,
+  Person,
+  Product,
+} from "../schemas";
 
 export const api = createApi({
   reducerPath: "api",
@@ -14,8 +22,43 @@ export const api = createApi({
       return headers;
     },
   }),
-  tagTypes: ["invoices", "invoiceitems", "products", "persons", "categories"],
+  tagTypes: [
+    "invoices",
+    "invoiceitems",
+    "products",
+    "persons",
+    "categories",
+    "brands",
+    "entities",
+  ],
   endpoints: (build) => ({
+    getBrands: build.query<Brand[], void>({
+      query: () => `brands/`,
+      providesTags: ["brands"],
+    }),
+    createBrand: build.mutation<Brand, Brand>({
+      query: (data) => ({
+        url: "brands/",
+        method: "POST",
+        body: data,
+      }),
+      invalidatesTags: ["brands"],
+    }),
+    deleteBrand: build.mutation<void, any>({
+      query: (id) => ({
+        url: `brands/${id}/`,
+        method: "DELETE",
+      }),
+      invalidatesTags: ["brands"],
+    }),
+    editBrand: build.mutation<void, Partial<Brand>>({
+      query: (data) => ({
+        url: `brands/${data?.id}/`,
+        method: "PATCH",
+        body: data,
+      }),
+      invalidatesTags: ["brands"],
+    }),
     getInvoices: build.query<Invoice[], void>({
       query: () => `invoices/`,
       providesTags: ["invoices"],
@@ -153,6 +196,37 @@ export const api = createApi({
       }),
       invalidatesTags: ["persons"],
     }),
+    getParentEntities: build.query<Entity[], void>({
+      query: () => `parent_entities`,
+      providesTags: ["entities"],
+    }),
+    getEntities: build.query<Entity[], void>({
+      query: () => `entities/`,
+      providesTags: ["entities"],
+    }),
+    createEntity: build.mutation<Entity, Entity>({
+      query: (data) => ({
+        url: "entities/",
+        method: "POST",
+        body: data,
+      }),
+      invalidatesTags: ["entities"],
+    }),
+    deleteEntity: build.mutation<void, any>({
+      query: (id) => ({
+        url: `entities/${id}/`,
+        method: "DELETE",
+      }),
+      invalidatesTags: ["entities"],
+    }),
+    editEntity: build.mutation<void, Partial<Entity>>({
+      query: (data) => ({
+        url: `entities/${data?.id}/`,
+        method: "PATCH",
+        body: data,
+      }),
+      invalidatesTags: ["entities"],
+    }),
   }),
 });
 
@@ -178,4 +252,13 @@ export const {
   useCreateInvoiceItemMutation,
   useDeleteInvoiceItemMutation,
   useEditInvoiceItemMutation,
+  useGetBrandsQuery,
+  useCreateBrandMutation,
+  useDeleteBrandMutation,
+  useEditBrandMutation,
+  useGetParentEntitiesQuery,
+  useGetEntitiesQuery,
+  useCreateEntityMutation,
+  useDeleteEntityMutation,
+  useEditEntityMutation,
 } = api;

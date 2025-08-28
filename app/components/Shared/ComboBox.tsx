@@ -25,14 +25,16 @@ interface Option {
   value: string;
 }
 
-export function Combobox<T extends { id: string | number; name: string }>({
+export function Combobox<T extends { id?: string | number; name: string }>({
   value,
   setValue,
   array,
+  title,
 }: {
   value: string;
   setValue: Function;
   array: T[];
+  title: string;
 }) {
   const options = React.useMemo<Option[]>(() => {
     return array.map((item) => ({
@@ -44,14 +46,14 @@ export function Combobox<T extends { id: string | number; name: string }>({
   const [open, setOpen] = React.useState(false);
 
   return (
-    <div className="z-[10000]">
+    <div className="z-[10000] flex flex-row gap-4 items-start">
+      <p className=" text-black">{title}</p>
       <Popover open={open} onOpenChange={setOpen}>
         <PopoverTrigger asChild>
           <Button
-            variant="outline"
             role="combobox"
             aria-expanded={open}
-            className="w-1/2 text-start flex flex-row justify-center items-center"
+            className="w-1/2 text-start flex flex-row justify-center items-center !border-gray-800 !border  p-2"
           >
             {value
               ? options.find((item) => item.value === value)?.label
