@@ -25,7 +25,7 @@ const ProductCard = async ({ product }: { product: Product }) => {
         <div className="text-xs text-gray-500">
           {product?.generated ? product?.main_product?.info : product?.info}
         </div>
-        <div>{product.price}</div>
+        <div>{product?.generated ? product?.price2 : product?.price}</div>
       </div>
     </Link>
   );

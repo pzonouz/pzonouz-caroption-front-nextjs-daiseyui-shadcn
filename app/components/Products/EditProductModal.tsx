@@ -33,6 +33,8 @@ const EditProductModal = ({
             price: formatStringToCommaSeparatedNumber(
               product.price?.toString() ?? "",
             ),
+            price2: product?.price2?.toString(),
+            price3: product?.price3?.toString(),
           }
         : undefined,
     [product],
@@ -50,16 +52,15 @@ const EditProductModal = ({
     editProductAction,
   } = useEditProduct({ product: normalizedProduct });
 
-  const { data: categories, isFetching } = useGetCategoriesQuery();
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-    if (isFetching || editProductIsLoading) {
+    if (editProductIsLoading) {
       dispatch(LoadingShow());
     } else {
       dispatch(LoadingHide());
     }
-  }, [isFetching, dispatch, editProductIsLoading]);
+  }, [dispatch, editProductIsLoading]);
 
   if (!product) return null;
 
@@ -74,9 +75,7 @@ const EditProductModal = ({
               setProduct(undefined);
             }}
           />
-          <label className=" text-3xl text-center w-5/6">
-            ویرایش دسته بندی
-          </label>
+          <label className=" text-3xl text-center w-5/6">ویرایش کالا</label>
           <ProductForm
             submitHandler={submitHandler<Product>({
               action: editProductAction,
@@ -97,7 +96,6 @@ const EditProductModal = ({
             errors={errors}
             setValue={setValue}
             watch={watch}
-            categories={categories ?? []}
           />
         </div>
       </div>

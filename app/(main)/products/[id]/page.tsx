@@ -29,7 +29,6 @@ const page = async ({ params }: { params: Promise<{ id: string }> }) => {
   const { id } = await params;
   const productRes = await fetch(`${process.env.BACKEND_URL}/products/${id}/`);
   const product: Product = await productRes.json();
-  console.log(product);
   return (
     <div>
       {product?.image_url && (

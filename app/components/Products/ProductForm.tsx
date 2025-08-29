@@ -1,5 +1,5 @@
 "use client";
-import { FormEventHandler, useEffect, useState } from "react";
+import { FormEventHandler, useEffect } from "react";
 import { FormField } from "../Shared/FormField";
 import { LoadingButton } from "../Shared/LoadingButton";
 import {
@@ -81,16 +81,21 @@ const ProductForm = ({
   };
 
   // Category
-  const category = watch("category")?.toString() ?? "";
+  const category = watch("generated")
+    ? (watch("main_product")?.category?.toString() ?? "")
+    : (watch("category")?.toString() ?? "");
   const updateCategory = (catgoryId: string) => setValue("category", catgoryId);
 
   // Brand
-  const brand = watch("brand")?.toString() ?? "";
+  const brand = watch("generated")
+    ? (watch("main_product")?.brand?.toString() ?? "")
+    : (watch("brand")?.toString() ?? "");
   const updateBrand = (brandId: string) => setValue("brand", brandId);
 
   // Generatable
   const generatable = watch("generatable") ?? false;
-  const updateGeneratable = (value: boolean) => setValue("generatable", value);
+  const updateGeneratable = (value: boolean | "indeterminate") =>
+    setValue("generatable", value === true, { shouldValidate: true });
   return (
     <form
       lang="fa"
@@ -124,12 +129,16 @@ const ProductForm = ({
         value={count}
         onChange={updateCount}
         register={register}
-        error={errors?.count?.message}
+        error={errors?.count?.message?.toString()}
       />
       <FormField register={register} title="image_url" hidden />
       <FormField register={register} title="description" hidden />
       <div className="flex flex-row gap-4 items-center">
-        <Checkbox checked={generatable} onCheckedChange={updateGeneratable} />
+        <Checkbox
+          disabled={watch("generated")}
+          checked={generatable}
+          onCheckedChange={updateGeneratable}
+        />
         <p>بازتولید</p>
       </div>
       <Combobox<Brand>
@@ -137,12 +146,14 @@ const ProductForm = ({
         setValue={updateBrand}
         array={brands ?? []}
         title="برند"
+        disabled={watch("generated")}
       />
       <Combobox<Category>
         value={category}
         setValue={updateCategory}
         array={categories ?? []}
         title="دسته بندی"
+        disabled={watch("generated")}
       />
       <ImageUpload imageUrl={imageUrl} setImageUrl={updateImageUrl} />
       {error && <p className="text-sm text-red-500">{error}</p>}

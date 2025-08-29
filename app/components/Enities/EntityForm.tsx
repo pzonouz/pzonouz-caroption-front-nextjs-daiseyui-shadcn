@@ -51,6 +51,12 @@ const EntityForm = ({
         error={errors?.name?.message?.toString()}
       />
       <FormField
+        label="نام انگلیسی"
+        title="english_name"
+        register={register}
+        error={errors?.english_name?.message?.toString()}
+      />
+      <FormField
         label="توضیح"
         title="description"
         register={register}

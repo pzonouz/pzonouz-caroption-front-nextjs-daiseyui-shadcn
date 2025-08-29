@@ -35,11 +35,6 @@ const EditEntityModal = ({
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-    console.log(watch("parent"));
-    console.log(errors);
-  }, [errors]);
-
-  useEffect(() => {
     if (isLoading) {
       dispatch(LoadingShow());
     } else {

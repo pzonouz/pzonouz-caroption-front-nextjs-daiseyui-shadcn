@@ -30,11 +30,13 @@ export function Combobox<T extends { id?: string | number; name: string }>({
   setValue,
   array,
   title,
+  disabled = false,
 }: {
   value: string;
   setValue: Function;
   array: T[];
   title: string;
+  disabled?: boolean;
 }) {
   const options = React.useMemo<Option[]>(() => {
     return array.map((item) => ({
@@ -51,6 +53,7 @@ export function Combobox<T extends { id?: string | number; name: string }>({
       <Popover open={open} onOpenChange={setOpen}>
         <PopoverTrigger asChild>
           <Button
+            disabled={disabled}
             role="combobox"
             aria-expanded={open}
             className="w-1/2 text-start flex flex-row justify-center items-center !border-gray-800 !border  p-2"
