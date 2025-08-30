@@ -68,6 +68,7 @@ const CategoryForm = ({
         value={parent}
         setValue={updateParent}
         array={categories}
+        title="دسته بندی"
       />
       <FormField register={register} title="image_url" hidden />
       <ImageUpload imageUrl={imageUrl} setImageUrl={updateImageUrl} />

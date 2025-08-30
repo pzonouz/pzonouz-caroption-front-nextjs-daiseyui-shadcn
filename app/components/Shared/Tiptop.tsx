@@ -7,7 +7,7 @@ import Paragraph from "@tiptap/extension-paragraph";
 import Bold from "@tiptap/extension-bold";
 import Italic from "@tiptap/extension-italic";
 import Strike from "@tiptap/extension-strike";
-import TextStyle from "@tiptap/extension-text-style";
+import { TextStyle } from "@tiptap/extension-text-style";
 import Color from "@tiptap/extension-color";
 import BulletList from "@tiptap/extension-bullet-list";
 import OrderedList from "@tiptap/extension-ordered-list";
@@ -53,7 +53,7 @@ export default function Editor({
   //immediate update of tiptap
   useEffect(() => {
     if (editor && state !== editor.getHTML()) {
-      editor.commands.setContent(state, false); // `false` avoids creating history step
+      editor.commands.setContent(state, { emitUpdate: false }); // `false` avoids creating history step
     }
   }, [state, editor]);
 
