@@ -19,8 +19,7 @@ import { Button } from "../../../components/ui/button";
 import { useAppDispatch, useAppSelector } from "../../lib/hooks";
 import { setAccess } from "../../lib/features/SessionSlice";
 
-// const CRMMenu = ({ user }: { user: User | undefined }) => {
-const CRMMenu = () => {
+const CRMMenu = ({ user }: { user: User | undefined }) => {
   const loading = useAppSelector((state) => state?.loading?.show);
   const { data, status } = useSession();
   const dispatch = useAppDispatch();
@@ -55,13 +54,13 @@ const CRMMenu = () => {
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent className="w-32 bg-white" align="start">
-              {/* <Link */}
-              {/*   href={"profile"} */}
-              {/*   key={user?.id} */}
-              {/*   className="text-xs cursor-pointer" */}
-              {/* > */}
-              {/*   <DropdownMenuItem>{user?.name}</DropdownMenuItem> */}
-              {/* </Link> */}
+              <Link
+                href={"profile"}
+                key={user?.id}
+                className="text-xs cursor-pointer"
+              >
+                <DropdownMenuItem>{user?.name}</DropdownMenuItem>
+              </Link>
               {menuList?.map((item) => {
                 if (item.submenu?.length) {
                   return (
