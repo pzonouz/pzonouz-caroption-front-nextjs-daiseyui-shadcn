@@ -2,18 +2,14 @@
 import { columns } from "@/app/components/Products/Columns";
 import { CreateProduct } from "@/app/components/Products/CreateProduct";
 import { DataTable } from "@/app/components/Shared/DataTable";
-import {
-  useGetParentCategoriesQuery,
-  useGetProductsQuery,
-} from "@/app/lib/features/api";
+import { useGetProductsQuery } from "@/app/lib/features/api";
 
 const Page = () => {
   const { data: products } = useGetProductsQuery();
-  const { data: parentCategories } = useGetParentCategoriesQuery();
   return (
     <div className="pt-20 flex flex-col items-center justify-center w-full">
-      {parentCategories && <CreateProduct categories={parentCategories} />}
-      {products && parentCategories ? (
+      <CreateProduct />
+      {products ? (
         <DataTable
           filterColumns={[{ title: "نام", column: "name" }]}
           columns={columns}

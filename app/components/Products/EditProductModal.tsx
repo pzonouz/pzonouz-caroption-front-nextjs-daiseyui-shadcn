@@ -12,7 +12,6 @@ import {
   formatStringToCommaSeparatedNumber,
   submitHandler,
 } from "../../lib/utils";
-import { useGetCategoriesQuery } from "@/app/lib/features/api";
 
 const EditProductModal = ({
   product,
@@ -27,6 +26,7 @@ const EditProductModal = ({
         ? {
             ...product,
             category: product.category?.toString() ?? "",
+            brand: product.brand?.toString() ?? "",
             count: formatStringToCommaSeparatedNumber(
               product.count?.toString() ?? "",
             ),

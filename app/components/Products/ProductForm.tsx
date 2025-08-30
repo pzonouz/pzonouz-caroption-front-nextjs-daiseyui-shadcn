@@ -46,6 +46,7 @@ const ProductForm = ({
   const { data: categories, isFetching: categoryIsLoading } =
     useGetCategoriesQuery();
   const { data: brands, isFetching: brandIsLoading } = useGetBrandsQuery();
+
   useEffect(() => {
     if (isLoading || categoryIsLoading || brandIsLoading) {
       dispatch(LoadingShow());
