@@ -6,14 +6,6 @@ import { Toaster } from "sonner";
 
 const layout = async ({ children }: { children: ReactNode }) => {
   const session = await auth();
-  return (
-    <div className="">
-      <Toaster />
-      <CRMMenu user={session?.user} />
-      <CRMMenu />
-      {children}
-    </div>
-  );
   if (!session) {
     redirect("/signin?callback=crm");
   }
