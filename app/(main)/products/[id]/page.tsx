@@ -3,6 +3,8 @@ export const revalidate = 60;
 import Image from "next/image";
 import { Product } from "../../../lib/schemas";
 import { Metadata } from "next";
+import { formatStringToCommaSeparatedNumber } from "@/app/lib/utils";
+import PriceBlock from "@/app/components/Shared/PriceBlock";
 
 export async function generateStaticParams() {
   const productsRes = await fetch(`${process.env.BACKEND_URL}/products/`);
@@ -32,31 +34,41 @@ const page = async ({ params }: { params: Promise<{ id: string }> }) => {
   return (
     <div>
       {product?.image_url && (
-        <Image
-          src={`${process.env.NEXT_PUBLIC_BASE_URL}${product?.image_url}`}
-          alt={`${product?.name}`}
-          width={400}
-          height={400}
-        />
+        <div className="grid place-items-center">
+          <Image
+            src={`${process.env.NEXT_PUBLIC_BASE_URL}${product?.image_url}`}
+            alt={`${product?.name}`}
+            width={400}
+            height={300}
+            className="p-4"
+          />
+        </div>
       )}
-      <h1 className="font-bold px-4">{product?.name}</h1>
+      <h1 className="font-extrabold px-4">{product?.name}</h1>
       {product?.generated ? (
         <div
-          className="mt-4 [&_li]:list-disc px-6"
+          className="mt-4 [&_li]:list-disc px-8 text-gray-700 leading-8"
           dangerouslySetInnerHTML={{
             __html: product?.main_product?.description ?? "",
           }}
         ></div>
       ) : (
         <div
-          className="mt-4 [&_li]:list-disc px-6"
+          className="mt-4 [&_li]:list-disc px-8 text-gray-700 leading-8"
           dangerouslySetInnerHTML={{
             __html: product?.description ?? "",
           }}
         ></div>
       )}
-      <div className="px-4 font-bold" style={{ color: "red" }}>
-        این محصول کاملا اورجینال میباشد و دارای ضمانت و اصالت کالا می باشد
+      <div className="px-4 py-4 font-bold" style={{ color: "red" }}>
+        یک سال گارانتی و ۴ سال خدمات پس از فروش
+      </div>
+      <div className="px-6 mb-6 font-extrabold text-xl">
+        {product?.generated ? (
+          <PriceBlock price={product?.main_product?.price2} />
+        ) : (
+          <PriceBlock price={product?.price} />
+        )}
       </div>
     </div>
   );

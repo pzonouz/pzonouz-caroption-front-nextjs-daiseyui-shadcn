@@ -16,6 +16,7 @@ import Text from "@tiptap/extension-text";
 import Image from "@tiptap/extension-image";
 
 import { SetStateAction, useEffect, useState } from "react";
+import { Indent, IndentIncrease } from "lucide-react";
 
 export default function Editor({
   state,
