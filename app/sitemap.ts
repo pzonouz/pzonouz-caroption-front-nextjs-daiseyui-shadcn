@@ -1,3 +1,5 @@
+export const revalidate = 60;
+
 import type { MetadataRoute } from "next";
 import { Category, Product } from "./lib/schemas";
 
