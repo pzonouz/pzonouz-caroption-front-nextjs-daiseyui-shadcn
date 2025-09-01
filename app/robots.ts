@@ -5,7 +5,7 @@ export default function robots(): MetadataRoute.Robots {
     rules: {
       userAgent: "*",
       allow: "/",
-      disallow: "/crm/",
+      disallow: ["/crm/", "/backend/"],
     },
     sitemap: `${process.env.BACKEND_URL}/sitemap.xml`,
   };
