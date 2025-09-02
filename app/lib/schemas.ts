@@ -32,6 +32,7 @@ export const productSchema: z.ZodType<any> = z.lazy(() =>
     name: z.string().min(1, { message: "نام را وارد کنید" }),
     description: z.string().nullish(),
     image_url: z.string().nullish(),
+    image_urls: z.array(z.string()).optional(),
     category: z.string().nullish(),
     brand: z.string().nullish(),
     info: z.string().min(1, { message: "وارد کنید" }),

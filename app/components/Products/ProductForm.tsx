@@ -23,6 +23,7 @@ import {
 import { useAppDispatch } from "@/app/lib/hooks";
 import { LoadingHide, LoadingShow } from "@/app/lib/features/LoadingSlice";
 import { Checkbox } from "@/components/ui/checkbox";
+import MultipleImageUpload from "../Shared/MultipleImageUpload";
 interface ProductFormProp {
   register: UseFormRegister<Product>;
   errors: FieldErrors<Product>;
@@ -62,6 +63,10 @@ const ProductForm = ({
   // Image
   const imageUrl = watch("image_url") ?? "";
   const updateImageUrl = (value: string) => setValue("image_url", value);
+
+  // Images
+  const imageUrls = watch("image_urls") ?? [];
+  const updateImageUrls = (value: string[]) => setValue("image_urls", value);
 
   //Price
   const price = watch("price") ?? "";
@@ -157,6 +162,10 @@ const ProductForm = ({
         disabled={watch("generated")}
       />
       <ImageUpload imageUrl={imageUrl} setImageUrl={updateImageUrl} />
+      <MultipleImageUpload
+        imageUrls={imageUrls}
+        setImageUrls={updateImageUrls}
+      />
       {error && <p className="text-sm text-red-500">{error}</p>}
       <LoadingButton className="btn btn-primary" isLoading={isLoading}>
         ثبت
