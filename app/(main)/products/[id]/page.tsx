@@ -3,8 +3,8 @@ export const revalidate = 60;
 import Image from "next/image";
 import { Product } from "../../../lib/schemas";
 import { Metadata } from "next";
-import { formatStringToCommaSeparatedNumber } from "@/app/lib/utils";
 import PriceBlock from "@/app/components/Shared/PriceBlock";
+import Slider from "@/app/components/Shared/Slider";
 
 export async function generateStaticParams() {
   const productsRes = await fetch(`${process.env.BACKEND_URL}/products/`);
@@ -45,6 +45,9 @@ const page = async ({ params }: { params: Promise<{ id: string }> }) => {
         </div>
       )}
       <h1 className="font-extrabold px-4">{product?.name}</h1>
+      {product?.image_urls?.length > 0 && (
+        <Slider items={product?.image_urls} />
+      )}
       {product?.generated ? (
         <div
           className="mt-4 [&_li]:list-disc px-8 text-gray-700 leading-8"

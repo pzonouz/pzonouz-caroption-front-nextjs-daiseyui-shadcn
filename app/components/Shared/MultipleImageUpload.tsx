@@ -1,11 +1,14 @@
 "use client";
+import { X } from "lucide-react";
 import Image from "next/image";
 import React, { useState } from "react";
 
 const MultipleImageUpload = ({
+  parentId,
   imageUrls,
   setImageUrls,
 }: {
+  parentId: string;
   imageUrls: string[];
   setImageUrls: (value: string[]) => void;
 }) => {
@@ -66,14 +69,37 @@ const MultipleImageUpload = ({
 
       <div className="flex flex-wrap gap-2 mt-3">
         {imageUrls.map((url, i) => (
-          <Image
-            key={i}
-            src={`${process.env.NEXT_PUBLIC_BASE_URL}/${url}`}
-            alt={`Uploaded-${i}`}
-            className="w-32 h-32 object-cover rounded-md"
-            width={128}
-            height={128}
-          />
+          <div className="relative" key={url}>
+            <X
+              className="absolute top-2 right-2 bg-red-600 text-white rounded-xl cursor-pointer"
+              onClick={() => {
+                fetch(
+                  `${process.env.NEXT_PUBLIC_BASE_URL}/delete_from_image_urls/${parentId}`,
+                  {
+                    method: "POST",
+                    headers: {
+                      "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify({ image_name: url }),
+                  },
+                )
+                  .then(() => {
+                    setImageUrls(imageUrls.filter((item) => item != url));
+                  })
+                  .catch((err) => {
+                    console.log(err);
+                  });
+              }}
+            />
+            <Image
+              key={i}
+              src={`${process.env.NEXT_PUBLIC_BASE_URL}/${url}`}
+              alt={`Uploaded-${i}`}
+              className="w-32 h-32 object-cover rounded-md"
+              width={128}
+              height={128}
+            />
+          </div>
         ))}
       </div>
     </>

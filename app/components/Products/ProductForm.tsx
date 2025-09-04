@@ -163,6 +163,7 @@ const ProductForm = ({
       />
       <ImageUpload imageUrl={imageUrl} setImageUrl={updateImageUrl} />
       <MultipleImageUpload
+        parentId={watch("id")?.toString()}
         imageUrls={imageUrls}
         setImageUrls={updateImageUrls}
       />
