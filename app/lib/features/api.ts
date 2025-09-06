@@ -5,8 +5,11 @@ import {
   Entity,
   Invoice,
   InvoiceItem,
+  Parameter,
+  ParameterGroup,
   Person,
   Product,
+  productParameterValue,
 } from "../schemas";
 
 export const api = createApi({
@@ -30,6 +33,9 @@ export const api = createApi({
     "categories",
     "brands",
     "entities",
+    "parameterGroups",
+    "parameters",
+    "productParametersValue",
   ],
   endpoints: (build) => ({
     getBrands: build.query<Brand[], void>({
@@ -227,6 +233,93 @@ export const api = createApi({
       }),
       invalidatesTags: ["entities"],
     }),
+    getParameterGroups: build.query<ParameterGroup[], void>({
+      query: () => `parameter-groups/`,
+      providesTags: ["parameterGroups"],
+    }),
+    createParameterGroup: build.mutation<ParameterGroup, ParameterGroup>({
+      query: (data) => ({
+        url: "parameter-groups/",
+        method: "POST",
+        body: data,
+      }),
+      invalidatesTags: ["parameterGroups"],
+    }),
+    deleteParameterGroup: build.mutation<void, any>({
+      query: (id) => ({
+        url: `parameter-groups/${id}/`,
+        method: "DELETE",
+      }),
+      invalidatesTags: ["parameterGroups"],
+    }),
+    editParameterGroup: build.mutation<void, Partial<ParameterGroup>>({
+      query: (data) => ({
+        url: `parameter-groups/${data?.id}/`,
+        method: "PATCH",
+        body: data,
+      }),
+      invalidatesTags: ["parameterGroups"],
+    }),
+    getParameters: build.query<Parameter[], void>({
+      query: () => `parameters/`,
+      providesTags: ["parameters"],
+    }),
+    createParameter: build.mutation<Parameter, Parameter>({
+      query: (data) => ({
+        url: "parameters/",
+        method: "POST",
+        body: data,
+      }),
+      invalidatesTags: ["parameters"],
+    }),
+    deleteParameter: build.mutation<void, any>({
+      query: (id) => ({
+        url: `parameters/${id}/`,
+        method: "DELETE",
+      }),
+      invalidatesTags: ["parameters"],
+    }),
+    editParameter: build.mutation<void, Partial<Parameter>>({
+      query: (data) => ({
+        url: `parameters/${data?.id}/`,
+        method: "PATCH",
+        body: data,
+      }),
+      invalidatesTags: ["parameters"],
+    }),
+    getProductParameterValues: build.query<productParameterValue[], void>({
+      query: () => `product-parameter-values/`,
+      providesTags: ["productParametersValue"],
+    }),
+    createProductParameterValue: build.mutation<
+      productParameterValue,
+      productParameterValue
+    >({
+      query: (data) => ({
+        url: "product-parameter-values/",
+        method: "POST",
+        body: data,
+      }),
+      invalidatesTags: ["productParametersValue"],
+    }),
+    deleteProductParameterValue: build.mutation<void, any>({
+      query: (id) => ({
+        url: `product-parameter-values/${id}/`,
+        method: "DELETE",
+      }),
+      invalidatesTags: ["productParametersValue"],
+    }),
+    editProductParameterValue: build.mutation<
+      void,
+      Partial<productParameterValue>
+    >({
+      query: (data) => ({
+        url: `product-parameter-values/${data?.id}/`,
+        method: "PATCH",
+        body: data,
+      }),
+      invalidatesTags: ["productParametersValue"],
+    }),
   }),
 });
 
@@ -261,4 +354,16 @@ export const {
   useCreateEntityMutation,
   useDeleteEntityMutation,
   useEditEntityMutation,
+  useGetParameterGroupsQuery,
+  useCreateParameterGroupMutation,
+  useDeleteParameterGroupMutation,
+  useEditParameterGroupMutation,
+  useGetParametersQuery,
+  useCreateParameterMutation,
+  useDeleteParameterMutation,
+  useEditParameterMutation,
+  useGetProductParameterValuesQuery,
+  useCreateProductParameterValueMutation,
+  useDeleteProductParameterValueMutation,
+  useEditProductParameterValueMutation,
 } = api;

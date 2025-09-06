@@ -18,6 +18,7 @@ export const categorySchema: z.ZodType<any> = z.lazy(() =>
     order: z.string().min(1, { message: "اولویت را وارد کنید" }),
     parent_name: z.string().nullish(),
     children: z.array(categorySchema).optional(),
+    parameter_groups: z.array(parameterGroupSchema),
     created: z.string().datetime().nullish(),
     updated: z.string().datetime().nullish(),
   }),
@@ -89,6 +90,29 @@ export const entitySchema: z.ZodType<any> = z.lazy(() =>
     updated: z.string().datetime().nullish(),
   }),
 );
+export const parameterSchema = z.object({
+  id: z.string().nullish(),
+  name: z.string().min(1, { message: "نام را وارد کنید" }),
+  field_type: z.string(),
+  text_value: z.string().optional(),
+  boolean_value: z.boolean().optional(),
+  parameter_group: z.string(),
+  selectable_values: z.array(z.string()).optional(),
+});
+export const parameterGroupSchema = z.object({
+  id: z.string().nullish(),
+  name: z.string().min(1, { message: "نام را وارد کنید" }),
+  category: z.string(),
+  category_name: z.string().optional(),
+});
+export const productParameterValueSchema = z.object({
+  id: z.string().nullish(),
+  product: z.string(),
+  parameter: z.string(),
+  text_value: z.string().min(1, { message: "مقدار را وارد کنید" }),
+  bool_value: z.boolean().optional(),
+  selectable_value: z.string().optional(),
+});
 export type Person = z.infer<typeof personSchema>;
 export type Category = z.infer<typeof categorySchema>;
 export type Product = z.infer<typeof productSchema>;
@@ -96,6 +120,9 @@ export type InvoiceItem = z.infer<typeof invoiceItemSchema>;
 export type Invoice = z.infer<typeof invoiceSchema>;
 export type Brand = z.infer<typeof brandSchema>;
 export type Entity = z.infer<typeof entitySchema>;
+export type Parameter = z.infer<typeof parameterSchema>;
+export type ParameterGroup = z.infer<typeof parameterGroupSchema>;
+export type productParameterValue = z.infer<typeof productParameterValueSchema>;
 export interface SignResponse {
   success: boolean;
   error?: string;

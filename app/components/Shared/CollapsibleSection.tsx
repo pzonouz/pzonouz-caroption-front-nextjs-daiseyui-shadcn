@@ -4,7 +4,7 @@ import { Plus, Minus } from "lucide-react";
 
 interface CollapsibleSectionProps {
   isOpen: boolean;
-  onToggle: () => void;
+  onToggle: (e?: React.SyntheticEvent) => void;
   children: React.ReactNode;
   className?: string;
   headerClassName?: string;

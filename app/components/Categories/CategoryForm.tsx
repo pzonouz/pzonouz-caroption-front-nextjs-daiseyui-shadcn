@@ -1,5 +1,5 @@
 "use client";
-import { FormEventHandler } from "react";
+import { FormEventHandler, useEffect } from "react";
 import { FormField } from "../Shared/FormField";
 import { LoadingButton } from "../Shared/LoadingButton";
 import {
@@ -9,8 +9,10 @@ import {
   UseFormWatch,
 } from "react-hook-form";
 import ImageUpload from "../Shared/ImageUpload";
-import { Category } from "../../lib/schemas";
+import { Category, ParameterGroup } from "../../lib/schemas";
 import { Combobox } from "../Shared/ComboBox";
+import SelectBox from "../Shared/SelectBox";
+import { useGetParameterGroupsQuery } from "@/app/lib/features/api";
 interface CategoryFormProp {
   register: UseFormRegister<Category>;
   errors: FieldErrors<Category>;
@@ -32,6 +34,8 @@ const CategoryForm = ({
   watch,
   categories,
 }: CategoryFormProp) => {
+  const { data: allParameterGroups, isFetching: allParamaterGroupsIsFetching } =
+    useGetParameterGroupsQuery();
   const imageUrl = watch("image_url");
 
   const updateImageUrl = (url: string) => setValue("image_url", url);
@@ -39,6 +43,10 @@ const CategoryForm = ({
   const parent = watch("parent")?.toString() ?? "";
 
   const updateParent = (parentId: string) => setValue("parent", parentId);
+
+  const parameterGroups = watch("parameter_groups", []);
+  const updateParameterGroups = (parameterGroups: ParameterGroup[]) =>
+    setValue("parameter_groups", parameterGroups);
 
   return (
     <form
@@ -69,6 +77,11 @@ const CategoryForm = ({
         setValue={updateParent}
         array={categories}
         title="دسته بندی"
+      />
+      <SelectBox<ParameterGroup>
+        allItems={allParameterGroups}
+        selectedItems={parameterGroups}
+        setselectedItems={updateParameterGroups}
       />
       <FormField register={register} title="image_url" hidden />
       <ImageUpload imageUrl={imageUrl} setImageUrl={updateImageUrl} />

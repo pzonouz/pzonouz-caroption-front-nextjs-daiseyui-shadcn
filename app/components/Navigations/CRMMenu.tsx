@@ -34,6 +34,13 @@ const CRMMenu = ({ user }: { user: User | undefined }) => {
     { text: "برندها", link: "/crm/brands" },
     { text: "موجودیت ها", link: "/crm/entities" },
     {
+      text: "پارامترها",
+      submenu: [
+        { text: "دسته بندی", link: "/crm/parameter-groups" },
+        { text: "پارامترها", link: "/crm/parameters" },
+      ],
+    },
+    {
       text: "فاکتورها",
       submenu: [
         { text: "خرید", link: "/crm/invoices/buy" },
