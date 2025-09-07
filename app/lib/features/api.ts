@@ -260,6 +260,10 @@ export const api = createApi({
       }),
       invalidatesTags: ["parameterGroups"],
     }),
+    getParametersByGroup: build.query<Parameter[], string>({
+      query: (id) => `parameters/?parameter_group=${id}`,
+      providesTags: ["parameters"],
+    }),
     getParameters: build.query<Parameter[], void>({
       query: () => `parameters/`,
       providesTags: ["parameters"],
@@ -358,6 +362,7 @@ export const {
   useCreateParameterGroupMutation,
   useDeleteParameterGroupMutation,
   useEditParameterGroupMutation,
+  useGetParametersByGroupQuery,
   useGetParametersQuery,
   useCreateParameterMutation,
   useDeleteParameterMutation,

@@ -93,7 +93,7 @@ const ParameterForm = ({
           },
         ]}
       />
-      {type && (
+      {type == "SL" && (
         <div>
           <CollapsibleSection
             isOpen={open}

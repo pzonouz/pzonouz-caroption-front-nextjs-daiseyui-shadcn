@@ -19,11 +19,13 @@ import { Combobox } from "../Shared/ComboBox";
 import {
   useGetBrandsQuery,
   useGetCategoriesQuery,
+  useGetParametersQuery,
 } from "@/app/lib/features/api";
 import { useAppDispatch } from "@/app/lib/hooks";
 import { LoadingHide, LoadingShow } from "@/app/lib/features/LoadingSlice";
 import { Checkbox } from "@/components/ui/checkbox";
 import MultipleImageUpload from "../Shared/MultipleImageUpload";
+import ParameterValues from "../Shared/ParameterValues";
 interface ProductFormProp {
   register: UseFormRegister<Product>;
   errors: FieldErrors<Product>;
@@ -47,14 +49,26 @@ const ProductForm = ({
   const { data: categories, isFetching: categoryIsLoading } =
     useGetCategoriesQuery();
   const { data: brands, isFetching: brandIsLoading } = useGetBrandsQuery();
+  const { data: parameters, isFetching: parametersIsFetching } =
+    useGetParametersQuery();
 
   useEffect(() => {
-    if (isLoading || categoryIsLoading || brandIsLoading) {
+    if (
+      isLoading ||
+      categoryIsLoading ||
+      brandIsLoading ||
+      parametersIsFetching
+    ) {
       dispatch(LoadingShow());
     } else {
       dispatch(LoadingHide());
     }
-  }, [isLoading, categoryIsLoading, dispatch, brandIsLoading]);
+  }, [
+    isLoading,
+    categoryIsLoading,
+    dispatch,
+    brandIsLoading || parametersIsFetching,
+  ]);
 
   // Description
   const description = watch("description") ?? "";
@@ -161,6 +175,7 @@ const ProductForm = ({
         title="دسته بندی"
         disabled={watch("generated")}
       />
+      <ParameterValues category_full={watch("category_full")} />
       <ImageUpload imageUrl={imageUrl} setImageUrl={updateImageUrl} />
       <MultipleImageUpload
         parentId={watch("id")?.toString()}
