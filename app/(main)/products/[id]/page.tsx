@@ -1,10 +1,16 @@
 export const revalidate = 60;
 
 import Image from "next/image";
-import { Product } from "../../../lib/schemas";
+import {
+  Parameter,
+  Product,
+  productParameterValue,
+} from "../../../lib/schemas";
 import { Metadata } from "next";
 import PriceBlock from "@/app/components/Shared/PriceBlock";
 import Slider from "@/app/components/Shared/Slider";
+import { CircleSmall, Disc } from "lucide-react";
+import ParamterValueShow from "@/app/components/Shared/ParamterValueShow";
 
 export async function generateStaticParams() {
   const productsRes = await fetch(`${process.env.BACKEND_URL}/products/`);
@@ -47,6 +53,23 @@ const page = async ({ params }: { params: Promise<{ id: string }> }) => {
       <h1 className="font-extrabold px-4">{product?.name}</h1>
       {product?.image_urls?.length > 0 && (
         <Slider items={product?.image_urls} />
+      )}
+      <div className="flex flex-row items-center gap-2 pr-8">
+        <CircleSmall fill="true" size={12} />
+        <div className="flex flex-row items-center gap-2">
+          <div>برند:</div>
+          <div>{product?.brand_full?.name}</div>
+        </div>
+      </div>
+      {product?.category_full?.parameter_groups?.[0].parameters?.map(
+        (parameter: Parameter) => (
+          <div
+            key={parameter?.id}
+            className="flex flex-col items-start pr-8 leading-8 gap-2"
+          >
+            <ParamterValueShow parameter={parameter} product={product} />
+          </div>
+        ),
       )}
       {product?.generated ? (
         <div

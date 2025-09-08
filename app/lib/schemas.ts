@@ -46,7 +46,8 @@ export const productSchema: z.ZodType<any> = z.lazy(() =>
     created: z.string().datetime().nullish(),
     updated: z.string().datetime().nullish(),
     main_product: productSchema.nullish(),
-    category_full: categorySchema.optional(),
+    category_full: categorySchema.optional().nullish(),
+    parameter_values: z.array(productParameterValueSchema),
   }),
 );
 
@@ -105,12 +106,13 @@ export const parameterGroupSchema = z.object({
   name: z.string().min(1, { message: "نام را وارد کنید" }),
   category: z.string(),
   category_name: z.string().optional(),
+  parameters: z.array(parameterSchema),
 });
 export const productParameterValueSchema = z.object({
   id: z.string().nullish(),
   product: z.string(),
   parameter: z.string(),
-  text_value: z.string().min(1, { message: "مقدار را وارد کنید" }),
+  text_value: z.string(),
   bool_value: z.boolean().optional(),
   selectable_value: z.string().optional(),
 });

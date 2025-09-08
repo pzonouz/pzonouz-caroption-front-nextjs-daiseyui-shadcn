@@ -26,7 +26,7 @@ import { LoadingHide, LoadingShow } from "@/app/lib/features/LoadingSlice";
 import { Checkbox } from "@/components/ui/checkbox";
 import MultipleImageUpload from "../Shared/MultipleImageUpload";
 import ParameterValues from "../Shared/ParameterValues";
-interface ProductFormProp {
+export interface ProductFormProp {
   register: UseFormRegister<Product>;
   errors: FieldErrors<Product>;
   submitHandler: FormEventHandler<HTMLFormElement>;
@@ -175,7 +175,10 @@ const ProductForm = ({
         title="دسته بندی"
         disabled={watch("generated")}
       />
-      <ParameterValues category_full={watch("category_full")} />
+      <ParameterValues
+        productId={watch("id")}
+        category_full={watch("category_full")}
+      />
       <ImageUpload imageUrl={imageUrl} setImageUrl={updateImageUrl} />
       <MultipleImageUpload
         parentId={watch("id")?.toString()}

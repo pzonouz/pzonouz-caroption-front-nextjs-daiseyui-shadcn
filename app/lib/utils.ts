@@ -10,7 +10,6 @@ export const translate = (input: string): string => {
     case "person with this phone already exists.":
       return "شماره موبایل قبلا ثبت شده است";
     default:
-      console.log(input);
       return "خطای ترجمه";
   }
 };

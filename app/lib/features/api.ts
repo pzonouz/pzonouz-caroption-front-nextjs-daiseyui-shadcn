@@ -295,6 +295,13 @@ export const api = createApi({
       query: () => `product-parameter-values/`,
       providesTags: ["productParametersValue"],
     }),
+    getProductParameterValuesByProduct: build.query<
+      productParameterValue[],
+      string
+    >({
+      query: (id) => `product-parameter-values/product/${id}`,
+      providesTags: ["productParametersValue"],
+    }),
     createProductParameterValue: build.mutation<
       productParameterValue,
       productParameterValue
@@ -304,14 +311,14 @@ export const api = createApi({
         method: "POST",
         body: data,
       }),
-      invalidatesTags: ["productParametersValue"],
+      invalidatesTags: ["productParametersValue", "products", "parameters"],
     }),
     deleteProductParameterValue: build.mutation<void, any>({
       query: (id) => ({
         url: `product-parameter-values/${id}/`,
         method: "DELETE",
       }),
-      invalidatesTags: ["productParametersValue"],
+      invalidatesTags: ["productParametersValue", "products", "parameters"],
     }),
     editProductParameterValue: build.mutation<
       void,
@@ -322,7 +329,7 @@ export const api = createApi({
         method: "PATCH",
         body: data,
       }),
-      invalidatesTags: ["productParametersValue"],
+      invalidatesTags: ["productParametersValue", "products", "parameters"],
     }),
   }),
 });
@@ -368,6 +375,7 @@ export const {
   useDeleteParameterMutation,
   useEditParameterMutation,
   useGetProductParameterValuesQuery,
+  useGetProductParameterValuesByProductQuery,
   useCreateProductParameterValueMutation,
   useDeleteProductParameterValueMutation,
   useEditProductParameterValueMutation,

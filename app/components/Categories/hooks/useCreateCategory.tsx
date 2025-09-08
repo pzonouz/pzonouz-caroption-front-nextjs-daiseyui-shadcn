@@ -17,6 +17,7 @@ export const useCreateCategory = () => {
     getValues,
   } = useForm<Category>({
     resolver: zodResolver(categorySchema),
+    defaultValues: { parameter_groups: [] },
   });
   const [open, setOpen] = useState(false);
   const [error, setError] = useState("");

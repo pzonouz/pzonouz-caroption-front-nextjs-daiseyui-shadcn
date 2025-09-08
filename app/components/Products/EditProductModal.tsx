@@ -63,7 +63,6 @@ const EditProductModal = ({
   }, [dispatch, editProductIsLoading]);
 
   if (!product) return null;
-
   return (
     <dialog open className="modal w-full">
       <div className="modal-box w-full relative">

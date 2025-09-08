@@ -5,6 +5,7 @@ import { CollapsibleSection } from "../Shared/CollapsibleSection";
 import { useCreateProduct } from "./hooks/useCreateProduct";
 import ProductForm from "./ProductForm";
 import { submitHandler, toggle } from "../../lib/utils";
+import { useEffect } from "react";
 
 export function CreateProduct() {
   const {
@@ -21,6 +22,9 @@ export function CreateProduct() {
     handleSubmit,
     createProductAction,
   } = useCreateProduct();
+  useEffect(() => {
+    console.log(errors);
+  }, [errors]);
   return (
     <div className="w-full flex flex-col items-center justify-center  relative">
       <CollapsibleSection
