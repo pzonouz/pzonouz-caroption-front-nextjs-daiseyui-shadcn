@@ -2,6 +2,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { Product } from "../../lib/schemas";
+import { formatStringToCommaSeparatedNumber } from "@/app/lib/utils";
 
 const ProductCard = async ({ product }: { product: Product }) => {
   return (
@@ -25,7 +26,14 @@ const ProductCard = async ({ product }: { product: Product }) => {
         <div className="text-xs text-gray-500">
           {product?.generated ? product?.main_product?.info : product?.info}
         </div>
-        <div>{product?.generated ? product?.price2 : product?.price}</div>
+        <div className="flex flex-row gap-1 text-emerald-500">
+          <div>
+            {product?.generated
+              ? formatStringToCommaSeparatedNumber(product?.price2)
+              : formatStringToCommaSeparatedNumber(product?.price)}
+          </div>
+          <div>تومان</div>
+        </div>
       </div>
     </Link>
   );

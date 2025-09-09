@@ -12,17 +12,28 @@ const ParamterValueShow = ({
     (item: productParameterValue) => item?.parameter === parameter?.id,
   );
   return (
-    <div className="flex flex-row items-center gap-2">
-      <CircleSmall fill="true" size={12} />
-      <div>{parameter?.name}:</div>
-      {parameter?.field_type === "TX" && value?.text_value}
-      {parameter?.field_type === "SL" && value?.selectable_value}
-      {parameter?.field_type === "BL" &&
-        (value?.bool_value === true
-          ? "بله"
-          : value?.bool_value === false
-            ? "خیر"
-            : "-")}
+    <div className="flex flex-row gap-1 items-center text-gray-800">
+      <div>
+        {parameter?.field_type == "BL" && value?.bool_value && (
+          <div className="flex flex-row gap-1 items-center">
+            <CircleSmall fill="true" size={12} />
+            {parameter?.name}
+          </div>
+        )}
+        {parameter?.field_type == "SL" && (
+          <div className="flex flex-row gap-1 items-center">
+            <CircleSmall fill="true" size={12} />
+            <p>{parameter?.name}</p>
+            <p>{value?.selectable_value}</p>
+          </div>
+        )}
+        {parameter?.field_type == "TX" && (
+          <div className="flex flex-row gap-1">
+            <p>{parameter?.name}</p>
+            <p>{value?.text_value}</p>
+          </div>
+        )}
+      </div>
     </div>
   );
 };

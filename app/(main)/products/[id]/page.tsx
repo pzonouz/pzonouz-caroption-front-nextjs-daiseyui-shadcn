@@ -1,15 +1,11 @@
 export const revalidate = 60;
 
 import Image from "next/image";
-import {
-  Parameter,
-  Product,
-  productParameterValue,
-} from "../../../lib/schemas";
+import { Parameter, Product } from "../../../lib/schemas";
 import { Metadata } from "next";
 import PriceBlock from "@/app/components/Shared/PriceBlock";
 import Slider from "@/app/components/Shared/Slider";
-import { CircleSmall, Disc } from "lucide-react";
+import { CircleSmall } from "lucide-react";
 import ParamterValueShow from "@/app/components/Shared/ParamterValueShow";
 
 export async function generateStaticParams() {

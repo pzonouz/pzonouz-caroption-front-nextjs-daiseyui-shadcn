@@ -49,26 +49,14 @@ const ProductForm = ({
   const { data: categories, isFetching: categoryIsLoading } =
     useGetCategoriesQuery();
   const { data: brands, isFetching: brandIsLoading } = useGetBrandsQuery();
-  const { data: parameters, isFetching: parametersIsFetching } =
-    useGetParametersQuery();
 
   useEffect(() => {
-    if (
-      isLoading ||
-      categoryIsLoading ||
-      brandIsLoading ||
-      parametersIsFetching
-    ) {
+    if (isLoading || categoryIsLoading || brandIsLoading) {
       dispatch(LoadingShow());
     } else {
       dispatch(LoadingHide());
     }
-  }, [
-    isLoading,
-    categoryIsLoading,
-    dispatch,
-    brandIsLoading || parametersIsFetching,
-  ]);
+  }, [isLoading, categoryIsLoading, dispatch, brandIsLoading]);
 
   // Description
   const description = watch("description") ?? "";
