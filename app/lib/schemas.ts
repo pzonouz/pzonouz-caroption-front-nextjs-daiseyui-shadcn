@@ -106,7 +106,7 @@ export const parameterGroupSchema = z.object({
   name: z.string().min(1, { message: "نام را وارد کنید" }),
   category: z.string(),
   category_name: z.string().optional(),
-  parameters: z.array(parameterSchema),
+  parameters: z.array(parameterSchema).optional(),
 });
 export const productParameterValueSchema = z.object({
   id: z.string().nullish(),
