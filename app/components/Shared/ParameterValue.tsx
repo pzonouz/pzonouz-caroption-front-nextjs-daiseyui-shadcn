@@ -26,7 +26,7 @@ const ParameterValue = ({
   const dispatch = useAppDispatch();
   useEffect(() => {
     isFetching ? dispatch(LoadingShow()) : dispatch(LoadingHide());
-  }, [isFetching]);
+  }, [isFetching, dispatch]);
 
   useEffect(() => {
     const value: productParameterValue = productParameterValues?.find(
