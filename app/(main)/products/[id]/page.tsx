@@ -57,7 +57,7 @@ const page = async ({ params }: { params: Promise<{ id: string }> }) => {
           <div>{product?.brand_full?.name}</div>
         </div>
       </div>
-      {product?.category_full?.parameter_groups?.[0].parameters?.map(
+      {product?.category_full?.parameter_groups?.[0]?.parameters?.map(
         (parameter: Parameter) => (
           <div
             key={parameter?.id}
