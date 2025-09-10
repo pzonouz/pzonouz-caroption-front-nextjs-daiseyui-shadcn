@@ -48,6 +48,8 @@ const ProductForm = ({
   const dispatch = useAppDispatch();
   const { data: categories, isFetching: categoryIsLoading } =
     useGetCategoriesQuery();
+  const { data: parameters, isFetching: paramtersIsLoading } =
+    useGetParametersQuery();
   const { data: brands, isFetching: brandIsLoading } = useGetBrandsQuery();
 
   useEffect(() => {
@@ -168,8 +170,10 @@ const ProductForm = ({
         disabled={watch("generated")}
       />
       <ParameterValues
-        productId={watch("id")}
-        category_full={watch("category_full")}
+        watch={watch}
+        parameters={parameters}
+        register={register}
+        setValue={setValue}
       />
       <ImageUpload imageUrl={imageUrl} setImageUrl={updateImageUrl} />
       <MultipleImageUpload

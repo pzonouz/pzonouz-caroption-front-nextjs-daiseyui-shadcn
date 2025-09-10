@@ -32,6 +32,7 @@ const ParameterValue = ({
     const value: productParameterValue = productParameterValues?.find(
       (item) => item?.parameter == parameter?.id,
     );
+    console.log(productParameterValues);
     setTextValue(value?.text_value);
     setBooleabValue(value?.bool_value || true);
     setSelectableValue(value?.selectable_value || "");
@@ -55,7 +56,7 @@ const ParameterValue = ({
           <input
             type="checkbox"
             checked={booleanValue}
-            onChange={() => setBooleabValue(!booleanValue)}
+            onChange={() => setBooleabValue((prev) => !prev)}
             className="toggle"
           />
         )}
