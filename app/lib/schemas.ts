@@ -47,7 +47,7 @@ export const productSchema: z.ZodType<any> = z.lazy(() =>
     updated: z.string().datetime().nullish(),
     main_product: productSchema.nullish(),
     category_full: categorySchema.optional().nullish(),
-    parameter_values: z.array(productParameterValueSchema),
+    parameter_values: z.array(productParameterValueSchema).optional(),
   }),
 );
 
