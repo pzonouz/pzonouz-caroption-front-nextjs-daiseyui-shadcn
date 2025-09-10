@@ -112,7 +112,7 @@ export const productParameterValueSchema = z.object({
   id: z.string().nullish(),
   product: z.string(),
   parameter: z.string(),
-  text_value: z.string(),
+  text_value: z.string().optional(),
   bool_value: z.boolean().optional(),
   selectable_value: z.string().optional(),
 });
