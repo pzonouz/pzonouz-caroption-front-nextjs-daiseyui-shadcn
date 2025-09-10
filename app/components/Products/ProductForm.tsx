@@ -59,7 +59,7 @@ const ProductForm = ({
   }, [isLoading, categoryIsLoading, dispatch, brandIsLoading]);
 
   useEffect(() => {
-    console.console.log(errors);
+    console.log(errors);
   }, [errors]);
 
   // Description
