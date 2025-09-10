@@ -58,6 +58,10 @@ const ProductForm = ({
     }
   }, [isLoading, categoryIsLoading, dispatch, brandIsLoading]);
 
+  useEffect(() => {
+    console.console.log(errors);
+  }, [errors]);
+
   // Description
   const description = watch("description") ?? "";
   const updateDescription = (value: string) => setValue("description", value);
