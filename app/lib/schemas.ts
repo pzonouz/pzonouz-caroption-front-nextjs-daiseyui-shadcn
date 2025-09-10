@@ -112,9 +112,9 @@ export const productParameterValueSchema = z.object({
   id: z.string().nullish(),
   product: z.string(),
   parameter: z.string(),
-  text_value: z.string().optional(),
-  bool_value: z.boolean().optional(),
-  selectable_value: z.string().optional(),
+  text_value: z.string().nullable().optional(),
+  bool_value: z.boolean().nullable().optional(),
+  selectable_value: z.string().nullable().optional(),
 });
 export type Person = z.infer<typeof personSchema>;
 export type Category = z.infer<typeof categorySchema>;
