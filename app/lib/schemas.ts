@@ -110,7 +110,7 @@ export const parameterGroupSchema = z.object({
 });
 export const productParameterValueSchema = z.object({
   id: z.string().nullish(),
-  product: z.string(),
+  product: z.string().nullish().optional(),
   parameter: z.string(),
   text_value: z.string().nullable().optional(),
   bool_value: z.boolean().nullable().optional(),
