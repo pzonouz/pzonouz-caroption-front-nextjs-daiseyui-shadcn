@@ -16,14 +16,13 @@ import Text from "@tiptap/extension-text";
 import Image from "@tiptap/extension-image";
 
 import { SetStateAction, useEffect, useState } from "react";
-import { Indent, IndentIncrease } from "lucide-react";
 
 export default function Editor({
   state,
-  setState,
+  setStateAction,
 }: {
   state: string | null | undefined;
-  setState: React.Dispatch<SetStateAction<string | null | undefined>>;
+  setStateAction: React.Dispatch<SetStateAction<string | null | undefined>>;
 }) {
   const [color, setColor] = useState("#000000");
 
@@ -46,7 +45,7 @@ export default function Editor({
       }),
     ],
     onUpdate: ({ editor }) => {
-      setState(editor?.getHTML());
+      setStateAction(editor?.getHTML());
     },
     content: state,
     immediatelyRender: false,

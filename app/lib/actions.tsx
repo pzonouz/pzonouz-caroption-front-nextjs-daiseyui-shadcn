@@ -20,7 +20,6 @@ export const signinAction = async (
       });
       return { success: true, error: "", errors: {}, data: {} };
     } catch (error) {
-      console.log(error);
       return {
         success: false,
         error: "نام کابری و پسورد مطابقت ندارد",

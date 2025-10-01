@@ -3,13 +3,14 @@ import {
   Brand,
   Category,
   Entity,
+  Image,
   Invoice,
   InvoiceItem,
   Parameter,
   ParameterGroup,
   Person,
   Product,
-  productParameterValue,
+  ProductParameterValue,
 } from "../schemas";
 
 export const api = createApi({
@@ -36,6 +37,7 @@ export const api = createApi({
     "parameterGroups",
     "parameters",
     "productParametersValue",
+    "images",
   ],
   endpoints: (build) => ({
     getBrands: build.query<Brand[], void>({
@@ -52,14 +54,14 @@ export const api = createApi({
     }),
     deleteBrand: build.mutation<void, any>({
       query: (id) => ({
-        url: `brands/${id}/`,
+        url: `brands/${id}`,
         method: "DELETE",
       }),
       invalidatesTags: ["brands"],
     }),
     editBrand: build.mutation<void, Partial<Brand>>({
       query: (data) => ({
-        url: `brands/${data?.id}/`,
+        url: `brands/${data?.id}`,
         method: "PATCH",
         body: data,
       }),
@@ -82,14 +84,14 @@ export const api = createApi({
     }),
     deleteInvoice: build.mutation<void, any>({
       query: (id) => ({
-        url: `invoices/${id}/`,
+        url: `invoices/${id}`,
         method: "DELETE",
       }),
       invalidatesTags: ["invoices"],
     }),
     editInvoice: build.mutation<void, Partial<Invoice>>({
       query: (data) => ({
-        url: `invoices/${data?.id}/`,
+        url: `invoices/${data?.id}`,
         method: "PATCH",
         body: data,
       }),
@@ -104,14 +106,14 @@ export const api = createApi({
       Partial<InvoiceItem> & Pick<InvoiceItem, "id">
     >({
       query: (id) => ({
-        url: `invoiceitems/${id}/`,
+        url: `invoiceitems/${id}`,
         method: "DELETE",
       }),
       invalidatesTags: ["invoices", "invoiceitems"],
     }),
     editInvoiceItem: build.mutation<void, Partial<InvoiceItem>>({
       query: (data) => ({
-        url: `invoiceitems/${data?.id}/`,
+        url: `invoiceitems/${data?.id}`,
         method: "PATCH",
         body: data,
       }),
@@ -131,14 +133,14 @@ export const api = createApi({
     }),
     deleteProduct: build.mutation<void, any>({
       query: (id) => ({
-        url: `products/${id}/`,
+        url: `products/${id}`,
         method: "DELETE",
       }),
       invalidatesTags: ["products"],
     }),
     editProduct: build.mutation<void, Partial<Product>>({
       query: (data) => ({
-        url: `products/${data?.id}/`,
+        url: `products/${data?.id}`,
         method: "PATCH",
         body: data,
       }),
@@ -162,14 +164,14 @@ export const api = createApi({
     }),
     deleteCategory: build.mutation<void, any>({
       query: (id) => ({
-        url: `categories/${id}/`,
+        url: `categories/${id}`,
         method: "DELETE",
       }),
       invalidatesTags: ["categories"],
     }),
     editCategory: build.mutation<void, Partial<Category>>({
       query: (data) => ({
-        url: `categories/${data?.id}/`,
+        url: `categories/${data?.id}`,
         method: "PATCH",
         body: data,
       }),
@@ -189,14 +191,14 @@ export const api = createApi({
     }),
     deletePerson: build.mutation<void, any>({
       query: (id) => ({
-        url: `persons/${id}/`,
+        url: `persons/${id}`,
         method: "DELETE",
       }),
       invalidatesTags: ["persons"],
     }),
     editPerson: build.mutation<void, Partial<Person>>({
       query: (data) => ({
-        url: `persons/${data?.id}/`,
+        url: `persons/${data?.id}`,
         method: "PATCH",
         body: data,
       }),
@@ -220,14 +222,14 @@ export const api = createApi({
     }),
     deleteEntity: build.mutation<void, any>({
       query: (id) => ({
-        url: `entities/${id}/`,
+        url: `entities/${id}`,
         method: "DELETE",
       }),
       invalidatesTags: ["entities"],
     }),
     editEntity: build.mutation<void, Partial<Entity>>({
       query: (data) => ({
-        url: `entities/${data?.id}/`,
+        url: `entities/${data?.id}`,
         method: "PATCH",
         body: data,
       }),
@@ -247,7 +249,7 @@ export const api = createApi({
     }),
     deleteParameterGroup: build.mutation<void, any>({
       query: (id) => ({
-        url: `parameter-groups/${id}/`,
+        url: `parameter-groups/${id}`,
         method: "DELETE",
       }),
       invalidatesTags: ["parameterGroups"],
@@ -278,7 +280,7 @@ export const api = createApi({
     }),
     deleteParameter: build.mutation<void, any>({
       query: (id) => ({
-        url: `parameters/${id}/`,
+        url: `parameters/${id}`,
         method: "DELETE",
       }),
       invalidatesTags: ["parameters"],
@@ -291,20 +293,20 @@ export const api = createApi({
       }),
       invalidatesTags: ["parameters"],
     }),
-    getProductParameterValues: build.query<productParameterValue[], void>({
+    getProductParameterValues: build.query<ProductParameterValue[], void>({
       query: () => `product-parameter-values/`,
       providesTags: ["productParametersValue"],
     }),
     getProductParameterValuesByProduct: build.query<
-      productParameterValue[],
+      ProductParameterValue[],
       string
     >({
       query: (id) => `product-parameter-values/product/${id}`,
       providesTags: ["productParametersValue"],
     }),
     createProductParameterValue: build.mutation<
-      productParameterValue,
-      productParameterValue
+      ProductParameterValue,
+      ProductParameterValue
     >({
       query: (data) => ({
         url: "product-parameter-values/",
@@ -315,14 +317,14 @@ export const api = createApi({
     }),
     deleteProductParameterValue: build.mutation<void, any>({
       query: (id) => ({
-        url: `product-parameter-values/${id}/`,
+        url: `product-parameter-values/${id}`,
         method: "DELETE",
       }),
       invalidatesTags: ["productParametersValue", "products", "parameters"],
     }),
     editProductParameterValue: build.mutation<
       void,
-      Partial<productParameterValue>
+      Partial<ProductParameterValue>
     >({
       query: (data) => ({
         url: `product-parameter-values/${data?.id}/`,
@@ -330,6 +332,33 @@ export const api = createApi({
         body: data,
       }),
       invalidatesTags: ["productParametersValue", "products", "parameters"],
+    }),
+    getImages: build.query<Image[], void>({
+      query: () => `images/`,
+      providesTags: ["images"],
+    }),
+    createImage: build.mutation<Image, Image>({
+      query: (data) => ({
+        url: "images",
+        method: "POST",
+        body: data,
+      }),
+      invalidatesTags: ["images"],
+    }),
+    deleteImage: build.mutation<void, any>({
+      query: (id) => ({
+        url: `images/${id}`,
+        method: "DELETE",
+      }),
+      invalidatesTags: ["images"],
+    }),
+    editImage: build.mutation<void, Partial<Image>>({
+      query: (data) => ({
+        url: `images/${data?.id}/`,
+        method: "PATCH",
+        body: data,
+      }),
+      invalidatesTags: ["images"],
     }),
   }),
 });
@@ -379,4 +408,8 @@ export const {
   useCreateProductParameterValueMutation,
   useDeleteProductParameterValueMutation,
   useEditProductParameterValueMutation,
+  useGetImagesQuery,
+  useCreateImageMutation,
+  useDeleteImageMutation,
+  useEditImageMutation,
 } = api;

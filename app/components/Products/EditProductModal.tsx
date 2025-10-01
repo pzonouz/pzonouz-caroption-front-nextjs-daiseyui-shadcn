@@ -35,6 +35,7 @@ const EditProductModal = ({
             ),
             price2: product?.price2?.toString(),
             price3: product?.price3?.toString(),
+            imageIds: product?.imageIds ?? [], // ✅ ensure always array
           }
         : undefined,
     [product],
@@ -62,6 +63,9 @@ const EditProductModal = ({
     }
   }, [dispatch, editProductIsLoading]);
 
+  useEffect(() => {
+    console.log(errors);
+  }, [errors]);
   if (!product) return null;
   return (
     <dialog open className="modal w-full">

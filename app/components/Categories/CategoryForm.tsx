@@ -40,13 +40,13 @@ const CategoryForm = ({
 
   const updateImageUrl = (url: string) => setValue("image_url", url);
 
-  const parent = watch("parent")?.toString() ?? "";
+  const parentId = watch("parentId")?.toString() ?? "";
 
-  const updateParent = (parentId: string) => setValue("parent", parentId);
+  const updateParent = (parentId: string) => setValue("parentId", parentId);
 
-  const parameterGroups = watch("parameter_groups", []);
-  const updateParameterGroups = (parameterGroups: ParameterGroup[]) =>
-    setValue("parameter_groups", parameterGroups);
+  // const parameterGroups = watch("parameter_groups", []);
+  // const updateParameterGroups = (parameterGroups: ParameterGroup[]) =>
+  //   setValue("parameter_groups", parameterGroups);
 
   return (
     <form
@@ -68,21 +68,21 @@ const CategoryForm = ({
       />
       <FormField
         label="ترتیب"
-        title="order"
+        title="prioirity"
         register={register}
-        error={errors?.order?.message?.toString()}
+        error={errors?.prioirity?.message?.toString()}
       />
       <Combobox<Category>
-        value={parent}
+        value={parentId}
         setValue={updateParent}
         array={categories}
         title="دسته بندی"
       />
-      <SelectBox<ParameterGroup>
-        allItems={allParameterGroups}
-        selectedItems={parameterGroups}
-        setselectedItems={updateParameterGroups}
-      />
+      {/* <SelectBox<ParameterGroup> */}
+      {/*   allItems={allParameterGroups} */}
+      {/*   selectedItems={parameterGroups} */}
+      {/*   setselectedItems={updateParameterGroups} */}
+      {/* /> */}
       <FormField register={register} title="image_url" hidden />
       <ImageUpload imageUrl={imageUrl} setImageUrl={updateImageUrl} />
       {error && <p className="text-sm text-red-500">{error}</p>}

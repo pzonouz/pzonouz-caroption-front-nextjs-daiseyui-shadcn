@@ -13,10 +13,9 @@ export const categorySchema: z.ZodType<any> = z.lazy(() =>
     id: z.string().nullish(),
     name: z.string().min(1, { message: "نام را وارد کنید" }),
     description: z.string().nullish(),
-    image_url: z.string().nullish(),
-    parent: z.string().nullish(),
-    order: z.string().min(1, { message: "اولویت را وارد کنید" }),
-    parent_name: z.string().nullish(),
+    parentId: z.string().nullish(),
+    prioirity: z.string().min(1, { message: "اولویت را وارد کنید" }),
+    parentName: z.string().nullish(),
     children: z.array(categorySchema).optional(),
     parameter_groups: z.array(parameterGroupSchema),
     created: z.string().datetime().nullish(),
@@ -32,16 +31,20 @@ export const productSchema: z.ZodType<any> = z.lazy(() =>
     id: z.string().nullish(),
     name: z.string().min(1, { message: "نام را وارد کنید" }),
     description: z.string().nullish(),
-    image_url: z.string().nullish(),
-    image_urls: z.array(z.string()).optional(),
-    category: z.string().nullish(),
-    brand: z.string().nullish(),
+    categoryId: z.string().nullish(),
+    brandId: z.string().nullish(),
+    imageId: z.string().nullish(),
+    imageIds: z
+      .array(z.string())
+      .nullable()
+      .transform((val) => val ?? []),
+    images: z.array(imageSchema).optional().nullish().nullable(),
     info: z.string().min(1, { message: "وارد کنید" }),
     count: z.string().min(1, { message: "تعداد را وارد کنید" }),
     price: z.string().min(1, { message: "قیمت را وارد کنید" }),
     price2: z.string().optional(),
     price3: z.string().optional(),
-    generatable: z.boolean(),
+    generatable: z.boolean().optional(),
     generated: z.boolean().optional(),
     created: z.string().datetime().nullish(),
     updated: z.string().datetime().nullish(),
@@ -73,7 +76,6 @@ export const brandSchema = z.object({
   id: z.string().nullish(),
   name: z.string().min(1, { message: "نام را وارد کنید" }),
   description: z.string().nullish(),
-  image_url: z.string().nullish(),
   created: z.string().datetime().nullish(),
   updated: z.string().datetime().nullish(),
 });
@@ -83,7 +85,6 @@ export const entitySchema: z.ZodType<any> = z.lazy(() =>
     name: z.string().min(1, { message: "نام را وارد کنید" }),
     english_name: z.string().nullish(),
     description: z.string().nullish(),
-    image_url: z.string().nullish(),
     parent: z.string().nullish(),
     parent_name: z.string().nullish(),
     order: z.string().min(1, { message: "اولویت را وارد کنید" }),
@@ -116,6 +117,13 @@ export const productParameterValueSchema = z.object({
   bool_value: z.boolean().nullable().optional(),
   selectable_value: z.string().nullable().optional(),
 });
+export const imageSchema = z.object({
+  id: z.string().nullish(),
+  name: z.string().nullish().optional(),
+  imageUrl: z.string(),
+  created: z.string().datetime().nullish(),
+  updated: z.string().datetime().nullish(),
+});
 export type Person = z.infer<typeof personSchema>;
 export type Category = z.infer<typeof categorySchema>;
 export type Product = z.infer<typeof productSchema>;
@@ -125,7 +133,8 @@ export type Brand = z.infer<typeof brandSchema>;
 export type Entity = z.infer<typeof entitySchema>;
 export type Parameter = z.infer<typeof parameterSchema>;
 export type ParameterGroup = z.infer<typeof parameterGroupSchema>;
-export type productParameterValue = z.infer<typeof productParameterValueSchema>;
+export type ProductParameterValue = z.infer<typeof productParameterValueSchema>;
+export type Image = z.infer<typeof imageSchema>;
 export interface SignResponse {
   success: boolean;
   error?: string;

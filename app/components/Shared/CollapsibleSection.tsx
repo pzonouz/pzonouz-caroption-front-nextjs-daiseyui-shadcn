@@ -18,13 +18,13 @@ export const CollapsibleSection: React.FC<CollapsibleSectionProps> = ({
 }) => {
   return (
     <div className={`${className}`}>
-      <button
+      <div
         onClick={onToggle}
         className={`w-full flex items-center justify-between p-4 border-none outline-none cursor-pointer`}
         aria-expanded={isOpen}
       >
         {isOpen ? <Minus size={20} /> : <Plus size={20} />}
-      </button>
+      </div>
 
       {isOpen && <div className="p-4">{children}</div>}
     </div>

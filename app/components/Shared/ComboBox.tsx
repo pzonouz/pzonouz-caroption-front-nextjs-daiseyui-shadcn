@@ -39,7 +39,7 @@ export function Combobox<T extends { id?: string | number; name: string }>({
   disabled?: boolean;
 }) {
   const options = React.useMemo<Option[]>(() => {
-    return array.map((item) => ({
+    return array?.map((item) => ({
       value: item?.id?.toString() ?? "",
       label: item?.name,
     }));
@@ -70,7 +70,7 @@ export function Combobox<T extends { id?: string | number; name: string }>({
               <CommandList>
                 <CommandEmpty>پیدا نشد</CommandEmpty>
                 <CommandGroup>
-                  {options.map((item) => (
+                  {options?.map((item) => (
                     <CommandItem
                       key={item.value}
                       value={item.value}

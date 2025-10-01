@@ -11,6 +11,11 @@ const nextConfig: NextConfig = {
       },
       {
         protocol: "http",
+        hostname: "localhost",
+        pathname: "/**", // allows access to all media files
+      },
+      {
+        protocol: "http",
         hostname: "carroption.ir",
         pathname: "**/media/**", // allows access to all media files
       },

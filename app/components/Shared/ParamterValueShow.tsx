@@ -1,4 +1,4 @@
-import { Parameter, Product, productParameterValue } from "@/app/lib/schemas";
+import { Parameter, Product, ProductParameterValue } from "@/app/lib/schemas";
 import { CircleSmall } from "lucide-react";
 
 const ParamterValueShow = ({
@@ -9,7 +9,7 @@ const ParamterValueShow = ({
   product: Product;
 }) => {
   const value = product?.parameter_values?.find(
-    (item: productParameterValue) => item?.parameter === parameter?.id,
+    (item: ProductParameterValue) => item?.parameter === parameter?.id,
   );
   return (
     <div className="flex flex-row gap-1 items-center text-gray-800">

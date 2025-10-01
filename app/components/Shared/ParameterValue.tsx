@@ -1,4 +1,4 @@
-import { Parameter, productParameterValue } from "@/app/lib/schemas";
+import { Parameter, ProductParameterValue } from "@/app/lib/schemas";
 import { useEffect, useState } from "react";
 import { LoadingButton } from "./LoadingButton";
 import {
@@ -29,10 +29,9 @@ const ParameterValue = ({
   }, [isFetching, dispatch]);
 
   useEffect(() => {
-    const value: productParameterValue = productParameterValues?.find(
+    const value: ProductParameterValue = productParameterValues?.find(
       (item) => item?.parameter == parameter?.id,
     );
-    console.log(productParameterValues);
     setTextValue(value?.text_value);
     setBooleabValue(value?.bool_value || true);
     setSelectableValue(value?.selectable_value || "");

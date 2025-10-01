@@ -13,23 +13,12 @@ export const columns: ColumnDef<Category>[] = [
     },
   },
   {
-    accessorKey: "parent_name",
+    accessorKey: "parentName",
     header: () => <div className="text-right">والد</div>,
     cell: ({ row }) => {
       return (
         <div className="text-right font-medium">
-          {row?.original?.parent_name}
-        </div>
-      );
-    },
-  },
-  {
-    accessorKey: "count",
-    header: () => <div className="text-right">زیرمجموعه</div>,
-    cell: ({ row }) => {
-      return (
-        <div className="text-center font-medium">
-          {row.original?.children?.length}
+          {row?.original?.parentName}
         </div>
       );
     },
