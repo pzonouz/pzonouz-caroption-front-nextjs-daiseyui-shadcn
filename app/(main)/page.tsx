@@ -7,16 +7,16 @@ export const metadata: Metadata = {
   title: "خانه",
 };
 const page = async () => {
-  // const productsRes = await fetch(`${process.env.BACKEND_URL}/products/`);
-  // const products: Product[] = await productsRes.json();
+  const productsRes = await fetch(`${process.env.BACKEND_URL}/products`);
+  const products: Product[] = await productsRes.json();
   return (
     <div>
       <Blocks />
-      {/* <div> */}
-      {/*   {products.map((product) => ( */}
-      {/*     <ProductCard key={product.id} product={product} /> */}
-      {/*   ))} */}
-      {/* </div> */}
+      <div>
+        {products.map((product) => (
+          <ProductCard key={product.id} product={product} />
+        ))}
+      </div>
     </div>
   );
 };

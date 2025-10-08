@@ -45,16 +45,16 @@ const ParameterForm = ({
     }
   }, [isLoading, parameterGroupsIsLoading, dispatch]);
 
-  const parameterGroup = watch("parameter_group")?.toString() ?? "";
+  const parameterGroup = watch("parameterGroupId")?.toString() ?? "";
   const updateParameterGroup = (groupId: string) =>
-    setValue("parameter_group", groupId?.toString());
+    setValue("parameterGroupId", groupId?.toString());
 
-  const type = watch("field_type")?.toString() ?? "";
-  const updateType = (value: string) => setValue("field_type", value);
+  const type = watch("type")?.toString() ?? "";
+  const updateType = (value: string) => setValue("type", value);
 
-  const selectableValues = watch("selectable_values") ?? [];
+  const selectableValues = watch("selectables") ?? [];
   const updateSelectableValues = (value: string[]) =>
-    setValue("selectable_values", value);
+    setValue("selectables", value);
 
   const [selectableValue, setSelectableValue] = useState<string>("");
   const [open, setOpen] = useState(false);

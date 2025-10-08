@@ -24,7 +24,7 @@ const EditParameterModal = ({
     return {
       ...parameter,
       id: parameter.id?.toString(),
-      parameter_group: parameter.parameter_group?.toString(),
+      parameterGroupId: parameter.parameterGroupId?.toString(),
     };
   }, [parameter]);
 

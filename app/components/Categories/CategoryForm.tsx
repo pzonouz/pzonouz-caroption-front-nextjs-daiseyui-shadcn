@@ -13,6 +13,7 @@ import { Category, ParameterGroup } from "../../lib/schemas";
 import { Combobox } from "../Shared/ComboBox";
 import SelectBox from "../Shared/SelectBox";
 import { useGetParameterGroupsQuery } from "@/app/lib/features/api";
+import ImagesManager from "../Shared/ImageManager";
 interface CategoryFormProp {
   register: UseFormRegister<Category>;
   errors: FieldErrors<Category>;
@@ -36,13 +37,12 @@ const CategoryForm = ({
 }: CategoryFormProp) => {
   const { data: allParameterGroups, isFetching: allParamaterGroupsIsFetching } =
     useGetParameterGroupsQuery();
-  const imageUrl = watch("image_url");
-
-  const updateImageUrl = (url: string) => setValue("image_url", url);
-
   const parentId = watch("parentId")?.toString() ?? "";
-
   const updateParent = (parentId: string) => setValue("parentId", parentId);
+
+  // Main Image
+  const imageId = watch("imageId") ?? "";
+  const updateImageId = (value: string) => setValue("imageId", value);
 
   // const parameterGroups = watch("parameter_groups", []);
   // const updateParameterGroups = (parameterGroups: ParameterGroup[]) =>
@@ -84,7 +84,11 @@ const CategoryForm = ({
       {/*   setselectedItems={updateParameterGroups} */}
       {/* /> */}
       <FormField register={register} title="image_url" hidden />
-      <ImageUpload imageUrl={imageUrl} setImageUrl={updateImageUrl} />
+      <ImagesManager
+        type="One"
+        selectedImageId={imageId}
+        setSelectedImageId={updateImageId}
+      />
       {error && <p className="text-sm text-red-500">{error}</p>}
       <LoadingButton className="btn btn-primary" isLoading={isLoading}>
         ثبت

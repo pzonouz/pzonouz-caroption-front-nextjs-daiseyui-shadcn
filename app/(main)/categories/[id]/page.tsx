@@ -5,7 +5,7 @@ import ProductCard from "../../../components/Products/ProductCard";
 import { Category, Product } from "../../../lib/schemas";
 
 export async function generateStaticParams() {
-  const categoriesRes = await fetch(`${process.env.BACKEND_URL}/categories/`);
+  const categoriesRes = await fetch(`${process.env.BACKEND_URL}/categories`);
   const categories: Category[] = await categoriesRes.json();
   return categories.map((category) => ({
     id: category.id.toString(),
@@ -18,7 +18,7 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { id } = await params;
   const categoryRes = await fetch(
-    `${process.env.BACKEND_URL}/categories/${id}/`,
+    `${process.env.BACKEND_URL}/categories/${id}`,
   );
   const category: Category = await categoryRes.json();
   return {

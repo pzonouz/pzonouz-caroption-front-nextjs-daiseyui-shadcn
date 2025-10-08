@@ -18,6 +18,7 @@ import { Combobox } from "../Shared/ComboBox";
 import {
   useGetBrandsQuery,
   useGetCategoriesQuery,
+  useGetParametersByCategoryQuery,
   useGetParametersQuery,
 } from "@/app/lib/features/api";
 import { useAppDispatch } from "@/app/lib/hooks";
@@ -48,8 +49,6 @@ const ProductForm = ({
   const dispatch = useAppDispatch();
   const { data: categories, isFetching: categoryIsLoading } =
     useGetCategoriesQuery();
-  const { data: parameters, isFetching: parametersIsLoading } =
-    useGetParametersQuery();
   const { data: brands, isFetching: brandIsLoading } = useGetBrandsQuery();
 
   useEffect(() => {
@@ -108,6 +107,8 @@ const ProductForm = ({
   const updateGeneratable = (value: boolean | "indeterminate") =>
     setValue("generatable", value === true, { shouldValidate: true });
 
+  const { data: parameters, isFetching: parametersIsLoading } =
+    useGetParametersByCategoryQuery(categoryId);
   return (
     <form
       lang="fa"
@@ -164,7 +165,7 @@ const ProductForm = ({
       <Combobox<Category>
         value={categoryId}
         setValue={updateCategoryId}
-        array={categories ?? []}
+        array={categories?.filter((c: Category) => c?.parentId != null) ?? []}
         title="دسته بندی"
         disabled={watch("generated")}
       />

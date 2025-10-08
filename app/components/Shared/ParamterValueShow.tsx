@@ -8,29 +8,29 @@ const ParamterValueShow = ({
   parameter: Parameter;
   product: Product;
 }) => {
-  const value = product?.parameter_values?.find(
-    (item: ProductParameterValue) => item?.parameter === parameter?.id,
+  const value = product?.parameterValues?.find(
+    (item: ProductParameterValue) => item?.parameterId === parameter?.id,
   );
   return (
     <div className="flex flex-row gap-1 items-center text-gray-800">
       <div>
-        {parameter?.field_type == "BL" && value?.bool_value && (
+        {parameter?.type == "BL" && value?.boolValue && (
           <div className="flex flex-row gap-1 items-center">
             <CircleSmall fill="true" size={12} />
             {parameter?.name}
           </div>
         )}
-        {parameter?.field_type == "SL" && (
+        {parameter?.type == "SL" && (
           <div className="flex flex-row gap-1 items-center">
             <CircleSmall fill="true" size={12} />
             <p>{parameter?.name}</p>
-            <p>{value?.selectable_value}</p>
+            <p>{value?.selectableValue}</p>
           </div>
         )}
-        {parameter?.field_type == "TX" && (
+        {parameter?.type == "TX" && (
           <div className="flex flex-row gap-1">
             <p>{parameter?.name}</p>
-            <p>{value?.text_value}</p>
+            <p>{value?.textValue}</p>
           </div>
         )}
       </div>

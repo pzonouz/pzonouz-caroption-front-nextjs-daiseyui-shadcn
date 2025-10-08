@@ -4,7 +4,7 @@ import { faClose } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useEditCategory } from "./hooks/useEditCategory";
 import CategoryForm from "./CategoryForm";
-import React, { useEffect } from "react";
+import React, { useEffect, useMemo } from "react";
 import { Category } from "../../lib/schemas";
 import { useGetCategoriesQuery } from "../../lib/features/api";
 import { useAppDispatch } from "../../lib/hooks";
@@ -20,6 +20,20 @@ const EditCategoryModal = ({
     React.SetStateAction<Category | null | undefined>
   >;
 }) => {
+  const normalizedCategory = useMemo(
+    () =>
+      category
+        ? {
+            // children: category.children ? category.children : [],
+            // parameter_groups: category.parameter_groups
+            //   ? category.parameter_groups
+            //   : [],
+            ...category,
+          }
+        : undefined,
+    [category],
+  );
+
   const {
     register,
     setError,
@@ -31,10 +45,14 @@ const EditCategoryModal = ({
     reset,
     editCategoryIsLoading,
     editCategoryAction,
-  } = useEditCategory({ category });
+  } = useEditCategory({ category: normalizedCategory });
 
   const { data: categories, isLoading } = useGetCategoriesQuery();
   const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    console.log(errors);
+  }, [errors]);
 
   useEffect(() => {
     if (isLoading) {

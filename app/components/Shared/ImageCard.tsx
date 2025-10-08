@@ -1,7 +1,8 @@
+import { useDeleteImageMutation } from "@/app/lib/features/api";
 import { Image as ImageType } from "@/app/lib/schemas";
 import { Trash } from "lucide-react";
 import Image from "next/image";
-import React, { useState } from "react";
+import React from "react";
 
 const ImageCard = ({
   image,
@@ -12,6 +13,7 @@ const ImageCard = ({
   selected: boolean;
   toggleSelected: (image: ImageType) => void;
 }) => {
+  const [deleteImage, { isLoading }] = useDeleteImageMutation();
   return (
     <div className="grid grid-cols-2">
       <div className="">
@@ -29,7 +31,15 @@ const ImageCard = ({
               className="checkbox checkbox-md rounded-2xl bg-white"
             />
           </div>
-          <Trash className="bg-white text-red-500 p-1 rounded-2xl " size={24} />
+          {isLoading ? (
+            <div className="loading loading-spinner text-error"></div>
+          ) : (
+            <Trash
+              onClick={() => deleteImage(image?.id).then().catch()}
+              className="bg-white text-red-500 p-1 rounded-2xl cursor-pointer "
+              size={24}
+            />
+          )}
         </div>
         <Image
           alt={image?.name}

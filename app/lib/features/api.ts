@@ -236,12 +236,12 @@ export const api = createApi({
       invalidatesTags: ["entities"],
     }),
     getParameterGroups: build.query<ParameterGroup[], void>({
-      query: () => `parameter-groups/`,
+      query: () => `parameter-groups`,
       providesTags: ["parameterGroups"],
     }),
     createParameterGroup: build.mutation<ParameterGroup, ParameterGroup>({
       query: (data) => ({
-        url: "parameter-groups/",
+        url: "parameter-groups",
         method: "POST",
         body: data,
       }),
@@ -256,23 +256,23 @@ export const api = createApi({
     }),
     editParameterGroup: build.mutation<void, Partial<ParameterGroup>>({
       query: (data) => ({
-        url: `parameter-groups/${data?.id}/`,
+        url: `parameter-groups/${data?.id}`,
         method: "PATCH",
         body: data,
       }),
       invalidatesTags: ["parameterGroups"],
     }),
-    getParametersByGroup: build.query<Parameter[], string>({
-      query: (id) => `parameters/?parameter_group=${id}`,
+    getParametersByCategory: build.query<Parameter[], string>({
+      query: (id) => `parameters/by-group/${id}`,
       providesTags: ["parameters"],
     }),
     getParameters: build.query<Parameter[], void>({
-      query: () => `parameters/`,
+      query: () => `parameters`,
       providesTags: ["parameters"],
     }),
     createParameter: build.mutation<Parameter, Parameter>({
       query: (data) => ({
-        url: "parameters/",
+        url: "parameters",
         method: "POST",
         body: data,
       }),
@@ -287,7 +287,7 @@ export const api = createApi({
     }),
     editParameter: build.mutation<void, Partial<Parameter>>({
       query: (data) => ({
-        url: `parameters/${data?.id}/`,
+        url: `parameters/${data?.id}`,
         method: "PATCH",
         body: data,
       }),
@@ -350,7 +350,7 @@ export const api = createApi({
         url: `images/${id}`,
         method: "DELETE",
       }),
-      invalidatesTags: ["images"],
+      invalidatesTags: ["images", "products"],
     }),
     editImage: build.mutation<void, Partial<Image>>({
       query: (data) => ({
@@ -398,7 +398,7 @@ export const {
   useCreateParameterGroupMutation,
   useDeleteParameterGroupMutation,
   useEditParameterGroupMutation,
-  useGetParametersByGroupQuery,
+  useGetParametersByCategoryQuery,
   useGetParametersQuery,
   useCreateParameterMutation,
   useDeleteParameterMutation,

@@ -5,8 +5,9 @@ import { Navigation, Autoplay } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/navigation";
 import Image from "next/image";
+import { Image as ImageType } from "@/app/lib/schemas";
 
-export default function Slider({ items }: { items: string[] }) {
+export default function Slider({ images }: { images: ImageType[] }) {
   return (
     <div className="relative max-w-xl mx-auto">
       <Swiper
@@ -17,12 +18,12 @@ export default function Slider({ items }: { items: string[] }) {
         slidesPerView={1}
         className="rounded-2xl w-3/4 overflow-hidden"
       >
-        {items?.map((item) => (
-          <SwiperSlide key={item}>
+        {images?.map((image) => (
+          <SwiperSlide key={image?.id}>
             <div className="flex items-center justify-center bg-blue-500 text-white text-2xl h-64">
               <Image
-                src={`${process.env.NEXT_PUBLIC_BASE_URL}${item}`}
-                alt={item}
+                src={`${process.env.NEXT_PUBLIC_BASE_URL}/${image.imageUrl}`}
+                alt={image?.name}
                 width={400}
                 height={400}
               />

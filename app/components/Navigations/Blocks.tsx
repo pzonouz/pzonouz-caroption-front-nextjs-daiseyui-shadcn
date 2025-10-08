@@ -21,8 +21,8 @@ const Blocks = async () => {
           >
             <Image
               src={
-                category?.image_url
-                  ? `${process.env.NEXT_PUBLIC_BASE_URL}${category.image_url}`
+                category?.imageUrl
+                  ? `${process.env.NEXT_PUBLIC_BASE_URL}/${category.imageUrl}`
                   : "/images/logo.jpg"
               }
               width={50}

@@ -14,10 +14,12 @@ export const categorySchema: z.ZodType<any> = z.lazy(() =>
     name: z.string().min(1, { message: "نام را وارد کنید" }),
     description: z.string().nullish(),
     parentId: z.string().nullish(),
-    prioirity: z.string().min(1, { message: "اولویت را وارد کنید" }),
+    prioirity: z.string().min(1, { message: "اولویت را وارد کنید" }).nullish(),
     parentName: z.string().nullish(),
+    imageId: z.string().optional().nullish(),
+    imageUrl: z.string().optional().nullish(),
     children: z.array(categorySchema).optional(),
-    parameter_groups: z.array(parameterGroupSchema),
+    parameter_groups: z.array(parameterGroupSchema).optional(),
     created: z.string().datetime().nullish(),
     updated: z.string().datetime().nullish(),
   }),
@@ -33,9 +35,11 @@ export const productSchema: z.ZodType<any> = z.lazy(() =>
     description: z.string().nullish(),
     categoryId: z.string().nullish(),
     brandId: z.string().nullish(),
+    brandName: z.string().nullish(),
     imageId: z.string().nullish(),
     imageIds: z
       .array(z.string())
+      .optional()
       .nullable()
       .transform((val) => val ?? []),
     images: z.array(imageSchema).optional().nullish().nullable(),
@@ -49,8 +53,7 @@ export const productSchema: z.ZodType<any> = z.lazy(() =>
     created: z.string().datetime().nullish(),
     updated: z.string().datetime().nullish(),
     main_product: productSchema.nullish(),
-    category_full: categorySchema.optional().nullish(),
-    parameter_values: z.array(productParameterValueSchema).optional(),
+    productParameterValues: z.array(productParameterValueSchema).optional(),
   }),
 );
 
@@ -96,31 +99,29 @@ export const entitySchema: z.ZodType<any> = z.lazy(() =>
 export const parameterSchema = z.object({
   id: z.string().nullish(),
   name: z.string().min(1, { message: "نام را وارد کنید" }),
-  field_type: z.string(),
-  text_value: z.string().optional(),
-  boolean_value: z.boolean().optional(),
-  parameter_group: z.string(),
-  selectable_values: z.array(z.string()).optional(),
+  type: z.string(),
+  parameterGroupId: z.string(),
+  selectables: z.array(z.string()).optional(),
 });
 export const parameterGroupSchema = z.object({
   id: z.string().nullish(),
   name: z.string().min(1, { message: "نام را وارد کنید" }),
-  category: z.string(),
-  category_name: z.string().optional(),
+  categoryId: z.string(),
+  categoryName: z.string().optional().nullish(),
   parameters: z.array(parameterSchema).optional(),
 });
 export const productParameterValueSchema = z.object({
   id: z.string().nullish(),
-  product: z.string().nullish().optional(),
-  parameter: z.string(),
-  text_value: z.string().nullable().optional(),
-  bool_value: z.boolean().nullable().optional(),
-  selectable_value: z.string().nullable().optional(),
+  productId: z.string().nullish().optional(),
+  parameterId: z.string().nullish().optional(),
+  textValue: z.string().nullable().optional(),
+  boolValue: z.boolean().nullable().optional(),
+  selectableValue: z.string().nullable().optional(),
 });
 export const imageSchema = z.object({
   id: z.string().nullish(),
   name: z.string().nullish().optional(),
-  imageUrl: z.string(),
+  imageUrl: z.string().optional().nullish(),
   created: z.string().datetime().nullish(),
   updated: z.string().datetime().nullish(),
 });

@@ -24,7 +24,7 @@ const EditParameterGroupModal = ({
       parameterGroup
         ? {
             ...parameterGroup,
-            category: parameterGroup.category?.toString() ?? "",
+            categoryId: parameterGroup.categoryId?.toString() ?? "",
           }
         : undefined,
     [parameterGroup],
@@ -75,7 +75,7 @@ const EditParameterGroupModal = ({
               setObject: setParameterGroup,
               transform: (data) => ({
                 ...data,
-                category: data?.category?.toString(),
+                categoryId: data?.categoryId?.toString(),
               }),
             })}
             error={error}

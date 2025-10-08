@@ -13,29 +13,28 @@ interface Props {
   setValue: UseFormSetValue<Product>;
 }
 
-const ParameterValues = ({ parameters, register, watch, setValue }: Props) => {
-  const parameterValues = watch("parameter_values") ?? [];
+const ParameterValues = ({ parameters, watch, setValue }: Props) => {
+  const productParameterValues = watch("productParameterValues") ?? [];
 
   const updateValue = (parameterId: string, field: string, value: any) => {
-    const updated = [...parameterValues];
-    const idx = updated.findIndex((v) => v.parameter === parameterId);
+    const updated = [...productParameterValues];
+    const idx = updated.findIndex((v) => v.parameterId === parameterId);
     if (idx >= 0) {
       updated[idx] = { ...updated[idx], [field]: value };
     } else {
-      updated.push({ parameter: parameterId, [field]: value });
+      updated.push({ parameterId: parameterId, [field]: value });
     }
-    setValue("parameter_values", updated, {
+    setValue("productParameterValues", updated, {
       shouldDirty: true,
       shouldValidate: true,
     });
   };
-
   return (
     <div className=" mt-6 border rounded-xl p-4">
       <h3 className="text-lg font-bold mb-4">ویژگی‌ها</h3>
       {parameters?.map((p) => {
-        const value = parameterValues.find(
-          (v: ProductParameterValue) => v.parameter === p.id,
+        const value = productParameterValues.find(
+          (v: ProductParameterValue) => v.parameterId === p.id,
         );
         return (
           <div
@@ -44,38 +43,36 @@ const ParameterValues = ({ parameters, register, watch, setValue }: Props) => {
           >
             <label className="w-40">{p.name}</label>
 
-            {p.field_type === "TX" && (
+            {p.type === "TX" && (
               <input
                 type="text"
-                value={value?.text_value ?? ""}
-                onChange={(e) =>
-                  updateValue(p.id, "text_value", e.target.value)
-                }
+                value={value?.textValue ?? ""}
+                onChange={(e) => updateValue(p.id, "textValue", e.target.value)}
                 className="input input-bordered"
               />
             )}
 
-            {p.field_type === "BL" && (
+            {p.type === "BL" && (
               <input
                 className="toggle"
                 type="checkbox"
-                checked={Boolean(value?.bool_value)}
+                checked={Boolean(value?.boolValue)}
                 onChange={(e) =>
-                  updateValue(p.id, "bool_value", e.target.checked)
+                  updateValue(p.id, "boolValue", e.target.checked)
                 }
               />
             )}
 
-            {p.field_type === "SL" && (
+            {p.type === "SL" && (
               <select
-                value={value?.selectable_value ?? ""}
+                value={value?.selectableValue ?? ""}
                 onChange={(e) =>
-                  updateValue(p.id, "selectable_value", e.target.value)
+                  updateValue(p.id, "selectableValue", e.target.value)
                 }
                 className="select select-bordered"
               >
                 <option value="">انتخاب کنید</option>
-                {p.selectable_values?.map((v) => (
+                {p.selectables?.map((v) => (
                   <option key={v} value={v}>
                     {v}
                   </option>

@@ -10,7 +10,10 @@ import {
 } from "react-hook-form";
 import { Category, ParameterGroup } from "../../lib/schemas";
 import { Combobox } from "../Shared/ComboBox";
-import { useGetCategoriesQuery } from "@/app/lib/features/api";
+import {
+  useGetCategoriesQuery,
+  useGetParentCategoriesQuery,
+} from "@/app/lib/features/api";
 import { useAppDispatch } from "@/app/lib/hooks";
 import { LoadingHide, LoadingShow } from "@/app/lib/features/LoadingSlice";
 interface ParameterGroupFormProp {
@@ -34,7 +37,7 @@ const ParameterGroupForm = ({
 }: ParameterGroupFormProp) => {
   const dispatch = useAppDispatch();
   const { data: categories, isFetching: categoryIsLoading } =
-    useGetCategoriesQuery();
+    useGetParentCategoriesQuery();
 
   useEffect(() => {
     if (isLoading || categoryIsLoading) {
@@ -45,8 +48,9 @@ const ParameterGroupForm = ({
   }, [isLoading, categoryIsLoading, dispatch]);
 
   // Category
-  const category = watch("category")?.toString() ?? "";
-  const updateCategory = (catgoryId: string) => setValue("category", catgoryId);
+  const category = watch("categoryId")?.toString() ?? "";
+  const updateCategory = (catgoryId: string) =>
+    setValue("categoryId", catgoryId);
 
   useEffect(() => {
     console.log(errors);

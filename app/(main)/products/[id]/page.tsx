@@ -9,7 +9,7 @@ import { CircleSmall } from "lucide-react";
 import ParamterValueShow from "@/app/components/Shared/ParamterValueShow";
 
 export async function generateStaticParams() {
-  const productsRes = await fetch(`${process.env.BACKEND_URL}/products/`);
+  const productsRes = await fetch(`${process.env.BACKEND_URL}/products`);
   const products: Product[] = await productsRes.json();
   return products.map((category) => ({
     id: category.id.toString(),
@@ -21,7 +21,7 @@ export async function generateMetadata({
   params: Promise<{ id: string }>;
 }): Promise<Metadata> {
   const { id } = await params;
-  const productRes = await fetch(`${process.env.BACKEND_URL}/products/${id}/`);
+  const productRes = await fetch(`${process.env.BACKEND_URL}/products/${id}`);
   const product: Product = await productRes.json();
   return {
     title: product?.name,
@@ -31,14 +31,16 @@ export async function generateMetadata({
 
 const page = async ({ params }: { params: Promise<{ id: string }> }) => {
   const { id } = await params;
-  const productRes = await fetch(`${process.env.BACKEND_URL}/products/${id}/`);
+  const productRes = await fetch(`${process.env.BACKEND_URL}/products/${id}`, {
+    cache: "no-store",
+  });
   const product: Product = await productRes.json();
   return (
     <div>
-      {product?.image_url && (
+      {product?.imageUrl && (
         <div className="grid place-items-center">
           <Image
-            src={`${process.env.NEXT_PUBLIC_BASE_URL}${product?.image_url}`}
+            src={`${process.env.NEXT_PUBLIC_BASE_URL}/${product?.imageUrl}`}
             alt={`${product?.name}`}
             width={400}
             height={300}
@@ -47,17 +49,15 @@ const page = async ({ params }: { params: Promise<{ id: string }> }) => {
         </div>
       )}
       <h1 className="font-extrabold px-4">{product?.name}</h1>
-      {product?.image_urls?.length > 0 && (
-        <Slider items={product?.image_urls} />
-      )}
+      {product?.images?.length > 0 && <Slider images={product?.images} />}
       <div className="flex flex-row items-center gap-2 pr-8">
         <CircleSmall fill="true" size={12} />
         <div className="flex flex-row items-center gap-2">
           <div>برند:</div>
-          <div>{product?.brand_full?.name}</div>
+          <div>{product?.brandName}</div>
         </div>
       </div>
-      {product?.category_full?.parameter_groups?.[0]?.parameters?.map(
+      {product?.parameterGroups?.[0]?.parameters?.map(
         (parameter: Parameter) => (
           <div
             key={parameter?.id}

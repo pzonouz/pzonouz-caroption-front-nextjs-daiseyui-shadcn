@@ -13,8 +13,8 @@ const ProductCard = async ({ product }: { product: Product }) => {
     >
       <Image
         src={
-          product.image_url
-            ? `${process.env.NEXT_PUBLIC_BASE_URL}${product?.image_url}`
+          product.imageUrl
+            ? `${process.env.NEXT_PUBLIC_BASE_URL}/${product?.imageUrl}`
             : "/images/logo.jpg"
         }
         alt={product.name}
