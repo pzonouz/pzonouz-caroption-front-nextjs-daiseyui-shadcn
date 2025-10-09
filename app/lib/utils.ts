@@ -67,7 +67,6 @@ export function submitHandler<T extends FieldValues>({
 }: SubmitHandlerProps<T>) {
   return handleSubmit((data: T) => {
     const transformedData = transform ? transform(data) : data;
-    console.log(data);
     action(transformedData)
       .unwrap()
       .then(() => {

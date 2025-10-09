@@ -1,4 +1,4 @@
-import z from "zod/v4";
+import z, { nullish } from "zod/v4";
 
 export const personSchema = z.object({
   id: z.string().nullish(),
@@ -53,6 +53,7 @@ export const productSchema: z.ZodType<any> = z.lazy(() =>
     created: z.string().datetime().nullish(),
     updated: z.string().datetime().nullish(),
     main_product: productSchema.nullish(),
+    parameters: z.array(parameterSchema).nullish().optional().nullable(),
     productParameterValues: z.array(productParameterValueSchema).optional(),
   }),
 );
@@ -101,7 +102,7 @@ export const parameterSchema = z.object({
   name: z.string().min(1, { message: "نام را وارد کنید" }),
   type: z.string(),
   parameterGroupId: z.string(),
-  selectables: z.array(z.string()).optional(),
+  selectables: z.array(z.string()).optional().nullable().nullish(),
 });
 export const parameterGroupSchema = z.object({
   id: z.string().nullish(),

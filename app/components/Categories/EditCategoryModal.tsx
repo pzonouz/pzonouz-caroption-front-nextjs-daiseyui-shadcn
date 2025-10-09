@@ -51,10 +51,6 @@ const EditCategoryModal = ({
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-    console.log(errors);
-  }, [errors]);
-
-  useEffect(() => {
     if (isLoading) {
       dispatch(LoadingShow());
     } else {

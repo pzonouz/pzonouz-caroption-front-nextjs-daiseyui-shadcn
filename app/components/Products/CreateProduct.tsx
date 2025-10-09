@@ -22,9 +22,6 @@ export function CreateProduct() {
     handleSubmit,
     createProductAction,
   } = useCreateProduct();
-  useEffect(() => {
-    console.log(errors);
-  }, [errors]);
   return (
     <div className="w-full flex flex-col items-center justify-center  relative">
       <CollapsibleSection

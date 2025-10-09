@@ -63,9 +63,6 @@ const EditProductModal = ({
     }
   }, [dispatch, editProductIsLoading]);
 
-  useEffect(() => {
-    console.log(errors);
-  }, [errors]);
   if (!product) return null;
   return (
     <dialog open className="modal w-full">

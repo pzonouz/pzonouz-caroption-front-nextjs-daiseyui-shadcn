@@ -48,25 +48,23 @@ const page = async ({ params }: { params: Promise<{ id: string }> }) => {
           />
         </div>
       )}
-      <h1 className="font-extrabold px-4">{product?.name}</h1>
+      <h1 className="font-extrabold px-4 mb-4">{product?.name}</h1>
       {product?.images?.length > 0 && <Slider images={product?.images} />}
-      <div className="flex flex-row items-center gap-2 pr-8">
+      <div className="flex flex-row items-center gap-2 pr-8 mt-6">
         <CircleSmall fill="true" size={12} />
         <div className="flex flex-row items-center gap-2">
           <div>برند:</div>
           <div>{product?.brandName}</div>
         </div>
       </div>
-      {product?.parameterGroups?.[0]?.parameters?.map(
-        (parameter: Parameter) => (
-          <div
-            key={parameter?.id}
-            className="flex flex-col items-start pr-8 leading-8 gap-2"
-          >
-            <ParamterValueShow parameter={parameter} product={product} />
-          </div>
-        ),
-      )}
+      {product?.parameters?.map((parameter: Parameter) => (
+        <div
+          key={parameter?.id}
+          className="flex flex-col items-start pr-8 leading-8 gap-2"
+        >
+          <ParamterValueShow parameter={parameter} product={product} />
+        </div>
+      ))}
       {product?.generated ? (
         <div
           className="mt-4 [&_li]:list-disc px-8 text-gray-700 leading-8"

@@ -52,10 +52,6 @@ const ParameterGroupForm = ({
   const updateCategory = (catgoryId: string) =>
     setValue("categoryId", catgoryId);
 
-  useEffect(() => {
-    console.log(errors);
-  }, [errors]);
-
   return (
     <form
       lang="fa"

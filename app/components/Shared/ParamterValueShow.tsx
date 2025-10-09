@@ -8,7 +8,7 @@ const ParamterValueShow = ({
   parameter: Parameter;
   product: Product;
 }) => {
-  const value = product?.parameterValues?.find(
+  const value = product?.productParameterValues?.find(
     (item: ProductParameterValue) => item?.parameterId === parameter?.id,
   );
   return (
@@ -17,6 +17,7 @@ const ParamterValueShow = ({
         {parameter?.type == "BL" && value?.boolValue && (
           <div className="flex flex-row gap-1 items-center">
             <CircleSmall fill="true" size={12} />
+            <p>دارای</p>
             {parameter?.name}
           </div>
         )}
@@ -24,12 +25,15 @@ const ParamterValueShow = ({
           <div className="flex flex-row gap-1 items-center">
             <CircleSmall fill="true" size={12} />
             <p>{parameter?.name}</p>
+            <p>:</p>
             <p>{value?.selectableValue}</p>
           </div>
         )}
         {parameter?.type == "TX" && (
-          <div className="flex flex-row gap-1">
+          <div className="flex flex-row gap-1 items-center">
+            <CircleSmall fill="true" size={12} />
             <p>{parameter?.name}</p>
+            <p>:</p>
             <p>{value?.textValue}</p>
           </div>
         )}
