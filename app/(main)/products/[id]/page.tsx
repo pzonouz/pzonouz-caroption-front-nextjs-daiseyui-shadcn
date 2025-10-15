@@ -11,8 +11,8 @@ import ParamterValueShow from "@/app/components/Shared/ParamterValueShow";
 export async function generateStaticParams() {
   const productsRes = await fetch(`${process.env.BACKEND_URL}/products`);
   const products: Product[] = await productsRes.json();
-  return products.map((category) => ({
-    id: category.id.toString(),
+  return products.map((product) => ({
+    id: product.id.toString(),
   }));
 }
 export async function generateMetadata({
@@ -32,7 +32,7 @@ export async function generateMetadata({
 const page = async ({ params }: { params: Promise<{ id: string }> }) => {
   const { id } = await params;
   const productRes = await fetch(`${process.env.BACKEND_URL}/products/${id}`, {
-    cache: "no-store",
+    next: { revalidate: 60 },
   });
   const product: Product = await productRes.json();
   return (
