@@ -25,6 +25,7 @@ const nextConfig: NextConfig = {
         pathname: "**/media/**", // allows access to all media files
       },
     ],
+    unoptimized: process.env.NODE_ENV === "development",
   },
 };
 

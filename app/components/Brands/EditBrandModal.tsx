@@ -29,8 +29,8 @@ const EditBrandModal = ({
   if (!brand) return null;
   return (
     brand && (
-      <dialog open className="modal w-full">
-        <div className="modal-box w-full relative">
+      <dialog open className="modal">
+        <div className="modal-box w-full h-screen max-w-none p-6 relative rounded-none">
           <div className="modal-action w-full flex flex-col items-center justify-center">
             <FontAwesomeIcon
               icon={faClose}
@@ -39,7 +39,8 @@ const EditBrandModal = ({
                 setBrand(null);
               }}
             />
-            <label className=" text-3xl text-center w-5/6">ویرایش برند</label>
+            <label className="text-3xl text-center w-5/6">ویرایش برند</label>
+
             <BrandForm
               submitHandler={submitHandler<Brand>({
                 action: editBrandAction,

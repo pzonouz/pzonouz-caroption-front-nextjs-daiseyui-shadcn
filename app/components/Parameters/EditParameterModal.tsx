@@ -54,17 +54,19 @@ const EditParameterModal = ({
   if (!parameter) return null;
 
   return (
-    <dialog open className="modal w-full">
-      <div className="modal-box w-full relative">
-        <div className="modal-action w-full flex flex-col items-center justify-center">
-          <FontAwesomeIcon
-            icon={faClose}
-            className="absolute text-error cursor-pointer top-4 right-4"
-            onClick={() => {
-              setParameter(undefined);
-            }}
-          />
-          <label className=" text-3xl text-center w-5/6">ویرایش پارامتر</label>
+    <dialog open className="modal">
+      <div className="modal-box w-full h-screen max-w-none p-6 relative rounded-none flex flex-col">
+        <FontAwesomeIcon
+          icon={faClose}
+          className="absolute text-error cursor-pointer top-4 right-4"
+          onClick={() => {
+            setParameter(undefined);
+          }}
+        />
+
+        <label className="text-3xl text-center mb-6 mt-2">ویرایش پارامتر</label>
+
+        <div className="flex-1 overflow-y-auto w-full">
           <ParameterForm
             submitHandler={submitHandler<Parameter>({
               action: editParameterAction,

@@ -31,12 +31,14 @@ export function Combobox<T extends { id?: string | number; name: string }>({
   array,
   title,
   disabled = false,
+  className = "",
 }: {
   value: string;
   setValue: Function;
   array: T[];
   title: string;
   disabled?: boolean;
+  className?: string;
 }) {
   const options = React.useMemo<Option[]>(() => {
     return array?.map((item) => ({

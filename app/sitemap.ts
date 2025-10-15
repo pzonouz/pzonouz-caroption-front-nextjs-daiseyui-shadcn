@@ -9,7 +9,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const products: Product[] = await productsRes.json();
   const productsEntries: MetadataRoute.Sitemap = products.map((product) => ({
     url: `${process.env.BACKEND_URL}/products/${product?.id}/`,
-    lastModified: `${product?.updated}`,
+    lastModified: `${product?.updatedAt}`,
   }));
   const categoriesRes = await fetch(`${process.env.BACKEND_URL}/categories/`);
   if (!categoriesRes.ok) throw new Error("Failed to fetch categories");
@@ -17,7 +17,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const categoriesEntries: MetadataRoute.Sitemap = categories.map(
     (category) => ({
       url: `${process.env.BACKEND_URL}/categories/${category?.id}/`,
-      lastModified: `${category?.updated}`,
+      lastModified: `${category?.updatedAt}`,
     }),
   );
 

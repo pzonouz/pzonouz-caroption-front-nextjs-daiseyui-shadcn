@@ -15,7 +15,6 @@ export const signinAction = async (
       await signIn("credentials", {
         redirect: false,
         email: data.get("email"),
-        username: data.get("email"),
         password: data.get("password"),
       });
       return { success: true, error: "", errors: {}, data: {} };
@@ -50,13 +49,14 @@ export const signupAction = async (_prevState: unknown, data: FormData) => {
       message: "پسوردها مطابقت ندارند",
     });
   const result = userSchema.safeParse(rawData);
-  data.set("username", data.get("email")!);
-  data.set("re_password", data.get("password")!);
   if (result.success) {
     try {
       const res = await fetch(`${process.env.BACKEND_URL}/auth/signup`, {
         method: "POST",
-        body: data,
+        body: JSON.stringify({
+          email: data.get("email"),
+          password: data.get("password"),
+        }),
       });
       if (!res.ok) {
         throw new Error(res.statusText);

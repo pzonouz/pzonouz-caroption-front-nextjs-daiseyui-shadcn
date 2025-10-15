@@ -62,7 +62,7 @@ const ParameterForm = ({
   return (
     <form
       lang="fa"
-      className="w-full mt-10 grid grid-cols-1 sm:grid-cols-2 gap-3 mb-4"
+      className="w-full mt-10 grid grid-cols-1 md:grid-cols-2 gap-3 mb-4"
       onSubmit={submitHandler}
     >
       <FormField
@@ -70,31 +70,31 @@ const ParameterForm = ({
         title="name"
         register={register}
         error={errors?.name?.message?.toString()}
+        className="col-span-2 md:col-span-1"
       />
-      <Combobox
-        array={parameterGroups ?? []}
-        value={parameterGroup}
-        setValue={updateParameterGroup}
-        title="گروه"
-      />
-      <Combobox
-        title="نوع"
-        value={type}
-        setValue={updateType}
-        array={[
-          { id: "TX", name: "متن" },
-          {
-            id: "SL",
-            name: "قابل انتخاب",
-          },
-          {
-            id: "BL",
-            name: "بله-خیر",
-          },
-        ]}
-      />
+
+      {/* Group + Type in one column on small, side-by-side on md+ */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-3 col-span-2">
+        <Combobox
+          array={parameterGroups ?? []}
+          value={parameterGroup}
+          setValue={updateParameterGroup}
+          title="گروه"
+        />
+        <Combobox
+          title="نوع"
+          value={type}
+          setValue={updateType}
+          array={[
+            { id: "TX", name: "متن" },
+            { id: "SL", name: "قابل انتخاب" },
+            { id: "BL", name: "بله-خیر" },
+          ]}
+        />
+      </div>
+
       {type == "SL" && (
-        <div>
+        <div className="col-span-2">
           <CollapsibleSection
             isOpen={open}
             onToggle={(e: React.SyntheticEvent) => {
@@ -105,9 +105,7 @@ const ParameterForm = ({
             <div className="flex flex-row items-center gap-2">
               <input
                 value={selectableValue}
-                onChange={(e) => {
-                  setSelectableValue(e?.currentTarget?.value);
-                }}
+                onChange={(e) => setSelectableValue(e.currentTarget.value)}
                 type="text"
                 className="input"
               />
@@ -115,7 +113,7 @@ const ParameterForm = ({
                 className="btn btn-primary"
                 onClick={(e: React.SyntheticEvent) => {
                   e.preventDefault();
-                  if (selectableValues?.includes(selectableValue)) return;
+                  if (selectableValues.includes(selectableValue)) return;
                   updateSelectableValues([
                     ...selectableValues,
                     selectableValue,
@@ -126,7 +124,7 @@ const ParameterForm = ({
               </button>
             </div>
             <div className="p-2">
-              {selectableValues?.map((item) => (
+              {selectableValues.map((item) => (
                 <div
                   className="flex justify-between items-center py-2"
                   key={item}
@@ -136,7 +134,7 @@ const ParameterForm = ({
                     className="btn btn-error text-white"
                     onClick={() => {
                       updateSelectableValues(
-                        selectableValues?.filter((i) => i != item),
+                        selectableValues.filter((i) => i != item),
                       );
                     }}
                   >
@@ -148,10 +146,14 @@ const ParameterForm = ({
           </CollapsibleSection>
         </div>
       )}
-      {error && <p className="text-sm text-red-500">{error}</p>}
-      <LoadingButton className="btn btn-primary" isLoading={isLoading}>
-        ثبت
-      </LoadingButton>
+
+      {error && <p className="text-sm text-red-500 col-span-2">{error}</p>}
+
+      <div className="col-span-2">
+        <LoadingButton className="btn btn-primary" isLoading={isLoading}>
+          ثبت
+        </LoadingButton>
+      </div>
     </form>
   );
 };

@@ -12,7 +12,7 @@ const Blocks = async () => {
   );
   const categories: Category[] = await categoriesRes.json();
   return (
-    <div className=" grid grid-cols-3 gap-2 sm:grid-cols-4 p-4">
+    <div className=" grid grid-cols-3 gap-y-4 sm:grid-cols-5 p-4">
       {categories.map((category) => (
         <div className="rounded-2xl border-gray-500" key={category?.id}>
           <Link
@@ -28,6 +28,18 @@ const Blocks = async () => {
               width={50}
               height={50}
               alt={category.name}
+              className=" sm:hidden"
+            />
+            <Image
+              src={
+                category?.imageUrl
+                  ? `${process.env.NEXT_PUBLIC_BASE_URL}/${category.imageUrl}`
+                  : "/images/logo.jpg"
+              }
+              width={100}
+              height={100}
+              alt={category.name}
+              className="hidden sm:block"
             />
             <p className="text-sm">{category?.name}</p>
           </Link>

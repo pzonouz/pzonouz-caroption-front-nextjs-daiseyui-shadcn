@@ -24,7 +24,6 @@ export const FormField: React.FC<FormFieldProps> = ({
   value = null,
   onChange = null,
   hidden = false,
-  defaultValue = "",
 }) => {
   return (
     <label className={`floating-label w-full ${className}`}>

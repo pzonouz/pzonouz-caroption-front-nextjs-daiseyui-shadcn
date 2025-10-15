@@ -8,11 +8,8 @@ import {
   UseFormSetValue,
   UseFormWatch,
 } from "react-hook-form";
-import ImageUpload from "../Shared/ImageUpload";
-import { Category, ParameterGroup } from "../../lib/schemas";
+import { Category } from "../../lib/schemas";
 import { Combobox } from "../Shared/ComboBox";
-import SelectBox from "../Shared/SelectBox";
-import { useGetParameterGroupsQuery } from "@/app/lib/features/api";
 import ImagesManager from "../Shared/ImageManager";
 interface CategoryFormProp {
   register: UseFormRegister<Category>;
@@ -35,8 +32,6 @@ const CategoryForm = ({
   watch,
   categories,
 }: CategoryFormProp) => {
-  const { data: allParameterGroups, isFetching: allParamaterGroupsIsFetching } =
-    useGetParameterGroupsQuery();
   const parentId = watch("parentId")?.toString() ?? "";
   const updateParent = (parentId: string) => setValue("parentId", parentId);
 
@@ -44,55 +39,56 @@ const CategoryForm = ({
   const imageId = watch("imageId") ?? "";
   const updateImageId = (value: string) => setValue("imageId", value);
 
-  // const parameterGroups = watch("parameter_groups", []);
-  // const updateParameterGroups = (parameterGroups: ParameterGroup[]) =>
-  //   setValue("parameter_groups", parameterGroups);
-
   return (
     <form
       lang="fa"
-      className="w-full mt-10 grid grid-cols-1 sm:grid-cols-2 gap-3 mb-4"
       onSubmit={submitHandler}
+      className="w-full mt-10 grid grid-cols-1 md:grid-cols-2 items-start gap-6 mb-6"
     >
-      <FormField
-        label="نام"
-        title="name"
-        register={register}
-        error={errors?.name?.message?.toString()}
-      />
-      <FormField
-        label="توضیح"
-        title="description"
-        register={register}
-        error={errors?.description?.message?.toString()}
-      />
-      <FormField
-        label="ترتیب"
-        title="prioirity"
-        register={register}
-        error={errors?.prioirity?.message?.toString()}
-      />
-      <Combobox<Category>
-        value={parentId}
-        setValue={updateParent}
-        array={categories}
-        title="دسته بندی"
-      />
-      {/* <SelectBox<ParameterGroup> */}
-      {/*   allItems={allParameterGroups} */}
-      {/*   selectedItems={parameterGroups} */}
-      {/*   setselectedItems={updateParameterGroups} */}
-      {/* /> */}
-      <FormField register={register} title="image_url" hidden />
-      <ImagesManager
-        type="One"
-        selectedImageId={imageId}
-        setSelectedImageId={updateImageId}
-      />
-      {error && <p className="text-sm text-red-500">{error}</p>}
-      <LoadingButton className="btn btn-primary" isLoading={isLoading}>
-        ثبت
-      </LoadingButton>
+      {/* ImageManager — left on md+, top on mobile */}
+      <div className="order-1 md:order-1 flex justify-center md:justify-start w-full">
+        <div className="w-full md:w-[90%]">
+          <ImagesManager
+            className="w-full"
+            type="One"
+            selectedImageId={imageId}
+            setSelectedImageId={updateImageId}
+          />
+        </div>
+      </div>
+
+      {/* Form fields — right on md+, bottom on mobile */}
+      <div className="order-2 md:order-2 flex flex-col gap-4 w-full">
+        <FormField
+          label="نام"
+          title="name"
+          register={register}
+          error={errors?.name?.message?.toString()}
+        />
+        <FormField
+          label="توضیح"
+          title="description"
+          register={register}
+          error={errors?.description?.message?.toString()}
+        />
+        <FormField
+          label="ترتیب"
+          title="prioirity"
+          register={register}
+          error={errors?.prioirity?.message?.toString()}
+        />
+        <Combobox<Category>
+          value={parentId}
+          setValue={updateParent}
+          array={categories}
+          title="دسته بندی"
+        />
+        <FormField register={register} title="image_url" hidden />
+        {error && <p className="text-sm text-red-500">{error}</p>}
+        <LoadingButton className="btn btn-primary" isLoading={isLoading}>
+          ثبت
+        </LoadingButton>
+      </div>
     </form>
   );
 };

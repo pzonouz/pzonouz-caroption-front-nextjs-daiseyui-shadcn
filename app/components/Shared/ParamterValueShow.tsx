@@ -21,7 +21,7 @@ const ParamterValueShow = ({
             {parameter?.name}
           </div>
         )}
-        {parameter?.type == "SL" && (
+        {parameter?.type == "SL" && value && (
           <div className="flex flex-row gap-1 items-center">
             <CircleSmall fill="true" size={12} />
             <p>{parameter?.name}</p>
@@ -29,7 +29,7 @@ const ParamterValueShow = ({
             <p>{value?.selectableValue}</p>
           </div>
         )}
-        {parameter?.type == "TX" && (
+        {parameter?.type == "TX" && value && (
           <div className="flex flex-row gap-1 items-center">
             <CircleSmall fill="true" size={12} />
             <p>{parameter?.name}</p>

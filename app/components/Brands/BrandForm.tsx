@@ -24,14 +24,9 @@ const BrandForm = ({
   register,
   errors,
   submitHandler,
-  watch,
-  setValue,
   isLoading,
   error,
 }: BrandFormProp) => {
-  // Image
-  const imageUrl = watch("image_url");
-  const updateImageUrl = (value: string) => setValue("image_url", value);
   return (
     <form
       lang="fa"
@@ -50,7 +45,6 @@ const BrandForm = ({
         register={register}
         error={errors?.description?.message}
       />
-      <ImageUpload imageUrl={imageUrl} setImageUrl={updateImageUrl} />
 
       {error && <p className="text-sm text-red-500">{error}</p>}
       <LoadingButton className="btn btn-primary" isLoading={isLoading}>

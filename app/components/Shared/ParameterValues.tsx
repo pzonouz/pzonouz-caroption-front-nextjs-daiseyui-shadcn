@@ -19,11 +19,28 @@ const ParameterValues = ({ parameters, watch, setValue }: Props) => {
   const updateValue = (parameterId: string, field: string, value: any) => {
     const updated = [...productParameterValues];
     const idx = updated.findIndex((v) => v.parameterId === parameterId);
+
+    // Define default structure
+    const defaultValue = {
+      parameterId,
+      textValue: "",
+      boolValue: false,
+      selectableValue: "",
+    };
+
     if (idx >= 0) {
-      updated[idx] = { ...updated[idx], [field]: value };
+      updated[idx] = {
+        ...defaultValue,
+        ...updated[idx],
+        [field]: value,
+      };
     } else {
-      updated.push({ parameterId: parameterId, [field]: value });
+      updated.push({
+        ...defaultValue,
+        [field]: value,
+      });
     }
+
     setValue("productParameterValues", updated, {
       shouldDirty: true,
       shouldValidate: true,

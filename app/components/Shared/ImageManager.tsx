@@ -13,6 +13,7 @@ import { ErrorToast, SuccessToast } from "@/app/lib/Toasts";
 import { translateRTKFetchBaseQueryErrors } from "@/app/lib/utils";
 
 type ImagesManagerProps = {
+  className?: string;
   type: "One" | "Multiple";
   selectedImageId?: string | null;
   setSelectedImageId?: (id: string) => void;
@@ -21,6 +22,7 @@ type ImagesManagerProps = {
 };
 
 const ImagesManager = ({
+  className,
   type,
   selectedImageId,
   setSelectedImageId,
@@ -34,7 +36,9 @@ const ImagesManager = ({
   const handleToggleGallery = () => setImageGalleryOpen(true);
 
   return (
-    <div className="w-full border-[2px] border-solid rounded-md p-2">
+    <div
+      className={`w-full border-[2px] border-solid rounded-md p-2 ${className}`}
+    >
       {type == "One" && selectedImageId && <div>تصویر اصلی</div>}
       {type == "Multiple" && selectedImageIds?.length > 0 && <div>تصاویر</div>}
 

@@ -10,36 +10,32 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         password: { label: "Password", type: "password" },
       },
       authorize: async (credentials) => {
-        const jwtRes = await fetch(
-          `${process.env.BACKEND_URL}/auth/jwt/create`,
-          {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(credentials),
-          },
-        );
+        const jwtRes = await fetch(`${process.env.BACKEND_URL}/auth/signin`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(credentials),
+        });
 
         if (!jwtRes.ok) return null;
 
         const jwt = await jwtRes.json();
-        const userRes = await fetch(
-          `${process.env.BACKEND_URL}/auth/users/me/`,
-          {
-            headers: {
-              Authorization: `JWT ${jwt.access}`,
-            },
+        console.log(jwt?.access);
+        const userRes = await fetch(`${process.env.BACKEND_URL}/auth/me`, {
+          headers: {
+            Authorization: `JWT ${jwt.access}`,
           },
-        );
+        });
+        console.log(userRes);
 
         if (!userRes.ok) return null;
 
         const userData = await userRes.json();
         return {
-          id: userData.id,
+          id: userData.userId,
           access: jwt.access,
           email: userData.email,
           image: userData.image,
-          isAdmin: userData.is_staff,
+          isAdmin: userData.isAdmin,
         };
       },
     }),

@@ -3,7 +3,6 @@ import Image from "next/image";
 import Link from "next/link";
 import { Product } from "../../lib/schemas";
 import { formatStringToCommaSeparatedNumber } from "@/app/lib/utils";
-import ImagesManager from "../Shared/ImageManager";
 
 const ProductCard = async ({ product }: { product: Product }) => {
   return (

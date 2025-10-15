@@ -19,12 +19,7 @@ import { Button } from "../../../components/ui/button";
 import { useAppDispatch, useAppSelector } from "../../lib/hooks";
 import { setAccess } from "../../lib/features/SessionSlice";
 
-const CRMMenu = ({
-  user = "anon",
-}: {
-  user: string;
-  // user: User | undefined;
-}) => {
+const CRMMenu = ({ user }: { user: User | undefined }) => {
   const loading = useAppSelector((state) => state?.loading?.show);
   const { data, status } = useSession();
   const dispatch = useAppDispatch();

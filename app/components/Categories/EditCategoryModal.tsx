@@ -61,8 +61,8 @@ const EditCategoryModal = ({
   if (!category) return null;
 
   return (
-    <dialog open className="modal w-full">
-      <div className="modal-box w-full relative">
+    <dialog open className="modal">
+      <div className="modal-box w-full max-w-none h-screen p-6 relative rounded-none">
         <div className="modal-action w-full flex flex-col items-center justify-center">
           <FontAwesomeIcon
             icon={faClose}
@@ -71,9 +71,8 @@ const EditCategoryModal = ({
               setCategory(undefined);
             }}
           />
-          <label className=" text-3xl text-center w-5/6">
-            ویرایش دسته بندی
-          </label>
+          <label className="text-3xl text-center w-5/6">ویرایش دسته بندی</label>
+
           <CategoryForm
             submitHandler={submitHandler<Category>({
               action: editCategoryAction,

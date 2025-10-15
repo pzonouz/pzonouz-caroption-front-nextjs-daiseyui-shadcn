@@ -19,7 +19,6 @@ import {
   useGetBrandsQuery,
   useGetCategoriesQuery,
   useGetParametersByCategoryQuery,
-  useGetParametersQuery,
 } from "@/app/lib/features/api";
 import { useAppDispatch } from "@/app/lib/hooks";
 import { LoadingHide, LoadingShow } from "@/app/lib/features/LoadingSlice";
@@ -50,6 +49,9 @@ const ProductForm = ({
   const { data: categories, isFetching: categoryIsLoading } =
     useGetCategoriesQuery();
   const { data: brands, isFetching: brandIsLoading } = useGetBrandsQuery();
+  useEffect(() => {
+    console.log(categories);
+  }, [categories]);
 
   useEffect(() => {
     if (isLoading || categoryIsLoading || brandIsLoading) {
@@ -112,87 +114,92 @@ const ProductForm = ({
   return (
     <form
       lang="fa"
-      className="w-full mt-10 grid grid-cols-1 sm:grid-cols-2 gap-3 mb-4"
       onSubmit={submitHandler}
+      className="w-full mt-10 grid grid-cols-1 md:grid-cols-2 items-start gap-6 mb-6"
     >
-      <FormField
-        label="نام"
-        title="name"
-        register={register}
-        error={errors?.name?.message?.toString()}
-      />
-      <FormField
-        label="توضیح کوتاه"
-        title="info"
-        register={register}
-        error={errors?.info?.message?.toString()}
-      />
-      <Tiptop state={description} setStateAction={updateDescription} />
-      <FormField
-        label="قیمت"
-        title="price"
-        value={price}
-        onChange={updatePrice}
-        register={register}
-        error={errors?.price?.message?.toString()}
-      />
-      <FormField
-        label="تعداد"
-        title="count"
-        value={count}
-        onChange={updateCount}
-        register={register}
-        error={errors?.count?.message?.toString()}
-      />
-      <FormField register={register} title="description" hidden />
-
-      <div className="flex flex-row gap-4 items-center">
-        <Checkbox
-          disabled={watch("generated")}
-          checked={generatable}
-          onCheckedChange={updateGeneratable}
+      {/* Left side (Images on md+), bottom on mobile */}
+      <div className="order-1 md:order-1 flex flex-col gap-4 w-full md:w-[90%]">
+        <ImagesManager
+          type="One"
+          selectedImageId={imageId}
+          setSelectedImageId={updateImageId}
         />
-        <p>بازتولید</p>
+        <ImagesManager
+          type="Multiple"
+          selectedImageIds={imageIds}
+          setSelectedImageIds={updateImageIds}
+        />
       </div>
 
-      <Combobox<Brand>
-        value={brandId}
-        setValue={updateBrandId}
-        array={brands ?? []}
-        title="برند"
-        disabled={watch("generated")}
-      />
-      <Combobox<Category>
-        value={categoryId}
-        setValue={updateCategoryId}
-        array={categories?.filter((c: Category) => c?.parentId != null) ?? []}
-        title="دسته بندی"
-        disabled={watch("generated")}
-      />
+      {/* Right side (Form fields), top on mobile */}
+      <div className="order-2 md:order-2 flex flex-col gap-4 w-full">
+        <FormField
+          label="نام"
+          title="name"
+          register={register}
+          error={errors?.name?.message?.toString()}
+        />
+        <FormField
+          label="توضیح کوتاه"
+          title="info"
+          register={register}
+          error={errors?.info?.message?.toString()}
+        />
+        <Tiptop state={description} setStateAction={updateDescription} />
+        <FormField
+          label="قیمت"
+          title="price"
+          value={price}
+          onChange={updatePrice}
+          register={register}
+          error={errors?.price?.message?.toString()}
+        />
+        <FormField
+          label="تعداد"
+          title="count"
+          value={count}
+          onChange={updateCount}
+          register={register}
+          error={errors?.count?.message?.toString()}
+        />
+        <FormField register={register} title="description" hidden />
 
-      <ParameterValues
-        watch={watch}
-        parameters={parameters}
-        register={register}
-        setValue={setValue}
-      />
+        <div className="flex flex-row gap-4 items-center">
+          <Checkbox
+            disabled={watch("generated")}
+            checked={generatable}
+            onCheckedChange={updateGeneratable}
+          />
+          <p>بازتولید</p>
+        </div>
 
-      {/* Images */}
-      <ImagesManager
-        type="One"
-        selectedImageId={imageId}
-        setSelectedImageId={updateImageId}
-      />
-      <ImagesManager
-        type="Multiple"
-        selectedImageIds={imageIds}
-        setSelectedImageIds={updateImageIds}
-      />
+        <Combobox<Brand>
+          value={brandId}
+          setValue={updateBrandId}
+          array={brands ?? []}
+          title="برند"
+          disabled={watch("generated")}
+        />
+        <Combobox<Category>
+          value={categoryId}
+          setValue={updateCategoryId}
+          array={categories?.filter((c: Category) => c?.parentId != null) ?? []}
+          title="دسته بندی"
+          disabled={watch("generated")}
+        />
 
-      {error && <p className="text-sm text-red-500">{error}</p>}
-      <LoadingButton className="btn btn-primary" isLoading={isLoading}>
-        ثبت
-      </LoadingButton>
+        <ParameterValues
+          watch={watch}
+          parameters={parameters}
+          register={register}
+          setValue={setValue}
+        />
+
+        {error && <p className="text-sm text-red-500">{error}</p>}
+        <LoadingButton className="btn btn-primary" isLoading={isLoading}>
+          ثبت
+        </LoadingButton>
+      </div>
     </form>
   );
 };
