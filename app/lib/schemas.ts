@@ -104,6 +104,7 @@ export const parameterSchema = z.object({
   type: z.string(),
   parameterGroupId: z.string(),
   selectables: z.array(z.string()).optional().nullable().nullish(),
+  priority: z.string().optional().nullable().nullish(),
 });
 export const parameterGroupSchema = z.object({
   id: z.string().nullish(),

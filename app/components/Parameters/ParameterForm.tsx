@@ -56,6 +56,9 @@ const ParameterForm = ({
   const updateSelectableValues = (value: string[]) =>
     setValue("selectables", value);
 
+  // const priority = watch("priority")?.toString() ?? "";
+  // const updatePriority = (value: string) => setValue("priority", value);
+
   const [selectableValue, setSelectableValue] = useState<string>("");
   const [open, setOpen] = useState(false);
 
@@ -70,6 +73,14 @@ const ParameterForm = ({
         title="name"
         register={register}
         error={errors?.name?.message?.toString()}
+        className="col-span-2 md:col-span-1"
+      />
+
+      <FormField
+        label="ترتیب"
+        title="priority"
+        register={register}
+        error={errors?.priority?.message?.toString()}
         className="col-span-2 md:col-span-1"
       />
 
