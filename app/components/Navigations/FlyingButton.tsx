@@ -3,7 +3,7 @@ import { faWhatsapp } from "@fortawesome/free-brands-svg-icons";
 
 const FlyingButton = () => {
   return (
-    <div>
+    <div className="md:hidden">
       <a
         href="https://wa.me/+989196631457"
         className="btn btn-circle fixed bottom-30 bg-green-600 text-gray"

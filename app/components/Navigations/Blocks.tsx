@@ -11,9 +11,10 @@ const Blocks = async () => {
     },
   );
   const categories: Category[] = await categoriesRes.json();
+  const showigCategories = categories.filter((c: Category) => c.show);
   return (
     <div className=" grid grid-cols-3 gap-y-4 sm:grid-cols-5 p-4">
-      {categories.map((category) => (
+      {showigCategories.map((category) => (
         <div className="rounded-2xl border-gray-500" key={category?.id}>
           <Link
             href={`/categories/${category.id}`}

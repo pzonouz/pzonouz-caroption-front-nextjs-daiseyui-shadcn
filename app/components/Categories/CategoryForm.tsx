@@ -1,5 +1,5 @@
 "use client";
-import { FormEventHandler, useEffect } from "react";
+import { FormEventHandler } from "react";
 import { FormField } from "../Shared/FormField";
 import { LoadingButton } from "../Shared/LoadingButton";
 import {
@@ -11,6 +11,7 @@ import {
 import { Category } from "../../lib/schemas";
 import { Combobox } from "../Shared/ComboBox";
 import ImagesManager from "../Shared/ImageManager";
+import { Checkbox } from "@/components/ui/checkbox";
 interface CategoryFormProp {
   register: UseFormRegister<Category>;
   errors: FieldErrors<Category>;
@@ -38,6 +39,10 @@ const CategoryForm = ({
   // Main Image
   const imageId = watch("imageId") ?? "";
   const updateImageId = (value: string) => setValue("imageId", value);
+
+  // Show
+  const show = watch("show") ?? "";
+  const updateShow = (value: boolean) => setValue("show", value);
 
   return (
     <form
@@ -77,6 +82,14 @@ const CategoryForm = ({
           register={register}
           error={errors?.prioirity?.message?.toString()}
         />
+        <div className="flex flex-row gap-4 items-center">
+          <Checkbox
+            disabled={watch("generated")}
+            checked={show}
+            onCheckedChange={updateShow}
+          />
+          <p>نمایش</p>
+        </div>
         <Combobox<Category>
           value={parentId}
           setValue={updateParent}

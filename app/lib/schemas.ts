@@ -18,6 +18,7 @@ export const categorySchema: z.ZodType<any> = z.lazy(() =>
     parentName: z.string().nullish(),
     imageId: z.string().optional().nullish(),
     imageUrl: z.string().optional().nullish(),
+    show: z.boolean().optional().nullish().nullable(),
     children: z.array(categorySchema).optional(),
     parameter_groups: z.array(parameterGroupSchema).optional(),
     created: z.string().datetime().nullish(),
