@@ -3,6 +3,7 @@ import "./globals.css";
 import iransans from "./fonts/IranSans";
 import { SessionProvider } from "next-auth/react";
 import StoreProvider from "./components/Shared/StoreProvider";
+import Head from "next/head";
 
 export const metadata: Metadata = {
   title: {
@@ -19,6 +20,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" dir="rtl">
+      <Head>
+        <link rel="icon" href="/favicon.ico" />
+      </Head>
       <body className={`${iransans.className} antialiased`}>
         <StoreProvider>
           <SessionProvider>{children}</SessionProvider>
