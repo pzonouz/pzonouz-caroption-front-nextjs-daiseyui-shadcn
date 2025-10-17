@@ -1,5 +1,4 @@
 import { Parameter, Product, ProductParameterValue } from "@/app/lib/schemas";
-import { CircleSmall } from "lucide-react";
 
 const ParamterValueShow = ({
   parameter,
@@ -11,33 +10,16 @@ const ParamterValueShow = ({
   const value = product?.productParameterValues?.find(
     (item: ProductParameterValue) => item?.parameterId === parameter?.id,
   );
+
   return (
-    <div className="flex flex-row gap-1 items-center text-gray-800">
-      <div>
-        {parameter?.type == "BL" && value?.boolValue && (
-          <div className="flex flex-row gap-1 items-center">
-            <CircleSmall fill="true" size={12} />
-            <p>دارای</p>
-            {parameter?.name}
-          </div>
-        )}
-        {parameter?.type == "SL" && value && (
-          <div className="flex flex-row gap-1 items-center">
-            <CircleSmall fill="true" size={12} />
-            <p>{parameter?.name}</p>
-            <p>:</p>
-            <p>{value?.selectableValue}</p>
-          </div>
-        )}
-        {parameter?.type == "TX" && value && (
-          <div className="flex flex-row gap-1 items-center">
-            <CircleSmall fill="true" size={12} />
-            <p>{parameter?.name}</p>
-            <p>:</p>
-            <p>{value?.textValue}</p>
-          </div>
-        )}
-      </div>
+    <div className="flex justify-between items-center border-b-2 border-b-gray-600 py-2 text-right">
+      <p className="font-medium">{parameter?.name}</p>
+
+      {parameter?.type === "BL" && <p>{value?.boolValue ? "دارد" : "ندارد"}</p>}
+
+      {parameter?.type === "SL" && value && <p>{value?.selectableValue}</p>}
+
+      {parameter?.type === "TX" && value && <p>{value?.textValue}</p>}
     </div>
   );
 };
