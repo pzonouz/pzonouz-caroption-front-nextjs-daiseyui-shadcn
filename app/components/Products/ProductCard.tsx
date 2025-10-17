@@ -27,13 +27,16 @@ const ProductCard = async ({ product }: { product: Product }) => {
           {product?.generated ? product?.main_product?.info : product?.info}
         </div>
         <div className="flex flex-row gap-1 text-emerald-500">
-          <div>
-            {product?.generated
-              ? formatStringToCommaSeparatedNumber(product?.price2)
-              : formatStringToCommaSeparatedNumber(product?.price)}
-          </div>
-          <div>تومان</div>
+          قیمت: تماس بگیرید
         </div>
+        {/* <div className="flex flex-row gap-1 text-emerald-500"> */}
+        {/*   <div> */}
+        {/*     {product?.generated */}
+        {/*       ? formatStringToCommaSeparatedNumber(product?.price2) */}
+        {/*       : formatStringToCommaSeparatedNumber(product?.price)} */}
+        {/*   </div> */}
+        {/*   <div>تومان</div> */}
+        {/* </div> */}
       </div>
     </Link>
   );
