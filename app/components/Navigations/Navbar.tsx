@@ -1,6 +1,15 @@
+"use client";
+
 import Link from "next/link";
 
 const Navbar = () => {
+  const handleClick = () => {
+    const elem = document.activeElement;
+    console.log(elem);
+    if (elem) {
+      elem?.blur();
+    }
+  };
   return (
     <div className="navbar bg-base-100 shadow-sm">
       <div className="navbar-start">
@@ -25,16 +34,16 @@ const Navbar = () => {
             tabIndex={1}
             className="menu menu-lg dropdown-content bg-base-100 rounded-box z-1 mt-3 w-52 p-2 leading-10 shadow"
           >
-            <li>
+            <li onClick={handleClick}>
               <Link href={"/"}>خانه</Link>
             </li>
-            <li>
+            <li onClick={handleClick}>
               <Link href={"/products"}>محصولات</Link>
             </li>
-            <li>
+            <li onClick={handleClick}>
               <Link href={"/articles"}>مقالات</Link>
             </li>
-            <li>
+            <li onClick={handleClick}>
               <Link href={"/aboutus"}>درباه ما</Link>
             </li>
           </ul>
