@@ -25,7 +25,7 @@ export async function generateMetadata({
   return {
     title: product?.name,
     description: product?.description,
-    keywords: ["اردبیل", ...product.keywords],
+    keywords: ["اردبیل", ...(product?.keywords ?? [])],
   };
 }
 
