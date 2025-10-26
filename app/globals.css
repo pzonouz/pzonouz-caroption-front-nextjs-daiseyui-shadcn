@@ -2,7 +2,10 @@
 @plugin "daisyui";
 
 .btn_tiptap {
-  padding: 0.25 0.3rem;
+  display: grid;
+  justify-items: center;
+  align-items: center;
+  padding: 0.3rem 0.3rem;
   border: 1px solid #ccc;
   background: white;
   cursor: pointer;
@@ -10,6 +13,53 @@
   font-weight: bold;
 }
 
+.btn_tiptap.is_active {
+  display: grid;
+  justify-items: center;
+  align-items: center;
+  padding: 0.3rem 0.3rem;
+  border: 1px solid #ccc;
+  background: #ccc;
+  color: #fff;
+  cursor: pointer;
+  border-radius: 4px;
+  font-weight: bold;
+}
+.article {
+  font-size: 1rem;
+  justify-content: start;
+  margin: 0 2rem 0 2rem;
+  line-height: 2rem;
+}
+@media (width >= 48rem) {
+  .article {
+    font-size: 1.3rem;
+  }
+  .article h1 {
+    margin: 0 auto;
+    width: 100%;
+  }
+}
+.article h1 {
+  font-size: 2rem;
+  padding: 2rem;
+  font-weight: 800;
+}
+.description h2 {
+  font-size: 2rem;
+  padding: 2rem;
+  font-weight: 600;
+}
+.description img {
+  padding: 1rem;
+  margin: 1rem auto;
+}
+.description p > a {
+  color: blue;
+}
+.description > a {
+  color: blue;
+}
 .btn_tiptap:hover {
   background: #f3f3f3;
 }

@@ -1,7 +1,7 @@
 import { Metadata } from "next";
 import Blocks from "../components/Navigations/Blocks";
-import ProductCard from "../components/Products/ProductCard";
 import { Product } from "../lib/schemas";
+import { Products } from "../components/Products/Products";
 
 export const metadata: Metadata = {
   title: "خانه",
@@ -12,11 +12,7 @@ const page = async () => {
   return (
     <div>
       <Blocks />
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 sm:mt-14 md:mt-24">
-        {products.map((product) => (
-          <ProductCard key={product.id} product={product} />
-        ))}
-      </div>
+      <Products products={products} />
     </div>
   );
 };

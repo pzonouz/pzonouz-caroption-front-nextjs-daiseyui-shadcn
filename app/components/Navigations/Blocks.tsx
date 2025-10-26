@@ -17,7 +17,7 @@ const Blocks = async () => {
       {showigCategories.map((category) => (
         <div className="rounded-2xl border-gray-500" key={category?.id}>
           <Link
-            href={`/categories/${category.id}`}
+            href={`/categories/${category?.slug}`}
             className="flex flex-col items-center"
           >
             <Image

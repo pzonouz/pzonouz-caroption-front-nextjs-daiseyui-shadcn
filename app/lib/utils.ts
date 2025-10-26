@@ -86,3 +86,12 @@ export const toggle = (
 ) => {
   open ? setOpen(false) : setOpen(true);
 };
+
+export const CreateSlug = (input: string) => {
+  return input
+    .normalize("NFKD") // normalize accents (e.g. "é" → "e")
+    .replace(/[^\p{L}\p{N}\s]+/gu, "") // remove punctuation and symbols (keep letters, numbers, spaces)
+    .trim() // remove leading/trailing spaces
+    .replace(/\s+/g, "_") // replace spaces/tabs/newlines with underscores
+    .toLowerCase(); // optional: make lowercase
+};

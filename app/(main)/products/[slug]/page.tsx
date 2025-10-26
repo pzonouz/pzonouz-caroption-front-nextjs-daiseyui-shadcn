@@ -9,28 +9,34 @@ import ParamterValueShow from "@/app/components/Shared/ParamterValueShow";
 export async function generateStaticParams() {
   const res = await fetch(`${process.env.BACKEND_URL}/products`);
   const products: Product[] = await res.json();
-  return products.map((product) => ({ id: product.id.toString() }));
+  return products.map((product) => ({ slug: product?.slug?.toString() }));
 }
 
 export async function generateMetadata({
   params,
 }: {
-  params: Promise<{ id: string }>;
+  params: Promise<{ slug: string }>;
 }): Promise<Metadata> {
-  const { id } = await params;
-  const res = await fetch(`${process.env.BACKEND_URL}/products/${id}`);
+  const { slug } = await params;
+  const res = await fetch(
+    `${process.env.BACKEND_URL}/product_by_slug/search?q=${encodeURIComponent(slug)}`,
+  );
   const product: Product = await res.json();
   return {
     title: product?.name,
     description: product?.description,
+    keywords: ["اردبیل", ...product.keywords],
   };
 }
 
-const Page = async ({ params }: { params: Promise<{ id: string }> }) => {
-  const { id } = await params;
-  const res = await fetch(`${process.env.BACKEND_URL}/products/${id}`, {
-    next: { revalidate: 60 },
-  });
+const Page = async ({ params }: { params: Promise<{ slug: string }> }) => {
+  const { slug } = await params;
+  const res = await fetch(
+    `${process.env.BACKEND_URL}/product_by_slug/search?q=${encodeURIComponent(slug)}`,
+    {
+      next: { revalidate: 60 },
+    },
+  );
   const product: Product = await res.json();
 
   return (

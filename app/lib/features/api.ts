@@ -1,5 +1,6 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import {
+  Article,
   Brand,
   Category,
   Entity,
@@ -38,6 +39,7 @@ export const api = createApi({
     "parameters",
     "productParametersValue",
     "images",
+    "articles",
   ],
   endpoints: (build) => ({
     getBrands: build.query<Brand[], void>({
@@ -145,6 +147,33 @@ export const api = createApi({
         body: data,
       }),
       invalidatesTags: ["products"],
+    }),
+    getArticles: build.query<Article[], void>({
+      query: () => `articles/`,
+      providesTags: ["articles"],
+    }),
+    createArticle: build.mutation<Article, Article>({
+      query: (data) => ({
+        url: "articles/",
+        method: "POST",
+        body: data,
+      }),
+      invalidatesTags: ["articles"],
+    }),
+    deleteArticle: build.mutation<void, any>({
+      query: (id) => ({
+        url: `articles/${id}`,
+        method: "DELETE",
+      }),
+      invalidatesTags: ["articles"],
+    }),
+    editArticle: build.mutation<void, Partial<Article>>({
+      query: (data) => ({
+        url: `articles/${data?.id}`,
+        method: "PATCH",
+        body: data,
+      }),
+      invalidatesTags: ["articles"],
     }),
     getParentCategories: build.query<Category[], void>({
       query: () => `parent_categories`,
@@ -412,4 +441,8 @@ export const {
   useCreateImageMutation,
   useDeleteImageMutation,
   useEditImageMutation,
+  useGetArticlesQuery,
+  useCreateArticleMutation,
+  useEditArticleMutation,
+  useDeleteArticleMutation,
 } = api;

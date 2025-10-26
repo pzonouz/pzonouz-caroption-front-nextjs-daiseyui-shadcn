@@ -11,6 +11,7 @@ import {
 import Tiptop from "../Shared/Tiptop";
 import { Brand, Category, Product } from "../../lib/schemas";
 import {
+  CreateSlug,
   formatStringToCommaSeparatedNumber,
   replacePersianDigits,
 } from "../../lib/utils";
@@ -25,6 +26,7 @@ import { LoadingHide, LoadingShow } from "@/app/lib/features/LoadingSlice";
 import { Checkbox } from "@/components/ui/checkbox";
 import ParameterValues from "../Shared/ParameterValues";
 import ImagesManager from "../Shared/ImageManager";
+import TagsInput from "../Shared/TagsInput";
 
 export interface ProductFormProp {
   register: UseFormRegister<Product>;
@@ -49,9 +51,6 @@ const ProductForm = ({
   const { data: categories, isFetching: categoryIsLoading } =
     useGetCategoriesQuery();
   const { data: brands, isFetching: brandIsLoading } = useGetBrandsQuery();
-  useEffect(() => {
-    console.log(categories);
-  }, [categories]);
 
   useEffect(() => {
     if (isLoading || categoryIsLoading || brandIsLoading) {
@@ -60,6 +59,10 @@ const ProductForm = ({
       dispatch(LoadingHide());
     }
   }, [isLoading, categoryIsLoading, dispatch, brandIsLoading]);
+
+  useEffect(() => {
+    setValue("slug", CreateSlug(watch("name")), {});
+  }, [watch("name")]);
 
   // Description
   const description = watch("description") ?? "";
@@ -97,6 +100,10 @@ const ProductForm = ({
     : (watch("categoryId")?.toString() ?? "");
   const updateCategoryId = (categoryId: string) =>
     setValue("categoryId", categoryId);
+
+  // Tags
+  const keywords = watch("keywords") ?? [];
+  const updateKeywords = (keywords: string[]) => setValue("keywords", keywords);
 
   // Brand
   const brandId = watch("generated")
@@ -140,10 +147,21 @@ const ProductForm = ({
           error={errors?.name?.message?.toString()}
         />
         <FormField
+          label="مسیر"
+          title="slug"
+          register={register}
+          error={errors?.slug?.message?.toString()}
+        />
+        <FormField
           label="توضیح کوتاه"
           title="info"
           register={register}
           error={errors?.info?.message?.toString()}
+        />
+        <TagsInput
+          title="کلمات کلیدی"
+          tags={keywords}
+          setTags={updateKeywords}
         />
         <Tiptop state={description} setStateAction={updateDescription} />
         <FormField

@@ -1,5 +1,5 @@
 "use client";
-import { FormEventHandler } from "react";
+import { FormEventHandler, useEffect } from "react";
 import { FormField } from "../Shared/FormField";
 import { LoadingButton } from "../Shared/LoadingButton";
 import {
@@ -12,6 +12,7 @@ import { Category } from "../../lib/schemas";
 import { Combobox } from "../Shared/ComboBox";
 import ImagesManager from "../Shared/ImageManager";
 import { Checkbox } from "@/components/ui/checkbox";
+import { CreateSlug } from "@/app/lib/utils";
 interface CategoryFormProp {
   register: UseFormRegister<Category>;
   errors: FieldErrors<Category>;
@@ -44,6 +45,9 @@ const CategoryForm = ({
   const show = watch("show") ?? "";
   const updateShow = (value: boolean) => setValue("show", value);
 
+  useEffect(() => {
+    setValue("slug", CreateSlug(watch("name")), {});
+  }, [watch("name")]);
   return (
     <form
       lang="fa"
@@ -69,6 +73,12 @@ const CategoryForm = ({
           title="name"
           register={register}
           error={errors?.name?.message?.toString()}
+        />
+        <FormField
+          label="مسیر"
+          title="slug"
+          register={register}
+          error={errors?.slug?.message?.toString()}
         />
         <FormField
           label="توضیح"

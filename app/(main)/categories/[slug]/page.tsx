@@ -14,11 +14,11 @@ export async function generateStaticParams() {
 export async function generateMetadata({
   params,
 }: {
-  params: Promise<{ id: string }>;
+  params: Promise<{ slug: string }>;
 }): Promise<Metadata> {
-  const { id } = await params;
+  const { slug } = await params;
   const categoryRes = await fetch(
-    `${process.env.BACKEND_URL}/categories/${id}`,
+    `${process.env.BACKEND_URL}/category_by_slug/search?q=${encodeURIComponent(slug)}`,
   );
   const category: Category = await categoryRes.json();
   return {
@@ -26,10 +26,14 @@ export async function generateMetadata({
     description: category?.description,
   };
 }
-const page = async ({ params }: { params: Promise<{ id: string }> }) => {
-  const { id } = await params;
+const page = async ({ params }: { params: Promise<{ slug: string }> }) => {
+  const { slug } = await params;
+  const categoryRes = await fetch(
+    `${process.env.BACKEND_URL}/category_by_slug/search?q=${encodeURIComponent(slug)}`,
+  );
+  const category = await categoryRes.json();
   const productsRes = await fetch(
-    `${process.env.BACKEND_URL}/products_in_category/${id}`,
+    `${process.env.BACKEND_URL}/products_in_category/${category.id}`,
   );
   const products: Product[] = (await productsRes.json()) ?? [];
   return (

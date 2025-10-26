@@ -19,13 +19,11 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         if (!jwtRes.ok) return null;
 
         const jwt = await jwtRes.json();
-        console.log(jwt?.access);
         const userRes = await fetch(`${process.env.BACKEND_URL}/auth/me`, {
           headers: {
             Authorization: `JWT ${jwt.access}`,
           },
         });
-        console.log(userRes);
 
         if (!userRes.ok) return null;
 

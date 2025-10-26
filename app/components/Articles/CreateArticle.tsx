@@ -1,26 +1,26 @@
 "use client";
 
-import { Product } from "../../lib/schemas";
+import { Article } from "../../lib/schemas";
 import { CollapsibleSection } from "../Shared/CollapsibleSection";
-import { useCreateProduct } from "./hooks/useCreateProduct";
-import ProductForm from "./ProductForm";
+import { useCreateArticle } from "./hooks/useCreateArticle";
+import ArticleForm from "./ArticleForm";
 import { submitHandler, toggle } from "../../lib/utils";
 
-export function CreateProduct() {
+export function CreateArticle() {
   const {
     open,
     setOpen,
     error,
     errors,
-    createProductIsLoading,
+    createArticleIsLoading,
     watch,
     setValue,
     register,
     reset,
     setError,
     handleSubmit,
-    createProductAction,
-  } = useCreateProduct();
+    createArticleAction,
+  } = useCreateArticle();
   return (
     <div className="w-full flex flex-col items-center justify-center  relative">
       <CollapsibleSection
@@ -28,14 +28,14 @@ export function CreateProduct() {
         isOpen={open}
         onToggle={() => toggle(open, setOpen)}
       >
-        <label className=" text-3xl text-center w-5/6">ایجاد کالا</label>
-        <ProductForm
+        <label className=" text-3xl text-center w-5/6">ایجاد مقاله</label>
+        <ArticleForm
           error={error}
-          isLoading={createProductIsLoading}
+          isLoading={createArticleIsLoading}
           watch={watch}
           setValue={setValue}
-          submitHandler={submitHandler<Product>({
-            action: createProductAction,
+          submitHandler={submitHandler<Article>({
+            action: createArticleAction,
             handleSubmit,
             setError,
             reset,

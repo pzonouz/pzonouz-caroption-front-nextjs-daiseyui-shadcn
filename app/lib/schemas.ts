@@ -18,6 +18,7 @@ export const categorySchema: z.ZodType<any> = z.lazy(() =>
     parentName: z.string().nullish(),
     imageId: z.string().optional().nullish(),
     imageUrl: z.string().optional().nullish(),
+    slug: z.string().min(1, { message: "نام مسیر را وارد کنید" }),
     show: z.boolean().optional().nullish().nullable(),
     children: z.array(categorySchema).optional(),
     parameter_groups: z.array(parameterGroupSchema).optional(),
@@ -38,6 +39,7 @@ export const productSchema: z.ZodType<any> = z.lazy(() =>
     brandId: z.string().nullish(),
     brandName: z.string().nullish(),
     imageId: z.string().nullish(),
+    slug: z.string().min(1, { message: "نام مسیر را وارد کنید" }),
     imageIds: z
       .array(z.string())
       .optional()
@@ -56,6 +58,20 @@ export const productSchema: z.ZodType<any> = z.lazy(() =>
     main_product: productSchema.nullish(),
     parameters: z.array(parameterSchema).nullish().optional().nullable(),
     productParameterValues: z.array(productParameterValueSchema).optional(),
+    keywords: z.array(z.string()).optional().nullish(),
+  }),
+);
+export const articleSchema: z.ZodType<any> = z.lazy(() =>
+  z.object({
+    id: z.string().nullish(),
+    name: z.string().min(1, { message: "نام را وارد کنید" }),
+    description: z.string().nullish(),
+    categoryId: z.string().nullish(),
+    imageId: z.string().nullish(),
+    slug: z.string().min(1, { message: "نام مسیر را وارد کنید" }),
+    created: z.string().datetime().nullish(),
+    updated: z.string().datetime().nullish(),
+    keywords: z.array(z.string()).optional().nullish(),
   }),
 );
 
@@ -139,6 +155,7 @@ export type Parameter = z.infer<typeof parameterSchema>;
 export type ParameterGroup = z.infer<typeof parameterGroupSchema>;
 export type ProductParameterValue = z.infer<typeof productParameterValueSchema>;
 export type Image = z.infer<typeof imageSchema>;
+export type Article = z.infer<typeof articleSchema>;
 export interface SignResponse {
   success: boolean;
   error?: string;

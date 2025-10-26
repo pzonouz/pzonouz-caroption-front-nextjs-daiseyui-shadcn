@@ -2,12 +2,11 @@
 import Image from "next/image";
 import Link from "next/link";
 import { Product } from "../../lib/schemas";
-import { formatStringToCommaSeparatedNumber } from "@/app/lib/utils";
 
 const ProductCard = async ({ product }: { product: Product }) => {
   return (
     <Link
-      href={`/products/${product?.id}`}
+      href={`/products/${product?.slug}`}
       className="flex flex-row gap-3 items-center p-2 mt-2"
     >
       <Image
