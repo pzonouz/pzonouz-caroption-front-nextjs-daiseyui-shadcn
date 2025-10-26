@@ -1,3 +1,4 @@
+import { Products } from "@/app/components/Products/Products";
 import { Category } from "@/app/lib/schemas";
 
 const page = async () => {
