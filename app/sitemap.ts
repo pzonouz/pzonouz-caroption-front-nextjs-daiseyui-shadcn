@@ -8,7 +8,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   if (!productsRes.ok) throw new Error("Failed to fetch products");
   const products: Product[] = await productsRes.json();
   const productsEntries: MetadataRoute.Sitemap = products.map((product) => ({
-    url: `${process.env.BACKEND_URL}/products/${product?.slug}/`,
+    url: `${process.env.NEXT_PUBLIC_BASE_URL}/products/${product?.slug}/`,
     lastModified: `${product?.updatedAt}`,
   }));
   const categoriesRes = await fetch(`${process.env.BACKEND_URL}/categories/`);
@@ -16,7 +16,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const categories: Category[] = await categoriesRes.json();
   const categoriesEntries: MetadataRoute.Sitemap = categories.map(
     (category) => ({
-      url: `${process.env.BACKEND_URL}/categories/${category?.slug}/`,
+      url: `${process.env.NEXT_PUBLIC_BASE_URL}/categories/${category?.slug}/`,
       lastModified: `${category?.updatedAt}`,
     }),
   );
@@ -24,13 +24,13 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   if (!articlesRes.ok) throw new Error("Failed to fetch articles");
   const articles: Article[] = await articlesRes.json();
   const articleEntries: MetadataRoute.Sitemap = articles.map((article) => ({
-    url: `${process.env.BACKEND_URL}/articles/${article?.slug}/`,
+    url: `${process.env.NEXT_PUBLIC_BASE_URL}/articles/${article?.slug}/`,
     lastModified: `${article?.updatedAt}`,
   }));
 
   return [
     {
-      url: `${process.env.BACKEND_URL}`,
+      url: `${process.env.NEXT_PUBLIC_BASE_URL}`,
       lastModified: new Date(),
       changeFrequency: "daily",
       priority: 1,
