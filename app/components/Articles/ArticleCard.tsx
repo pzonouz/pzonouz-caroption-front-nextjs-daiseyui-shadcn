@@ -22,14 +22,6 @@ const ArticleCard = async ({ article }: { article: Article }) => {
       />
       <div>
         <div>{article.name}</div>
-        {/* <div className="flex flex-row gap-1 text-emerald-500"> */}
-        {/*   <div> */}
-        {/*     {article?.generated */}
-        {/*       ? formatStringToCommaSeparatedNumber(article?.price2) */}
-        {/*       : formatStringToCommaSeparatedNumber(article?.price)} */}
-        {/*   </div> */}
-        {/*   <div>تومان</div> */}
-        {/* </div> */}
       </div>
     </Link>
   );

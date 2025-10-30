@@ -32,7 +32,7 @@ const page = async ({ params }: { params: Promise<{ slug: string }> }) => {
   );
   const article: Article = (await articleRes.json()) ?? [];
   return (
-    <div className="article">
+    <div className="article h-dvh">
       <h1>{article?.name}</h1>
       <div
         className="description"

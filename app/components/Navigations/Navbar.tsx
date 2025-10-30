@@ -5,7 +5,6 @@ import Link from "next/link";
 const Navbar = () => {
   const handleClick = () => {
     const elem = document.activeElement;
-    console.log(elem);
     if (elem instanceof HTMLElement) {
       elem?.blur();
     }

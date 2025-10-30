@@ -105,6 +105,10 @@ const ProductForm = ({
   const keywords = watch("keywords") ?? [];
   const updateKeywords = (keywords: string[]) => setValue("keywords", keywords);
 
+  // Show
+  const show = watch("show") ?? false;
+  const updateShow = (show: boolean) => setValue("show", show);
+
   // Brand
   const brandId = watch("generated")
     ? (watch("main_product")?.brand?.toString() ?? "")
@@ -189,6 +193,10 @@ const ProductForm = ({
             onCheckedChange={updateGeneratable}
           />
           <p>بازتولید</p>
+        </div>
+        <div className="flex flex-row gap-4 items-center">
+          <Checkbox checked={show} onCheckedChange={updateShow} />
+          <p>نمایش</p>
         </div>
 
         <Combobox<Brand>

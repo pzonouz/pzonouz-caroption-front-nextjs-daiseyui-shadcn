@@ -17,6 +17,7 @@ import { useAppDispatch } from "@/app/lib/hooks";
 import { LoadingHide, LoadingShow } from "@/app/lib/features/LoadingSlice";
 import ImagesManager from "../Shared/ImageManager";
 import TagsInput from "../Shared/TagsInput";
+import { Checkbox } from "@/components/ui/checkbox";
 
 export interface ArticleFormProp {
   register: UseFormRegister<Article>;
@@ -70,6 +71,10 @@ const ArticleForm = ({
   const keywords = watch("keywords") ?? [];
   const updateKeywords = (keywords: string[]) => setValue("keywords", keywords);
 
+  const showInProducts = watch("showInProducts") ?? false;
+  const updateShowInProducts = (value: boolean) =>
+    setValue("showInProducts", value === true, { shouldValidate: true });
+
   return (
     <form
       lang="fa"
@@ -118,6 +123,13 @@ const ArticleForm = ({
           title="دسته بندی"
           disabled={watch("generated")}
         />
+        <div className="flex flex-row gap-4 items-center">
+          <Checkbox
+            checked={showInProducts}
+            onCheckedChange={updateShowInProducts}
+          />
+          <p>نمایش در محصولات</p>
+        </div>
         {error && <p className="text-sm text-red-500">{error}</p>}
         <LoadingButton className="btn btn-primary" isLoading={isLoading}>
           ثبت

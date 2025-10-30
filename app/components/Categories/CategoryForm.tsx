@@ -45,6 +45,10 @@ const CategoryForm = ({
   const show = watch("show") ?? "";
   const updateShow = (value: boolean) => setValue("show", value);
 
+  // Generator
+  const generator = watch("generator") ?? "";
+  const updateGenerator = (value: boolean) => setValue("generator", value);
+
   useEffect(() => {
     setValue("slug", CreateSlug(watch("name")), {});
   }, [watch("name")]);
@@ -100,6 +104,12 @@ const CategoryForm = ({
           />
           <p>نمایش</p>
         </div>
+        {!parentId && (
+          <div className="flex flex-row gap-4 items-center">
+            <Checkbox checked={generator} onCheckedChange={updateGenerator} />
+            <p>تولید کننده</p>
+          </div>
+        )}
         <Combobox<Category>
           value={parentId}
           setValue={updateParent}

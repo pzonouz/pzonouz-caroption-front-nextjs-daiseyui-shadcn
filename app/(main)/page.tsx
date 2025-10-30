@@ -9,10 +9,11 @@ export const metadata: Metadata = {
 const page = async () => {
   const productsRes = await fetch(`${process.env.BACKEND_URL}/products`);
   const products: Product[] = await productsRes.json();
+  const showProducts = products.filter((p) => p.show);
   return (
     <div>
       <Blocks />
-      <Products products={products} />
+      <Products products={showProducts} />
     </div>
   );
 };
