@@ -7,7 +7,7 @@ const page = async () => {
   });
   const products: Product[] = await productsRes.json();
   return (
-    <div className="h-dvh">
+    <div className="">
       <Products products={products} />
     </div>
   );
