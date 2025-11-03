@@ -50,7 +50,7 @@ export function Combobox<T extends { id?: string | number; name: string }>({
   const [open, setOpen] = React.useState(false);
 
   return (
-    <div className="z-[10000] flex flex-row gap-4 items-start">
+    <div className={`z-[10000] flex flex-row gap-4 items-start ${className}`}>
       <p className=" text-black">{title}</p>
       <Popover open={open} onOpenChange={setOpen}>
         <PopoverTrigger asChild>

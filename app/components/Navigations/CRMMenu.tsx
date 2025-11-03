@@ -33,7 +33,6 @@ const CRMMenu = ({ user }: { user: User | undefined }) => {
     { text: "کالاها", link: "/crm/products" },
     { text: "مقالات", link: "/crm/articles" },
     { text: "برندها", link: "/crm/brands" },
-    { text: "موجودیت ها", link: "/crm/entities" },
     {
       text: "پارامترها",
       submenu: [
@@ -42,10 +41,16 @@ const CRMMenu = ({ user }: { user: User | undefined }) => {
       ],
     },
     {
-      text: "فاکتورها",
+      text: "داخلی",
       submenu: [
-        { text: "خرید", link: "/crm/invoices/buy" },
-        { text: "فروش", link: "/crm/invoices/sell" },
+        { text: "کارها", link: "/crm/tasks" },
+        {
+          text: "فاکتورها",
+          submenu: [
+            { text: "خرید", link: "/crm/invoices/buy" },
+            { text: "فروش", link: "/crm/invoices/sell" },
+          ],
+        },
       ],
     },
   ];

@@ -1,5 +1,3 @@
-import { useEffect } from "react";
-
 const SelectBox = <T extends { id?: string; name: string }>({
   allItems,
   selectedItems = [],
