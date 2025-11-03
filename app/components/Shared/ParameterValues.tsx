@@ -56,7 +56,7 @@ const ParameterValues = ({ parameters, watch, setValue }: Props) => {
         return (
           <div
             key={p.id}
-            className="flex items-center justify-between gap-3 mb-2"
+            className="flex items-center justify-between gap-3 mb-2 border-b-2 border-gray-800 py-1 "
           >
             <label className="w-40">{p.name}</label>
 
