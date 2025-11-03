@@ -12,6 +12,7 @@ import {
   formatStringToCommaSeparatedNumber,
   submitHandler,
 } from "../../lib/utils";
+import { Modal } from "../Shared/Modal";
 
 const EditProductModal = ({
   product,
@@ -65,42 +66,38 @@ const EditProductModal = ({
 
   if (!product) return null;
   return (
-    <dialog open className="modal">
-      <div className="modal-box w-full h-screen max-w-none p-6 relative rounded-none">
-        <div className="modal-action w-full flex flex-col items-center justify-center">
-          <FontAwesomeIcon
-            icon={faClose}
-            className="absolute text-error cursor-pointer top-4 right-4"
-            onClick={() => {
-              setProduct(undefined);
-            }}
-          />
-          <label className="text-3xl text-center w-5/6">ویرایش کالا</label>
+    <Modal>
+      <FontAwesomeIcon
+        icon={faClose}
+        className="absolute text-error cursor-pointer top-4 right-4"
+        onClick={() => {
+          setProduct(undefined);
+        }}
+      />
+      <label className="text-3xl text-center w-5/6">ویرایش کالا</label>
 
-          <ProductForm
-            submitHandler={submitHandler<Product>({
-              action: editProductAction,
-              handleSubmit,
-              setError,
-              reset,
-              setObject: setProduct,
-              transform: (data) => ({
-                ...data,
-                count: data.count?.replaceAll(",", ""),
-                price: data?.price?.replaceAll(",", ""),
-                category: data?.category?.toString(),
-              }),
-            })}
-            error={error}
-            isLoading={editProductIsLoading}
-            register={register}
-            errors={errors}
-            setValue={setValue}
-            watch={watch}
-          />
-        </div>
-      </div>
-    </dialog>
+      <ProductForm
+        submitHandler={submitHandler<Product>({
+          action: editProductAction,
+          handleSubmit,
+          setError,
+          reset,
+          setObject: setProduct,
+          transform: (data) => ({
+            ...data,
+            count: data.count?.replaceAll(",", ""),
+            price: data?.price?.replaceAll(",", ""),
+            category: data?.category?.toString(),
+          }),
+        })}
+        error={error}
+        isLoading={editProductIsLoading}
+        register={register}
+        errors={errors}
+        setValue={setValue}
+        watch={watch}
+      />
+    </Modal>
   );
 };
 

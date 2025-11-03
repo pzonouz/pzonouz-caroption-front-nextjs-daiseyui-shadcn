@@ -57,7 +57,7 @@ const Page = () => {
       <CreateProduct />
       <div className="flex flex-col sm:flex-row gap-2 sm:gap-4">
         <Combobox
-          className="text-right"
+          className="text-right z-1"
           title="دسته بندی"
           array={filteredCategories}
           value={category}
