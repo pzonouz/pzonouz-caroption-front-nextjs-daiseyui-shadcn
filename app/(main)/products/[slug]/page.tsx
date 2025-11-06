@@ -22,6 +22,14 @@ export async function generateMetadata({
     `${process.env.BACKEND_URL}/product_by_slug/search?q=${encodeURIComponent(slug)}`,
   );
   const product: Product = await res.json();
+  if (!product?.show) {
+    return {
+      robots: {
+        index: false,
+        follow: false,
+      },
+    };
+  }
   return {
     title: product?.name,
     description: product?.description,

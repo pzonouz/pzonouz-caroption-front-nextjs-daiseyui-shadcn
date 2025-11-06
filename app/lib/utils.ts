@@ -31,15 +31,27 @@ export const formatStringToCommaSeparatedNumber = (
   const stringValue = value.toString();
   return stringValue.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 };
-
 export const replacePersianDigits = (value: string | undefined): string => {
-  value = value?.replace(/\D/g, "");
   if (!value) return "";
+
   const persianDigits = "۰۱۲۳۴۵۶۷۸۹";
   const englishDigits = "0123456789";
 
   return value.replace(/[۰-۹]/g, (char) => {
-    return englishDigits[persianDigits.indexOf(char)];
+    const index = persianDigits.indexOf(char);
+    return index !== -1 ? englishDigits[index] : char;
+  });
+};
+
+export const replaceWithPersianDigits = (value: string | undefined): string => {
+  if (!value) return "";
+
+  const persianDigits = "۰۱۲۳۴۵۶۷۸۹";
+  const englishDigits = "0123456789";
+
+  return value.replace(/[0-9]/g, (char) => {
+    const index = englishDigits.indexOf(char);
+    return index !== -1 ? persianDigits[index] : char;
   });
 };
 
