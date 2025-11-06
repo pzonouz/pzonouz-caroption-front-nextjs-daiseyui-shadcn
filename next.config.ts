@@ -16,12 +16,12 @@ const nextConfig: NextConfig = {
       },
       {
         protocol: "http",
-        hostname: "carroption.ir",
+        hostname: "caroptionshop.ir",
         pathname: "**/media/**", // allows access to all media files
       },
       {
         protocol: "https",
-        hostname: "carroption.ir",
+        hostname: "caroptionshop.ir",
         pathname: "**/media/**", // allows access to all media files
       },
     ],
