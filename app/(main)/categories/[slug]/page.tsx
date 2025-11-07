@@ -6,11 +6,17 @@ import { Article, Category, Product } from "../../../lib/schemas";
 import ArticleCard from "@/app/components/Articles/ArticleCard";
 import { notFound } from "next/navigation";
 
-// --- Generate static params for categories ---
+// --- Generate static params for all categories ---
 export async function generateStaticParams() {
-  const res = await fetch(`${process.env.BACKEND_URL}/categories`);
+  const res = await fetch(`${process.env.BACKEND_URL}/categories`, {
+    cache: "force-cache", // ensures build-time fetching
+  });
+
   if (!res.ok) return [];
+
   const categories: Category[] = await res.json();
+
+  // must return [{ slug: "something" }, ...]
   return categories.map((category) => ({
     slug: category.slug,
   }));
@@ -20,14 +26,14 @@ export async function generateStaticParams() {
 export async function generateMetadata({
   params,
 }: {
-  params: Promise<{ slug: string }>;
+  params: { slug: string };
 }): Promise<Metadata> {
-  const { slug } = await params;
+  const { slug } = params;
 
   try {
     const res = await fetch(
       `${process.env.BACKEND_URL}/category_by_slug/search?q=${encodeURIComponent(slug)}`,
-      { cache: "no-store" },
+      { cache: "force-cache" }, // build-time fetch
     );
 
     if (!res.ok) throw new Error("Category not found");
@@ -47,7 +53,7 @@ export async function generateMetadata({
   }
 }
 
-// --- Category Page Component ---
+// --- Category Page Component (SSG) ---
 const Page = async ({ params }: { params: Promise<{ slug: string }> }) => {
   const { slug } = await params;
 
@@ -59,13 +65,12 @@ const Page = async ({ params }: { params: Promise<{ slug: string }> }) => {
   try {
     const categoryRes = await fetch(
       `${process.env.BACKEND_URL}/category_by_slug/search?q=${encodeURIComponent(slug)}`,
-      { next: { revalidate } },
+      { cache: "force-cache" }, // SSG build-time fetch
     );
 
     if (!categoryRes.ok) notFound();
 
     category = await categoryRes.json();
-
     if (!category?.id) notFound();
   } catch {
     notFound();
@@ -75,28 +80,28 @@ const Page = async ({ params }: { params: Promise<{ slug: string }> }) => {
   try {
     const productsRes = await fetch(
       `${process.env.BACKEND_URL}/products_in_category/${category.id}`,
-      { next: { revalidate } },
+      { next: { revalidate: 60 } }, // incremental revalidation
     );
 
     if (productsRes.ok) {
       products = (await productsRes.json()) ?? [];
     }
   } catch {
-    // Fail silently; products remain empty
+    // silent fail
   }
 
   // --- Fetch articles in category ---
   try {
     const articlesRes = await fetch(
       `${process.env.BACKEND_URL}/articles_in_category/${category.id}`,
-      { next: { revalidate } },
+      { next: { revalidate: 60 } },
     );
 
     if (articlesRes.ok) {
       articles = (await articlesRes.json()) ?? [];
     }
   } catch {
-    // Fail silently; articles remain empty
+    // silent fail
   }
 
   const allowedArticles = articles?.filter(
@@ -110,11 +115,11 @@ const Page = async ({ params }: { params: Promise<{ slug: string }> }) => {
       </h1>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 sm:mt-14 md:mt-24">
-        {products?.map((product: Product) => (
+        {products.map((product) => (
           <ProductCard key={product.id} product={product} />
         ))}
 
-        {allowedArticles?.map((article: Article) => (
+        {allowedArticles.map((article) => (
           <ArticleCard key={article.id} article={article} />
         ))}
 

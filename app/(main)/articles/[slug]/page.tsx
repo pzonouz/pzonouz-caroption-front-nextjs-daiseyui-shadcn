@@ -6,15 +6,20 @@ import { notFound } from "next/navigation";
 
 // --- Generate static params for SSG ---
 export async function generateStaticParams() {
-  const res = await fetch(`${process.env.BACKEND_URL}/articles`);
+  const res = await fetch(`${process.env.BACKEND_URL}/articles`, {
+    cache: "force-cache", // ensures build-time fetching
+  });
+
   if (!res.ok) return [];
+
   const articles: Article[] = await res.json();
+
   return articles.map((article) => ({
     slug: article.slug?.toString(),
   }));
 }
 
-// --- Generate metadata dynamically ---
+// --- Generate metadata for each article ---
 export async function generateMetadata({
   params,
 }: {
@@ -25,7 +30,7 @@ export async function generateMetadata({
   try {
     const res = await fetch(
       `${process.env.BACKEND_URL}/article_by_slug/search?q=${encodeURIComponent(slug)}`,
-      { cache: "no-store" },
+      { cache: "force-cache" }, // build-time fetch
     );
 
     if (!res.ok) throw new Error("Article not found");
@@ -45,7 +50,7 @@ export async function generateMetadata({
   }
 }
 
-// --- Page component ---
+// --- Article Page Component (SSG + ISR) ---
 const Page = async ({ params }: { params: Promise<{ slug: string }> }) => {
   const { slug } = await params;
 
@@ -54,20 +59,13 @@ const Page = async ({ params }: { params: Promise<{ slug: string }> }) => {
   try {
     const res = await fetch(
       `${process.env.BACKEND_URL}/article_by_slug/search?q=${encodeURIComponent(slug)}`,
-      {
-        next: { revalidate },
-      },
+      { next: { revalidate: 60 } }, // incremental revalidation
     );
 
-    if (!res.ok) {
-      notFound();
-    }
+    if (!res.ok) notFound();
 
     article = await res.json();
-
-    if (!article?.id) {
-      notFound();
-    }
+    if (!article?.id) notFound();
   } catch {
     notFound();
   }

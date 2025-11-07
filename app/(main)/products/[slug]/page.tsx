@@ -1,4 +1,5 @@
-const revalidate = 60;
+export const revalidate = 60;
+
 import Image from "next/image";
 import { Metadata } from "next";
 import { Parameter, Product } from "../../../lib/schemas";
@@ -7,22 +8,33 @@ import Slider from "@/app/components/Shared/Slider";
 import ParamterValueShow from "@/app/components/Shared/ParamterValueShow";
 import { notFound } from "next/navigation";
 
+// --- Generate static params for all products (SSG) ---
 export async function generateStaticParams() {
-  const res = await fetch(`${process.env.BACKEND_URL}/products`);
+  const res = await fetch(`${process.env.BACKEND_URL}/products`, {
+    cache: "force-cache", // ensures build-time fetching
+  });
+
+  if (!res.ok) return [];
+
   const products: Product[] = await res.json();
-  return products.map((product) => ({ slug: product?.slug?.toString() }));
+
+  return products.map((product) => ({
+    slug: product?.slug?.toString(),
+  }));
 }
 
+// --- Generate metadata for each product (SSG) ---
 export async function generateMetadata({
   params,
 }: {
   params: Promise<{ slug: string }>;
 }): Promise<Metadata> {
   const { slug } = await params;
+
   try {
     const res = await fetch(
       `${process.env.BACKEND_URL}/product_by_slug/search?q=${encodeURIComponent(slug)}`,
-      { cache: "no-store" },
+      { cache: "force-cache" }, // build-time fetch for SSG
     );
 
     if (!res.ok) throw new Error("Product not found");
@@ -39,8 +51,8 @@ export async function generateMetadata({
     }
 
     return {
-      title: product?.name,
-      description: product?.description,
+      title: product?.name || "محصول یافت نشد",
+      description: product?.description || "",
       keywords: ["اردبیل", ...(product?.keywords ?? [])],
     };
   } catch {
@@ -51,6 +63,7 @@ export async function generateMetadata({
   }
 }
 
+// --- Product Page Component (SSG + ISR) ---
 const Page = async ({ params }: { params: Promise<{ slug: string }> }) => {
   const { slug } = await params;
 
@@ -59,22 +72,13 @@ const Page = async ({ params }: { params: Promise<{ slug: string }> }) => {
   try {
     const productRes = await fetch(
       `${process.env.BACKEND_URL}/product_by_slug/search?q=${encodeURIComponent(slug)}`,
-      {
-        next: { revalidate },
-      },
+      { next: { revalidate: 60 } }, // incremental revalidation (ISR)
     );
 
-    if (!productRes.ok) {
-      // Backend error (e.g. 500 or 404) → go to 404
-      notFound();
-    }
+    if (!productRes.ok) notFound();
 
     product = await productRes.json();
-
-    if (!product?.id) {
-      // Invalid JSON or empty response → go to 404
-      notFound();
-    }
+    if (!product?.id) notFound();
   } catch {
     notFound();
   }
