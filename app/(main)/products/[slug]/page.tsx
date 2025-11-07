@@ -5,6 +5,7 @@ import { Parameter, Product } from "../../../lib/schemas";
 import PriceBlock from "@/app/components/Shared/PriceBlock";
 import Slider from "@/app/components/Shared/Slider";
 import ParamterValueShow from "@/app/components/Shared/ParamterValueShow";
+import { notFound } from "next/navigation";
 
 export async function generateStaticParams() {
   const res = await fetch(`${process.env.BACKEND_URL}/products`);
@@ -45,6 +46,12 @@ const Page = async ({ params }: { params: Promise<{ slug: string }> }) => {
       next: { revalidate: 60 },
     },
   );
+  if (!res.ok) {
+    // Show 404 page on 400 or 500 errors
+    if (res.status === 400 || res.status === 500) {
+      notFound();
+    }
+  }
   const product: Product = await res.json();
 
   return (

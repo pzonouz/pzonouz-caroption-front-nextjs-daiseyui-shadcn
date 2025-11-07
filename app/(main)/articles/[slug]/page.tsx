@@ -2,6 +2,7 @@ export const revalidate = 60;
 
 import { Metadata } from "next";
 import { Article } from "../../../lib/schemas";
+import { notFound } from "next/navigation";
 
 export async function generateStaticParams() {
   const articlesRes = await fetch(`${process.env.BACKEND_URL}/articles`);
@@ -30,6 +31,12 @@ const page = async ({ params }: { params: Promise<{ slug: string }> }) => {
   const articleRes = await fetch(
     `${process.env.BACKEND_URL}/article_by_slug/search?q=${encodeURIComponent(slug)}`,
   );
+  if (!articleRes.ok) {
+    // Show 404 page on 400 or 500 errors
+    if (articleRes.status === 400 || articleRes.status === 500) {
+      notFound();
+    }
+  }
   const article: Article = (await articleRes.json()) ?? [];
   return (
     <div className="article h-dvh">
