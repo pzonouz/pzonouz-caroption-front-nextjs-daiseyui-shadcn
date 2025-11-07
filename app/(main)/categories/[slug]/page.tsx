@@ -6,81 +6,126 @@ import { Article, Category, Product } from "../../../lib/schemas";
 import ArticleCard from "@/app/components/Articles/ArticleCard";
 import { notFound } from "next/navigation";
 
+// --- Generate static params for categories ---
 export async function generateStaticParams() {
-  const categoriesRes = await fetch(`${process.env.BACKEND_URL}/categories`);
-  const categories: Category[] = await categoriesRes.json();
+  const res = await fetch(`${process.env.BACKEND_URL}/categories`);
+  if (!res.ok) return [];
+  const categories: Category[] = await res.json();
   return categories.map((category) => ({
-    id: category.id.toString(),
+    slug: category.slug,
   }));
 }
+
+// --- Generate metadata for each category ---
 export async function generateMetadata({
   params,
 }: {
   params: Promise<{ slug: string }>;
 }): Promise<Metadata> {
   const { slug } = await params;
-  const categoryRes = await fetch(
-    `${process.env.BACKEND_URL}/category_by_slug/search?q=${encodeURIComponent(slug)}`,
-  );
-  if (!categoryRes.ok) {
-    // Show 404 page on 400 or 500 errors
-    if (categoryRes.status === 400 || categoryRes.status === 500) {
-      notFound();
-    }
+
+  try {
+    const res = await fetch(
+      `${process.env.BACKEND_URL}/category_by_slug/search?q=${encodeURIComponent(slug)}`,
+      { cache: "no-store" },
+    );
+
+    if (!res.ok) throw new Error("Category not found");
+
+    const category: Category = await res.json();
+
+    return {
+      title: category?.name || "دسته‌بندی یافت نشد",
+      description: category?.description || "",
+    };
+  } catch {
+    return {
+      title: "دسته‌بندی یافت نشد",
+      description: "",
+      robots: { index: false, follow: false },
+    };
   }
-  const category: Category = await categoryRes.json();
-  return {
-    title: category?.name,
-    description: category?.description,
-  };
 }
-const page = async ({ params }: { params: Promise<{ slug: string }> }) => {
+
+// --- Category Page Component ---
+const Page = async ({ params }: { params: Promise<{ slug: string }> }) => {
   const { slug } = await params;
-  const categoryRes = await fetch(
-    `${process.env.BACKEND_URL}/category_by_slug/search?q=${encodeURIComponent(slug)}`,
-  );
-  if (!categoryRes.ok) {
-    // Show 404 page on 400 or 500 errors
-    if (categoryRes.status === 400 || categoryRes.status === 500) {
-      notFound();
-    }
+
+  let category: Category | null = null;
+  let products: Product[] = [];
+  let articles: Article[] = [];
+
+  // --- Fetch category ---
+  try {
+    const categoryRes = await fetch(
+      `${process.env.BACKEND_URL}/category_by_slug/search?q=${encodeURIComponent(slug)}`,
+      { next: { revalidate } },
+    );
+
+    if (!categoryRes.ok) notFound();
+
+    category = await categoryRes.json();
+
+    if (!category?.id) notFound();
+  } catch {
+    notFound();
   }
-  const category = await categoryRes.json();
-  const productsRes = await fetch(
-    `${process.env.BACKEND_URL}/products_in_category/${category.id}`,
-  );
-  if (!productsRes.ok) {
-    // Show 404 page on 400 or 500 errors
-    if (productsRes.status === 400 || categoryRes.status === 500) {
-      notFound();
+
+  // --- Fetch products in category ---
+  try {
+    const productsRes = await fetch(
+      `${process.env.BACKEND_URL}/products_in_category/${category.id}`,
+      { next: { revalidate } },
+    );
+
+    if (productsRes.ok) {
+      products = (await productsRes.json()) ?? [];
     }
+  } catch {
+    // Fail silently; products remain empty
   }
-  const products: Product[] = (await productsRes.json()) ?? [];
-  const articlesRes = await fetch(
-    `${process.env.BACKEND_URL}/articles_in_category/${category.id}`,
-  );
-  if (!articlesRes.ok) {
-    // Show 404 page on 400 or 500 errors
-    if (articlesRes.status === 400 || categoryRes.status === 500) {
-      notFound();
+
+  // --- Fetch articles in category ---
+  try {
+    const articlesRes = await fetch(
+      `${process.env.BACKEND_URL}/articles_in_category/${category.id}`,
+      { next: { revalidate } },
+    );
+
+    if (articlesRes.ok) {
+      articles = (await articlesRes.json()) ?? [];
     }
+  } catch {
+    // Fail silently; articles remain empty
   }
-  const articles: Article[] = await articlesRes.json();
+
   const allowedArticles = articles?.filter(
     (article) => article?.showInProducts,
   );
+
   return (
-    <div className="">
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 sm:mt-14 md:mt-24">
-        {products.map((product: Product) => (
+    <div className="px-4 py-8">
+      <h1 className="text-3xl font-extrabold text-center mb-8">
+        {category?.name}
+      </h1>
+
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 sm:mt-14 md:mt-24">
+        {products?.map((product: Product) => (
           <ProductCard key={product.id} product={product} />
         ))}
+
         {allowedArticles?.map((article: Article) => (
-          <ArticleCard key={article?.id} article={article} />
+          <ArticleCard key={article.id} article={article} />
         ))}
+
+        {products.length === 0 && allowedArticles.length === 0 && (
+          <div className="col-span-full text-center text-gray-500 text-lg">
+            محصول یا مقاله‌ای در این دسته‌بندی یافت نشد.
+          </div>
+        )}
       </div>
     </div>
   );
 };
 
-export default page;
+export default Page;

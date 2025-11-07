@@ -1,4 +1,4 @@
-export const revalidate = 60;
+const revalidate = 60;
 import Image from "next/image";
 import { Metadata } from "next";
 import { Parameter, Product } from "../../../lib/schemas";
@@ -19,40 +19,65 @@ export async function generateMetadata({
   params: Promise<{ slug: string }>;
 }): Promise<Metadata> {
   const { slug } = await params;
-  const res = await fetch(
-    `${process.env.BACKEND_URL}/product_by_slug/search?q=${encodeURIComponent(slug)}`,
-  );
-  const product: Product = await res.json();
-  if (!product?.show) {
+  try {
+    const res = await fetch(
+      `${process.env.BACKEND_URL}/product_by_slug/search?q=${encodeURIComponent(slug)}`,
+      { cache: "no-store" },
+    );
+
+    if (!res.ok) throw new Error("Product not found");
+
+    const product: Product = await res.json();
+
+    if (!product?.show) {
+      return {
+        robots: {
+          index: false,
+          follow: false,
+        },
+      };
+    }
+
     return {
-      robots: {
-        index: false,
-        follow: false,
-      },
+      title: product?.name,
+      description: product?.description,
+      keywords: ["اردبیل", ...(product?.keywords ?? [])],
+    };
+  } catch {
+    return {
+      title: "محصول یافت نشد",
+      robots: { index: false, follow: false },
     };
   }
-  return {
-    title: product?.name,
-    description: product?.description,
-    keywords: ["اردبیل", ...(product?.keywords ?? [])],
-  };
 }
 
 const Page = async ({ params }: { params: Promise<{ slug: string }> }) => {
   const { slug } = await params;
-  const res = await fetch(
-    `${process.env.BACKEND_URL}/product_by_slug/search?q=${encodeURIComponent(slug)}`,
-    {
-      next: { revalidate: 60 },
-    },
-  );
-  if (!res.ok) {
-    // Show 404 page on 400 or 500 errors
-    if (res.status === 400 || res.status === 500) {
+
+  let product: Product | null = null;
+
+  try {
+    const productRes = await fetch(
+      `${process.env.BACKEND_URL}/product_by_slug/search?q=${encodeURIComponent(slug)}`,
+      {
+        next: { revalidate },
+      },
+    );
+
+    if (!productRes.ok) {
+      // Backend error (e.g. 500 or 404) → go to 404
       notFound();
     }
+
+    product = await productRes.json();
+
+    if (!product?.id) {
+      // Invalid JSON or empty response → go to 404
+      notFound();
+    }
+  } catch {
+    notFound();
   }
-  const product: Product = await res.json();
 
   return (
     <div className="p-4">
