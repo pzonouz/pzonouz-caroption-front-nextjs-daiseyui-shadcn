@@ -4,6 +4,7 @@ import { Metadata } from "next";
 import ProductCard from "../../../components/Products/ProductCard";
 import { Article, Category, Product } from "../../../lib/schemas";
 import ArticleCard from "@/app/components/Articles/ArticleCard";
+import { notFound } from "next/navigation";
 
 export async function generateStaticParams() {
   const categoriesRes = await fetch(`${process.env.BACKEND_URL}/categories`);
@@ -21,6 +22,12 @@ export async function generateMetadata({
   const categoryRes = await fetch(
     `${process.env.BACKEND_URL}/category_by_slug/search?q=${encodeURIComponent(slug)}`,
   );
+  if (!categoryRes.ok) {
+    // Show 404 page on 400 or 500 errors
+    if (categoryRes.status === 400 || categoryRes.status === 500) {
+      notFound();
+    }
+  }
   const category: Category = await categoryRes.json();
   return {
     title: category?.name,
@@ -32,14 +39,32 @@ const page = async ({ params }: { params: Promise<{ slug: string }> }) => {
   const categoryRes = await fetch(
     `${process.env.BACKEND_URL}/category_by_slug/search?q=${encodeURIComponent(slug)}`,
   );
+  if (!categoryRes.ok) {
+    // Show 404 page on 400 or 500 errors
+    if (categoryRes.status === 400 || categoryRes.status === 500) {
+      notFound();
+    }
+  }
   const category = await categoryRes.json();
   const productsRes = await fetch(
     `${process.env.BACKEND_URL}/products_in_category/${category.id}`,
   );
+  if (!productsRes.ok) {
+    // Show 404 page on 400 or 500 errors
+    if (productsRes.status === 400 || categoryRes.status === 500) {
+      notFound();
+    }
+  }
   const products: Product[] = (await productsRes.json()) ?? [];
   const articlesRes = await fetch(
     `${process.env.BACKEND_URL}/articles_in_category/${category.id}`,
   );
+  if (!articlesRes.ok) {
+    // Show 404 page on 400 or 500 errors
+    if (articlesRes.status === 400 || categoryRes.status === 500) {
+      notFound();
+    }
+  }
   const articles: Article[] = await articlesRes.json();
   const allowedArticles = articles?.filter(
     (article) => article?.showInProducts,
