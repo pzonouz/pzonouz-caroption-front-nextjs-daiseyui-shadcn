@@ -92,9 +92,9 @@ const CategoryForm = ({
         />
         <FormField
           label="ترتیب"
-          title="prioirity"
+          title="priority"
           register={register}
-          error={errors?.prioirity?.message?.toString()}
+          error={errors?.priority?.message?.toString()}
         />
         <div className="flex flex-row gap-4 items-center">
           <Checkbox

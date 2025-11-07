@@ -14,7 +14,7 @@ export const categorySchema: z.ZodType<any> = z.lazy(() =>
     name: z.string().min(1, { message: "نام را وارد کنید" }),
     description: z.string().nullish(),
     parentId: z.string().nullish(),
-    prioirity: z.string().min(1, { message: "اولویت را وارد کنید" }).nullish(),
+    priority: z.string().min(1, { message: "اولویت را وارد کنید" }).nullish(),
     parentName: z.string().nullish(),
     imageId: z.string().optional().nullish(),
     imageUrl: z.string().optional().nullish(),
