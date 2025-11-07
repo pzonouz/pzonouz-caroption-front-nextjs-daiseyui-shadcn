@@ -9,7 +9,7 @@ import { Category } from "../../lib/schemas";
 import { useGetCategoriesQuery } from "../../lib/features/api";
 import { useAppDispatch } from "../../lib/hooks";
 import { LoadingHide, LoadingShow } from "../../lib/features/LoadingSlice";
-import { submitHandler } from "../../lib/utils";
+import { replaceWithPersianDigits, submitHandler } from "../../lib/utils";
 
 const EditCategoryModal = ({
   category,
@@ -80,6 +80,10 @@ const EditCategoryModal = ({
               setError,
               reset,
               setObject: setCategory,
+              transform: (data) => ({
+                ...data,
+                priority: replaceWithPersianDigits(data.priority),
+              }),
             })}
             error={error}
             isLoading={editCategoryIsLoading}

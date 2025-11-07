@@ -3,7 +3,11 @@
 import { CollapsibleSection } from "../Shared/CollapsibleSection";
 import { useCreateCategory } from "./hooks/useCreateCategory";
 import { Category } from "../../lib/schemas";
-import { submitHandler, toggle } from "../../lib/utils";
+import {
+  replaceWithPersianDigits,
+  submitHandler,
+  toggle,
+} from "../../lib/utils";
 import CategoryForm from "./CategoryForm";
 
 export function CreateCategory({ categories }: { categories: Category[] }) {
@@ -40,6 +44,10 @@ export function CreateCategory({ categories }: { categories: Category[] }) {
             handleSubmit,
             setError,
             reset,
+            transform: (data) => ({
+              ...data,
+              priority: replaceWithPersianDigits(data.priority),
+            }),
           })}
           errors={errors}
           register={register}
