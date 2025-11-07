@@ -85,7 +85,7 @@ export function Search() {
         </button>
       </PopoverTrigger>
 
-      <PopoverContent className="w-full py-3 px-6 bg-white">
+      <PopoverContent className="w-[22rem] sm:w-[30rem] md:w-[36rem] lg:w-[48rem] py-3 px-3 bg-white">
         <div>
           <label className="input w-full">
             <svg
