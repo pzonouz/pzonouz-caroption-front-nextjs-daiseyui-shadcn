@@ -94,3 +94,95 @@ export const signupAction = async (_prevState: unknown, data: FormData) => {
 export const signOutAction = async () => {
   await signOut();
 };
+
+export const changePasswordAction = async (
+  _prevState: unknown,
+  data: FormData,
+) => {
+  const rawData = Object.fromEntries(data);
+  const userSchema = z
+    .object({
+      password: z.string().min(1, "پسورد را وارد کنید"),
+      confirmPassword: z.string().min(1, "پسورد را وارد کنید"),
+      token: z.string().optional(),
+    })
+    .refine((data) => data.password === data.confirmPassword, {
+      path: ["confirmPassword"],
+      message: "پسوردها مطابقت ندارند",
+    });
+  const result = userSchema.safeParse(rawData);
+  if (result.success) {
+    try {
+      const res = await fetch(
+        `${process.env.BACKEND_URL}/auth/reset_password_callback/${result?.data?.token}`,
+        {
+          method: "POST",
+          body: JSON.stringify({
+            password: result.data.password,
+          }),
+        },
+      );
+      if (!res.ok) {
+        throw new Error(res.status?.toString());
+      }
+      return {
+        success: true,
+        error: null,
+        errors: {},
+        data: {},
+      };
+    } catch (err) {
+      return {
+        success: false,
+        error: err?.message,
+        errors: {},
+        data: {},
+      };
+    }
+  }
+  if (!result.success) {
+    return {
+      success: false,
+      error: "",
+      errors: result.error.flatten().fieldErrors,
+    };
+  }
+};
+export const PasswordResetRequestAction = async (
+  _prevState: unknown,
+  data: FormData,
+) => {
+  const rawData = Object.fromEntries(data);
+  const userSchema = z.object({
+    email: z.string().min(1, "ایمیل را وارد کنید"),
+  });
+  const result = userSchema.safeParse(rawData);
+  if (result.success) {
+    try {
+      const res = await fetch(
+        `${process.env.BACKEND_URL}/auth/reset_password/${result?.data?.email}`,
+        { cache: "no-cache" },
+      );
+      return {
+        success: true,
+        error: null,
+        errors: {},
+        data: {},
+      };
+    } catch (err) {
+      return {
+        success: false,
+        error: err?.message,
+        errors: {},
+        data: {},
+      };
+    }
+  }
+  if (!result.success) {
+    return {
+      success: false,
+      error: "",
+      errors: result.error.flatten().fieldErrors,
+    };
+  }
+};

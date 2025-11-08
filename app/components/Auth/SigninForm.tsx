@@ -35,7 +35,7 @@ export default function SignInForm() {
           defaultValue={msg?.data?.email?.toString()}
           name="email"
           type="text"
-          placeholder="mail@site.com"
+          placeholder="ایمیل خود را وارد کنید"
           className={classNames("input input-md", {
             "input-error": msg?.errors?.email?.length,
           })}
@@ -68,7 +68,9 @@ export default function SignInForm() {
         <Link href={"/signup"} className="link link-primary text-sm">
           ثبت نام
         </Link>
-        <a className="link link-primary text-sm">فراموشی کلمه عبور</a>
+        <Link href={"/reset-password"} className="link link-primary text-sm">
+          فراموشی کلمه عبور
+        </Link>
       </div>
     </form>
   );

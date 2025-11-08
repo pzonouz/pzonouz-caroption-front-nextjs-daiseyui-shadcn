@@ -167,6 +167,23 @@ export interface SignResponse {
     email?: string;
   };
 }
+export interface ChangePasswordResponse {
+  success: boolean;
+  error?: string;
+  errors?: Record<string, string[]>;
+  data?: {
+    password?: string;
+    confirmPassword?: string;
+  };
+}
+export interface PasswordChangeRequestResponse {
+  success: boolean;
+  error?: string;
+  errors?: Record<string, string[]>;
+  data?: {
+    email: string;
+  };
+}
 export type ActionResult = {
   success: boolean;
   error: string | null;
