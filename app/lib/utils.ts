@@ -49,7 +49,7 @@ export const replaceWithPersianDigits = (value: string | undefined): string => {
   const persianDigits = "۰۱۲۳۴۵۶۷۸۹";
   const englishDigits = "0123456789";
 
-  return value.replace(/[۰-۹]/g, (char) => {
+  return value.replace(/[0-9]/g, (char) => {
     const index = englishDigits.indexOf(char);
     return index !== -1 ? persianDigits[index] : char;
   });
