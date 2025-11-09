@@ -13,19 +13,32 @@ import {
   Product,
   ProductParameterValue,
 } from "../schemas";
+import { getSession } from "next-auth/react";
 
 export const api = createApi({
   reducerPath: "api",
   baseQuery: fetchBaseQuery({
     baseUrl: "/backend",
-    prepareHeaders(headers, { getState }) {
-      // @ts-ignore
-      const access = getState()?.access?.access;
-      if (access) {
-        headers.set("Authorization", `JWT ${access}`);
+    // prepareHeaders(headers, { getState }) {
+    //   // @ts-ignore
+    //   const access = getState()?.access?.access;
+    //   if (access) {
+    //     headers.set("Authorization", `JWT ${access}`);
+    //   }
+    //   return headers;
+    // },
+    prepareHeaders: async (headers) => {
+      // Get Auth.js session
+      const session = await getSession();
+
+      if (session?.user && session?.access) {
+        // Attach your backend-compatible header
+        headers.set("Authorization", `JWT ${session.access}`);
       }
+
       return headers;
     },
+    credentials: "include", // include cookies if needed
   }),
   tagTypes: [
     "invoices",
