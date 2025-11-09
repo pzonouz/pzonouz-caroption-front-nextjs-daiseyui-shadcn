@@ -56,9 +56,6 @@ const ParameterForm = ({
   const updateSelectableValues = (value: string[]) =>
     setValue("selectables", value);
 
-  // const priority = watch("priority")?.toString() ?? "";
-  // const updatePriority = (value: string) => setValue("priority", value);
-
   const [selectableValue, setSelectableValue] = useState<string>("");
   const [open, setOpen] = useState(false);
 

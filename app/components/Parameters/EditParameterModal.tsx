@@ -6,7 +6,7 @@ import React, { useEffect, useMemo } from "react";
 import { Parameter } from "../../lib/schemas";
 import { useAppDispatch } from "../../lib/hooks";
 import { LoadingHide, LoadingShow } from "../../lib/features/LoadingSlice";
-import { submitHandler } from "../../lib/utils";
+import { replacePersianDigits, submitHandler } from "../../lib/utils";
 import ParameterForm from "./ParameterForm";
 import { useEditParameter } from "./hooks/useEditParameter";
 
@@ -74,6 +74,10 @@ const EditParameterModal = ({
               setError,
               reset,
               setObject: setParameter,
+              transform: (data) => ({
+                ...data,
+                priority: replacePersianDigits(data.priority),
+              }),
             })}
             error={error}
             isLoading={editParameterIsLoading}

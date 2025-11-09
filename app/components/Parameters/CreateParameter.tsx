@@ -2,7 +2,7 @@
 
 import { Parameter } from "../../lib/schemas";
 import { CollapsibleSection } from "../Shared/CollapsibleSection";
-import { submitHandler, toggle } from "../../lib/utils";
+import { replacePersianDigits, submitHandler, toggle } from "../../lib/utils";
 import { useCreateParameter } from "./hooks/useCreateParameter";
 import ParameterForm from "./ParameterForm";
 
@@ -39,6 +39,10 @@ export function CreateParameter() {
             handleSubmit,
             setError,
             reset,
+            transform: (data) => ({
+              ...data,
+              priority: replacePersianDigits(data.priority),
+            }),
           })}
           errors={errors}
           register={register}
