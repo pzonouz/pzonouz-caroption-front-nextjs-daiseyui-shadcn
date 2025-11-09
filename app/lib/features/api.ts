@@ -19,14 +19,6 @@ export const api = createApi({
   reducerPath: "api",
   baseQuery: fetchBaseQuery({
     baseUrl: "/backend",
-    // prepareHeaders(headers, { getState }) {
-    //   // @ts-ignore
-    //   const access = getState()?.access?.access;
-    //   if (access) {
-    //     headers.set("Authorization", `JWT ${access}`);
-    //   }
-    //   return headers;
-    // },
     prepareHeaders: async (headers) => {
       // Get Auth.js session
       const session = await getSession();

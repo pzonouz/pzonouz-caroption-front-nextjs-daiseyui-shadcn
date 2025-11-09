@@ -24,13 +24,41 @@ export const translateRTKFetchBaseQueryErrors = (
   return output;
 };
 
+// export const formatStringToCommaSeparatedNumber = (
+//   value: string | number | undefined,
+// ): string => {
+//   if (!value && value !== 0) return "";
+//   const stringValue = value.toString();
+//   return stringValue.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+// };
+// export const replacePersianDigits = (value: string | undefined): string => {
+//   if (!value) return "";
+//
+//   const persianDigits = "۰۱۲۳۴۵۶۷۸۹";
+//   const englishDigits = "0123456789";
+//
+//   return value.replace(/[۰-۹]/g, (char) => {
+//     const index = persianDigits.indexOf(char);
+//     return index !== -1 ? englishDigits[index] : char;
+//   });
+// };
 export const formatStringToCommaSeparatedNumber = (
   value: string | number | undefined,
 ): string => {
   if (!value && value !== 0) return "";
-  const stringValue = value.toString();
+
+  // convert to plain string
+  let stringValue = value.toString();
+
+  // remove commas, spaces, RTL/Persian direction marks, etc.
+  stringValue = stringValue
+    .replace(/[^\d]/g, "") // keep only digits
+    .normalize("NFKD"); // normalize unicode digits
+
+  // format from right to left into 3-digit groups
   return stringValue.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 };
+
 export const replacePersianDigits = (value: string | undefined): string => {
   if (!value) return "";
 
