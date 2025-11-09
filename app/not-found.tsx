@@ -16,11 +16,6 @@ export default function NotFound() {
       <p style={{ fontSize: "1.5rem", marginTop: "1rem" }}>
         صفحه‌ای که دنبالش بودی یا حذف شده یا هیچ‌وقت وجود نداشته!
       </p>
-      <img
-        src="https://media.giphy.com/media/3o6ZsY8TtFqVJZzU3O/giphy.gif"
-        alt="404 funny gif"
-        style={{ maxWidth: "400px", margin: "2rem auto" }}
-      />
       <p style={{ fontSize: "1.2rem" }}>
         نگران نباش! می‌تونی از{" "}
         <a href="/" style={{ color: "#1d3557", textDecoration: "underline" }}>
