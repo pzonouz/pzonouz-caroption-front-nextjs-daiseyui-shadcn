@@ -26,9 +26,9 @@ export async function generateStaticParams() {
 export async function generateMetadata({
   params,
 }: {
-  params: { slug: string };
+  params: Promise<{ slug: string }>;
 }): Promise<Metadata> {
-  const { slug } = params;
+  const { slug } = await params;
 
   try {
     const res = await fetch(
@@ -114,7 +114,7 @@ const Page = async ({ params }: { params: Promise<{ slug: string }> }) => {
         {category?.name}
       </h1>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 sm:mt-14 md:mt-24">
+      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-6 sm:mt-14 md:mt-24">
         {products.map((product) => (
           <ProductCard key={product.id} product={product} />
         ))}

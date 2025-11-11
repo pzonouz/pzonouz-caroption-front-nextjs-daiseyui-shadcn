@@ -12,7 +12,7 @@ const layout = async ({ children }: { children: ReactNode }) => {
   // @ts-ignore
   if (session?.user?.isAdmin) {
     return (
-      <div className="">
+      <div className="" dir="rtl">
         <Toaster />
         <CRMMenu user={session?.user} />
         {children}

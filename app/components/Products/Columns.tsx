@@ -5,6 +5,7 @@ import { ColumnDef } from "@tanstack/react-table";
 import { ArrowUpDown } from "lucide-react";
 import { Product } from "@/app/lib/schemas";
 import ProductActionsCell from "./ProductActionsCell";
+import { replacePersianDigits } from "@/app/lib/utils";
 
 export const columns: ColumnDef<Product>[] = [
   {
@@ -33,7 +34,9 @@ export const columns: ColumnDef<Product>[] = [
     cell: ({ row }) => {
       if (!row.getValue("price")) return null;
       const price = row.getValue("price")?.toString();
-      const formatted = price?.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+      const formatted = replacePersianDigits(
+        price?.replace(/\B(?=(\d{3})+(?!\d))/g, ","),
+      );
       return <div className="text-right font-medium">{formatted}</div>;
     },
   },

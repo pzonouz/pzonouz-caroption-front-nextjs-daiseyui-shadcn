@@ -1,14 +1,17 @@
-"use server";
 import Image from "next/image";
 import Link from "next/link";
 import { Product } from "../../lib/schemas";
 
-const ProductCard = async ({ product }: { product: Product }) => {
+const ProductCard = ({ product }: { product: Product }) => {
   return (
     <Link
       href={`/products/${product?.slug}`}
-      className="flex flex-row gap-3 items-center p-2 mt-2"
+      className=" flex flex-col gap-3 items-center  mt-2 border-gray-500 bg-white border-solid border-[1px] rounded-md relative "
     >
+      <div
+        className="w-full h-full absolute top-0 right-0 bg-gray-800/0 hover:bg-gray-800/10 transition-colors duration-300"
+        id="overlay"
+      ></div>
       <Image
         src={
           product.imageUrl
@@ -16,26 +19,15 @@ const ProductCard = async ({ product }: { product: Product }) => {
             : "/images/logo.jpg"
         }
         alt={product.name}
-        width={800}
-        height={800}
-        className="w-1/3"
+        width={400}
+        height={400}
+        className="w-full p-0.5"
       />
-      <div>
-        <div>{product.name}</div>
-        <div className="text-xs text-gray-500">
-          {product?.generated ? product?.main_product?.info : product?.info}
-        </div>
-        <div className="flex flex-row gap-1 text-emerald-500">
+      <div className="flex flex-col items-center px-6 pb-4">
+        <div className="text-sm font-bold h-12">{product.name}</div>
+        <div className="flex flex-row gap-1 text-emerald-500 text-xs font-bold">
           قیمت: تماس بگیرید
         </div>
-        {/* <div className="flex flex-row gap-1 text-emerald-500"> */}
-        {/*   <div> */}
-        {/*     {product?.generated */}
-        {/*       ? formatStringToCommaSeparatedNumber(product?.price2) */}
-        {/*       : formatStringToCommaSeparatedNumber(product?.price)} */}
-        {/*   </div> */}
-        {/*   <div>تومان</div> */}
-        {/* </div> */}
       </div>
     </Link>
   );
