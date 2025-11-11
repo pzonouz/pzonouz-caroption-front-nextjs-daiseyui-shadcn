@@ -14,7 +14,10 @@ const layout = async ({ children }: { children: ReactNode }) => {
   const frames: Category[] = categories.filter(
     (c: Category) => c?.name == "قاب مانیتور",
   )[0];
-  const monitors: Category[] = categories[0];
+  // const monitors: Category[] = categories[0];
+  const monitors = categories.filter(
+    (c: Category) => c?.name == "مانیتور خودرو",
+  )[0];
   const restCategories = categories.filter(
     (c: Category) => c?.name != "مانیتور خودرو",
   );
