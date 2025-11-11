@@ -85,6 +85,7 @@ const Page = async ({ params }: { params: Promise<{ slug: string }> }) => {
 
     if (productsRes.ok) {
       products = (await productsRes.json()) ?? [];
+      products = products.filter((p) => p?.show);
     }
   } catch {
     // silent fail
