@@ -32,8 +32,10 @@ export async function generateMetadata({
 
   try {
     const res = await fetch(
-      `${process.env.BACKEND_URL}/category_by_slug/search?q=${encodeURIComponent(slug)}`,
-      { cache: "force-cache" }, // build-time fetch
+      `${
+        process.env.BACKEND_URL
+      }/category_by_slug/search?q=${encodeURIComponent(slug)}`,
+      { cache: "force-cache" } // build-time fetch
     );
 
     if (!res.ok) throw new Error("Category not found");
@@ -64,8 +66,10 @@ const Page = async ({ params }: { params: Promise<{ slug: string }> }) => {
   // --- Fetch category ---
   try {
     const categoryRes = await fetch(
-      `${process.env.BACKEND_URL}/category_by_slug/search?q=${encodeURIComponent(slug)}`,
-      { cache: "force-cache" }, // SSG build-time fetch
+      `${
+        process.env.BACKEND_URL
+      }/category_by_slug/search?q=${encodeURIComponent(slug)}`,
+      { cache: "force-cache" } // SSG build-time fetch
     );
 
     if (!categoryRes.ok) notFound();
@@ -80,9 +84,9 @@ const Page = async ({ params }: { params: Promise<{ slug: string }> }) => {
   try {
     const productsRes = await fetch(
       `${process.env.BACKEND_URL}/products_in_category/${category.id}`,
-      { next: { revalidate: 60 } }, // incremental revalidation
+      { next: { revalidate: 60 } } // incremental revalidation
     );
-
+    console.log(category);
     if (productsRes.ok) {
       products = (await productsRes.json()) ?? [];
       products = products.filter((p) => p?.show);
@@ -95,7 +99,7 @@ const Page = async ({ params }: { params: Promise<{ slug: string }> }) => {
   try {
     const articlesRes = await fetch(
       `${process.env.BACKEND_URL}/articles_in_category/${category.id}`,
-      { next: { revalidate: 60 } },
+      { next: { revalidate: 60 } }
     );
 
     if (articlesRes.ok) {
@@ -106,7 +110,7 @@ const Page = async ({ params }: { params: Promise<{ slug: string }> }) => {
   }
 
   const allowedArticles = articles?.filter(
-    (article) => article?.showInProducts,
+    (article) => article?.showInProducts
   );
 
   return (

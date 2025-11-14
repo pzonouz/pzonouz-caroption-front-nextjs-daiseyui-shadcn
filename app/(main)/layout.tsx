@@ -20,7 +20,7 @@ const layout = async ({ children }: { children: ReactNode }) => {
     (c: Category) => c?.name != "مانیتور خودرو"
   );
   // @ts-ignore
-  monitors.children = [...monitors.children, ...frames];
+  monitors.children = [...frames];
   const modifiedCategories = [monitors, ...restCategories].filter(
     (i) => i.show
   );
