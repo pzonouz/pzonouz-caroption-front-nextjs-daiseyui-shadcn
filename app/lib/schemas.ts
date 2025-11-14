@@ -25,7 +25,7 @@ export const categorySchema: z.ZodType<any> = z.lazy(() =>
     generator: z.boolean().optional().nullish().nullable(),
     created: z.string().datetime().nullish(),
     updated: z.string().datetime().nullish(),
-  }),
+  })
 );
 export const userSchema = z.object({
   email: z.string().min(1, "ایمیل را وارد کنید"),
@@ -61,7 +61,7 @@ export const productSchema: z.ZodType<any> = z.lazy(() =>
     productParameterValues: z.array(productParameterValueSchema).optional(),
     keywords: z.array(z.string()).optional().nullish(),
     show: z.boolean().optional().nullish().nullable(),
-  }),
+  })
 );
 export const articleSchema: z.ZodType<any> = z.lazy(() =>
   z.object({
@@ -75,7 +75,7 @@ export const articleSchema: z.ZodType<any> = z.lazy(() =>
     created: z.string().datetime().nullish(),
     updated: z.string().datetime().nullish(),
     keywords: z.array(z.string()).optional().nullish(),
-  }),
+  })
 );
 
 export const invoiceItemSchema = z.object({
@@ -88,10 +88,10 @@ export const invoiceItemSchema = z.object({
 export const invoiceSchema = z.object({
   id: z.string().nullish(),
   person: z.string(),
-  personname: z.string(),
+  personName: z.string(),
   description: z.string().min(1, { message: "توضیح را وارد کنید" }),
   total: z.string(),
-  invoiceitems: z.array(invoiceItemSchema),
+  invoiceItems: z.array(invoiceItemSchema),
   type: z.string().nullish(),
   created: z.string().datetime().nullish(),
   updated: z.string().datetime().nullish(),
@@ -109,13 +109,15 @@ export const entitySchema: z.ZodType<any> = z.lazy(() =>
     name: z.string().min(1, { message: "نام را وارد کنید" }),
     english_name: z.string().nullish(),
     description: z.string().nullish(),
-    parent: z.string().nullish(),
-    parent_name: z.string().nullish(),
-    order: z.string().min(1, { message: "اولویت را وارد کنید" }),
+    parentId: z.string().nullish(),
+    imageId: z.string().nullish(),
+    entitySlug: z.string().optional(),
+    show: z.boolean().optional(),
+    parentName: z.string().nullish(),
     children: z.array(entitySchema).optional(),
     created: z.string().datetime().nullish(),
     updated: z.string().datetime().nullish(),
-  }),
+  })
 );
 export const parameterSchema = z.object({
   id: z.string().nullish(),

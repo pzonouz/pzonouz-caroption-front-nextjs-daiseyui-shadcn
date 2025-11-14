@@ -62,7 +62,7 @@ const ProductForm = ({
 
   useEffect(() => {
     setValue("slug", CreateSlug(watch("name")), {});
-  }, [watch("name")]);
+  }, [setValue, watch("name")]);
 
   // Description
   const description = watch("description") ?? "";
@@ -80,7 +80,7 @@ const ProductForm = ({
   const price = watch("price") ?? "";
   const updatePrice = (e: React.ChangeEvent<HTMLInputElement>) => {
     const replaced = formatStringToCommaSeparatedNumber(
-      replacePersianDigits(e.target.value),
+      replacePersianDigits(e.target.value)
     );
     setValue("price", replaced, { shouldValidate: true, shouldDirty: true });
   };
@@ -89,15 +89,15 @@ const ProductForm = ({
   const count = watch("count") ?? "";
   const updateCount = (e: React.ChangeEvent<HTMLInputElement>) => {
     const replaced = formatStringToCommaSeparatedNumber(
-      replacePersianDigits(e.target.value),
+      replacePersianDigits(e.target.value)
     );
     setValue("count", replaced, { shouldValidate: true, shouldDirty: true });
   };
 
   // Category
   const categoryId = watch("generated")
-    ? (watch("main_product")?.category?.toString() ?? "")
-    : (watch("categoryId")?.toString() ?? "");
+    ? watch("main_product")?.category?.toString() ?? ""
+    : watch("categoryId")?.toString() ?? "";
   const updateCategoryId = (categoryId: string) =>
     setValue("categoryId", categoryId);
 
@@ -111,8 +111,8 @@ const ProductForm = ({
 
   // Brand
   const brandId = watch("generated")
-    ? (watch("main_product")?.brand?.toString() ?? "")
-    : (watch("brandId")?.toString() ?? "");
+    ? watch("main_product")?.brand?.toString() ?? ""
+    : watch("brandId")?.toString() ?? "";
   const updateBrandId = (brandId: string) => setValue("brandId", brandId);
 
   // Generatable

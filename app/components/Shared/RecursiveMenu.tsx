@@ -112,7 +112,11 @@ function CategoryItem({
     <div className="text-gray-700">
       <div className="cursor-default flex items-center justify-between px-3 py-2 rounded-md hover:bg-gray-100 transition">
         <Link
-          href={`/categories/${category.slug}`}
+          href={
+            category?.entitySlug
+              ? `/entities/${category.entitySlug}`
+              : `/categories/${category.slug}`
+          }
           onClick={handleClick}
           className="text-sm font-medium text-gray-800 cursor-pointer"
         >

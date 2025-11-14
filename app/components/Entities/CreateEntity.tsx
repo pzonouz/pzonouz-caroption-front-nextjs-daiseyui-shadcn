@@ -3,7 +3,11 @@
 import { CollapsibleSection } from "../Shared/CollapsibleSection";
 import { useCreateEntity } from "./hooks/useCreateEntity";
 import { Entity } from "../../lib/schemas";
-import { submitHandler, toggle } from "../../lib/utils";
+import {
+  replaceWithPersianDigits,
+  submitHandler,
+  toggle,
+} from "../../lib/utils";
 import EntityForm from "./EntityForm";
 
 export function CreateEntity({ entities }: { entities: Entity[] }) {
@@ -30,7 +34,7 @@ export function CreateEntity({ entities }: { entities: Entity[] }) {
       >
         <label className=" text-3xl text-center w-5/6">ایجاد موجودیت</label>
         <EntityForm
-          entities={entities ?? []}
+          entities={entities}
           error={error}
           isLoading={createEntityIsLoading}
           watch={watch}
@@ -40,6 +44,10 @@ export function CreateEntity({ entities }: { entities: Entity[] }) {
             handleSubmit,
             setError,
             reset,
+            transform: (data) => ({
+              ...data,
+              priority: replaceWithPersianDigits(data.priority),
+            }),
           })}
           errors={errors}
           register={register}

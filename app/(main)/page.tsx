@@ -1,5 +1,5 @@
 import { Metadata } from "next";
-import Blocks from "../components/Navigations/Blocks";
+import Blocks from "../components/Navigation/Blocks";
 import { RecentlyAddedProducts } from "../components/Products/RecentlyAddedProducts";
 
 export const metadata: Metadata = {

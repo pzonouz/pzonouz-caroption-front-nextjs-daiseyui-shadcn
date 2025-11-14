@@ -1,6 +1,6 @@
 "use client";
-import { columns } from "@/app/components/Enities/Columns";
-import { CreateEntity } from "@/app/components/Enities/CreateEntity";
+import { columns } from "@/app/components/Entities/Columns";
+import { CreateEntity } from "@/app/components/Entities/CreateEntity";
 import { DataTable } from "@/app/components/Shared/DataTable";
 import {
   useGetEntitiesQuery,

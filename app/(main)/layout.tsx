@@ -1,30 +1,28 @@
 import { ReactNode } from "react";
-import Navbar from "../components/Navigations/Navbar";
-import { Footer } from "../components/Navigations/Footer";
-import { TopBar } from "../components/Navigations/TopBar";
+import Navbar from "../components/Navigation/Navbar";
+import { Footer } from "../components/Navigation/Footer";
+import { TopBar } from "../components/Navigation/TopBar";
 import { Toaster } from "sonner";
 import RecursiveMenu from "../components/Shared/RecursiveMenu";
-import { Category } from "../lib/schemas";
+import { Category, Entity } from "../lib/schemas";
 
 const layout = async ({ children }: { children: ReactNode }) => {
   const parentCategoriesRes = await fetch(
-    `${process.env.BACKEND_URL}/parent_categories`,
+    `${process.env.BACKEND_URL}/parent_categories`
   );
   const categories: Category[] = await parentCategoriesRes.json();
-  const frames: Category[] = categories.filter(
-    (c: Category) => c?.name == "قاب مانیتور",
-  )[0];
-  // const monitors: Category[] = categories[0];
+  const entitiesRes = await fetch(`${process.env.BACKEND_URL}/parent_entities`);
+  const frames: Entity[] = await entitiesRes.json();
   const monitors = categories.filter(
-    (c: Category) => c?.name == "مانیتور خودرو",
+    (c: Category) => c?.name == "مانیتور خودرو"
   )[0];
   const restCategories = categories.filter(
-    (c: Category) => c?.name != "مانیتور خودرو",
+    (c: Category) => c?.name != "مانیتور خودرو"
   );
   // @ts-ignore
-  monitors.children = [...monitors.children, ...frames?.children];
+  monitors.children = [...monitors.children, ...frames];
   const modifiedCategories = [monitors, ...restCategories].filter(
-    (i) => i.show,
+    (i) => i.show
   );
   return (
     <div>

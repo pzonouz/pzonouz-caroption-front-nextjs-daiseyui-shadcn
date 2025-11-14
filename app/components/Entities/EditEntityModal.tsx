@@ -4,12 +4,15 @@ import { faClose } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useEditEntity } from "./hooks/useEditEntity";
 import EntityForm from "./EntityForm";
-import React, { useEffect } from "react";
+import React, { useEffect, useMemo } from "react";
 import { Entity } from "../../lib/schemas";
+import {
+  useGetCategoriesQuery,
+  useGetEntitiesQuery,
+} from "../../lib/features/api";
 import { useAppDispatch } from "../../lib/hooks";
 import { LoadingHide, LoadingShow } from "../../lib/features/LoadingSlice";
-import { submitHandler } from "../../lib/utils";
-import { useGetEntitiesQuery } from "@/app/lib/features/api";
+import { replaceWithPersianDigits, submitHandler } from "../../lib/utils";
 
 const EditEntityModal = ({
   entity,
@@ -29,7 +32,7 @@ const EditEntityModal = ({
     reset,
     editEntityIsLoading,
     editEntityAction,
-  } = useEditEntity({ entity });
+  } = useEditEntity({ entity: entity });
 
   const { data: entities, isLoading } = useGetEntitiesQuery();
   const dispatch = useAppDispatch();
@@ -45,8 +48,8 @@ const EditEntityModal = ({
   if (!entity) return null;
 
   return (
-    <dialog open className="modal w-full">
-      <div className="modal-box w-full relative">
+    <dialog open className="modal">
+      <div className="modal-box w-full max-w-none h-screen p-6 relative rounded-none">
         <div className="modal-action w-full flex flex-col items-center justify-center">
           <FontAwesomeIcon
             icon={faClose}
@@ -55,7 +58,8 @@ const EditEntityModal = ({
               setEntity(undefined);
             }}
           />
-          <label className=" text-3xl text-center w-5/6">ویرایش موجودیت</label>
+          <label className="text-3xl text-center w-5/6">ویرایش موجودیت</label>
+
           <EntityForm
             submitHandler={submitHandler<Entity>({
               action: editEntityAction,
@@ -63,6 +67,10 @@ const EditEntityModal = ({
               setError,
               reset,
               setObject: setEntity,
+              transform: (data) => ({
+                ...data,
+                priority: replaceWithPersianDigits(data.priority),
+              }),
             })}
             error={error}
             isLoading={editEntityIsLoading}

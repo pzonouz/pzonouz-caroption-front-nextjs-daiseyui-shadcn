@@ -17,6 +17,7 @@ export const useCreateEntity = () => {
     getValues,
   } = useForm<Entity>({
     resolver: zodResolver(entitySchema),
+    defaultValues: { parameter_groups: [] },
   });
   const [open, setOpen] = useState(false);
   const [error, setError] = useState("");

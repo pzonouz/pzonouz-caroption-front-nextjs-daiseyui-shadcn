@@ -14,7 +14,7 @@ export const translate = (input: string): string => {
   }
 };
 export const translateRTKFetchBaseQueryErrors = (
-  error: FetchBaseQueryError,
+  error: FetchBaseQueryError
 ) => {
   const errorData = error?.data as Record<string, string[]>;
   const allMessages = Object?.values(errorData)?.flat();
@@ -25,7 +25,7 @@ export const translateRTKFetchBaseQueryErrors = (
 };
 
 export const formatStringToCommaSeparatedNumber = (
-  value: string | number | undefined,
+  value: string | number | undefined
 ): string => {
   if (!value && value !== 0) return "";
 
@@ -104,7 +104,7 @@ export function submitHandler<T extends FieldValues>({
 }
 export const toggle = (
   open: boolean,
-  setOpen: React.Dispatch<SetStateAction<boolean>>,
+  setOpen: React.Dispatch<SetStateAction<boolean>>
 ) => {
   open ? setOpen(false) : setOpen(true);
 };

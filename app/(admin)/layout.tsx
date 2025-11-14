@@ -1,7 +1,7 @@
 import { ReactNode } from "react";
 import { auth } from "../auth";
 import { redirect } from "next/navigation";
-import CRMMenu from "../components/Navigations/CRMMenu";
+import CRMMenu from "../components/Navigation/CRMMenu";
 import { Toaster } from "sonner";
 
 const layout = async ({ children }: { children: ReactNode }) => {

@@ -5,7 +5,7 @@ const RecentlyAddedProducts = async () => {
     `${process.env.BACKEND_URL}/recently_added_products`,
     {
       next: { revalidate: 60 },
-    },
+    }
   );
   const products = await productsRes.json();
 

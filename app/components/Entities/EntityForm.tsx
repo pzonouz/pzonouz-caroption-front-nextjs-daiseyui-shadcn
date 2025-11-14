@@ -1,5 +1,5 @@
 "use client";
-import { FormEventHandler, useEffect } from "react";
+import { FormEventHandler, use, useEffect } from "react";
 import { FormField } from "../Shared/FormField";
 import { LoadingButton } from "../Shared/LoadingButton";
 import {
@@ -8,23 +8,23 @@ import {
   UseFormSetValue,
   UseFormWatch,
 } from "react-hook-form";
-import { Category } from "../../lib/schemas";
+import { Entity } from "../../lib/schemas";
 import { Combobox } from "../Shared/ComboBox";
 import ImagesManager from "../Shared/ImageManager";
 import { Checkbox } from "@/components/ui/checkbox";
 import { CreateSlug } from "@/app/lib/utils";
-interface CategoryFormProp {
-  register: UseFormRegister<Category>;
-  errors: FieldErrors<Category>;
+interface EntityFormProp {
+  register: UseFormRegister<Entity>;
+  errors: FieldErrors<Entity>;
   submitHandler: FormEventHandler<HTMLFormElement>;
-  setValue: UseFormSetValue<Category>;
-  watch: UseFormWatch<Category>;
+  setValue: UseFormSetValue<Entity>;
+  watch: UseFormWatch<Entity>;
   isLoading: boolean;
   error: string;
-  categories: Category[];
+  entities: Entity[];
 }
 
-const CategoryForm = ({
+const EntityForm = ({
   register,
   errors,
   submitHandler,
@@ -32,8 +32,8 @@ const CategoryForm = ({
   isLoading,
   error,
   watch,
-  categories,
-}: CategoryFormProp) => {
+  entities,
+}: EntityFormProp) => {
   const parentId = watch("parentId")?.toString() ?? "";
   const updateParent = (parentId: string) => setValue("parentId", parentId);
 
@@ -45,13 +45,10 @@ const CategoryForm = ({
   const show = watch("show") ?? "";
   const updateShow = (value: boolean) => setValue("show", value);
 
-  // Generator
-  const generator = watch("generator") ?? "";
-  const updateGenerator = (value: boolean) => setValue("generator", value);
-
+  useEffect(() => {}, [errors]);
   useEffect(() => {
-    setValue("slug", CreateSlug(watch("name")), {});
-  }, [setValue, watch]);
+    setValue("entitySlug", CreateSlug(watch("name")), {});
+  }, [setValue, watch("name")]);
   return (
     <form
       lang="fa"
@@ -81,7 +78,7 @@ const CategoryForm = ({
 
         <FormField
           label="مسیر"
-          title="slug"
+          title="entitySlug"
           register={register}
           error={errors?.slug?.message?.toString()}
         />
@@ -105,16 +102,11 @@ const CategoryForm = ({
           />
           <p>نمایش</p>
         </div>
-        {!parentId && (
-          <div className="flex flex-row gap-4 items-center">
-            <Checkbox checked={generator} onCheckedChange={updateGenerator} />
-            <p>تولید کننده</p>
-          </div>
-        )}
-        <Combobox<Category>
+
+        <Combobox<Entity>
           value={parentId}
           setValue={updateParent}
-          array={categories}
+          array={entities}
           title="دسته بندی"
         />
         <FormField register={register} title="image_url" hidden />
@@ -126,4 +118,4 @@ const CategoryForm = ({
     </form>
   );
 };
-export default CategoryForm;
+export default EntityForm;

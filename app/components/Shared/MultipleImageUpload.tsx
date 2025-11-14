@@ -13,7 +13,7 @@ const MultipleImageUpload = ({
   setImageUrls: (value: string[]) => void;
 }) => {
   const [uploadProgress, setUploadProgress] = useState<Record<string, number>>(
-    {},
+    {}
   );
 
   const handleUpload = async (files: FileList | null) => {
@@ -81,7 +81,7 @@ const MultipleImageUpload = ({
                       "Content-Type": "application/json",
                     },
                     body: JSON.stringify({ image_name: url }),
-                  },
+                  }
                 )
                   .then(() => {
                     setImageUrls(imageUrls.filter((item) => item != url));

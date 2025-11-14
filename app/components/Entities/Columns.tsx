@@ -1,8 +1,8 @@
 "use client";
 
 import { ColumnDef } from "@tanstack/react-table";
-import { Entity } from "../../lib/schemas";
 import EntityActionsCell from "./EntityActionsCell";
+import { Entity } from "../../lib/schemas";
 
 export const columns: ColumnDef<Entity>[] = [
   {
@@ -13,23 +13,12 @@ export const columns: ColumnDef<Entity>[] = [
     },
   },
   {
-    accessorKey: "parent_name",
+    accessorKey: "parentName",
     header: () => <div className="text-right">والد</div>,
     cell: ({ row }) => {
       return (
         <div className="text-right font-medium">
-          {row?.original?.parent_name}
-        </div>
-      );
-    },
-  },
-  {
-    accessorKey: "count",
-    header: () => <div className="text-right">زیرمجموعه</div>,
-    cell: ({ row }) => {
-      return (
-        <div className="text-center font-medium">
-          {row.original?.children?.length}
+          {row?.original?.parentName}
         </div>
       );
     },
