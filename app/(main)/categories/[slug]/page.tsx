@@ -86,7 +86,6 @@ const Page = async ({ params }: { params: Promise<{ slug: string }> }) => {
       `${process.env.BACKEND_URL}/products_in_category/${category.id}`,
       { next: { revalidate: 60 } } // incremental revalidation
     );
-    console.log(category);
     if (productsRes.ok) {
       products = (await productsRes.json()) ?? [];
       products = products.filter((p) => p?.show);
