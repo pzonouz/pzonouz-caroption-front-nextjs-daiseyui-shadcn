@@ -113,27 +113,34 @@ const Page = async ({ params }: { params: Promise<{ slug: string }> }) => {
   );
 
   return (
-    <div className="px-4 py-8">
-      <h1 className="text-3xl font-extrabold text-center mb-8">
-        {category?.name}
-      </h1>
+    <>
+      <link
+        rel="canonical"
+        href={`${process.env.BASE_URL}/categories/${category?.slug}`}
+        key="canonical"
+      />
+      <div className="px-4 py-8">
+        <h1 className="text-3xl font-extrabold text-center mb-8">
+          {category?.name}
+        </h1>
 
-      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-6 sm:mt-14 md:mt-24">
-        {products.map((product) => (
-          <ProductCard key={product.id} product={product} />
-        ))}
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-6 sm:mt-14 md:mt-24">
+          {products.map((product) => (
+            <ProductCard key={product.id} product={product} />
+          ))}
 
-        {allowedArticles.map((article) => (
-          <ArticleCard key={article.id} article={article} />
-        ))}
+          {allowedArticles.map((article) => (
+            <ArticleCard key={article.id} article={article} />
+          ))}
 
-        {products.length === 0 && allowedArticles.length === 0 && (
-          <div className="col-span-full text-center text-gray-500 text-lg">
-            محصول یا مقاله‌ای در این دسته‌بندی یافت نشد.
-          </div>
-        )}
+          {products.length === 0 && allowedArticles.length === 0 && (
+            <div className="col-span-full text-center text-gray-500 text-lg">
+              محصول یا مقاله‌ای در این دسته‌بندی یافت نشد.
+            </div>
+          )}
+        </div>
       </div>
-    </div>
+    </>
   );
 };
 

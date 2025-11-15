@@ -37,6 +37,10 @@ const CategoryForm = ({
   const parentId = watch("parentId")?.toString() ?? "";
   const updateParent = (parentId: string) => setValue("parentId", parentId);
 
+  useEffect(() => {
+    setValue("slug", CreateSlug(watch("name")), {});
+  }, [setValue, watch("name")]);
+
   // Main Image
   const imageId = watch("imageId") ?? "";
   const updateImageId = (value: string) => setValue("imageId", value);

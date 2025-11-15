@@ -29,8 +29,10 @@ export async function generateMetadata({
 
   try {
     const res = await fetch(
-      `${process.env.BACKEND_URL}/article_by_slug/search?q=${encodeURIComponent(slug)}`,
-      { cache: "force-cache" }, // build-time fetch
+      `${process.env.BACKEND_URL}/article_by_slug/search?q=${encodeURIComponent(
+        slug
+      )}`,
+      { cache: "force-cache" } // build-time fetch
     );
 
     if (!res.ok) throw new Error("Article not found");
@@ -58,8 +60,10 @@ const Page = async ({ params }: { params: Promise<{ slug: string }> }) => {
 
   try {
     const res = await fetch(
-      `${process.env.BACKEND_URL}/article_by_slug/search?q=${encodeURIComponent(slug)}`,
-      { next: { revalidate: 60 } }, // incremental revalidation
+      `${process.env.BACKEND_URL}/article_by_slug/search?q=${encodeURIComponent(
+        slug
+      )}`,
+      { next: { revalidate: 60 } } // incremental revalidation
     );
 
     if (!res.ok) notFound();
@@ -71,18 +75,25 @@ const Page = async ({ params }: { params: Promise<{ slug: string }> }) => {
   }
 
   return (
-    <div className="article h-dvh px-4 py-8">
-      <h1 className="text-3xl font-extrabold text-center mb-6">
-        {article?.name}
-      </h1>
-
-      <div
-        className="description leading-8 text-gray-800 text-right"
-        dangerouslySetInnerHTML={{
-          __html: article?.description ?? "",
-        }}
+    <>
+      <link
+        rel="canonical"
+        href={`${process.env.BASE_URL}/articles/${article?.slug}`}
+        key="canonical"
       />
-    </div>
+      <div className="article h-dvh px-4 py-8">
+        <h1 className="text-3xl font-extrabold text-center mb-6">
+          {article?.name}
+        </h1>
+
+        <div
+          className="description leading-8 text-gray-800 text-right"
+          dangerouslySetInnerHTML={{
+            __html: article?.description ?? "",
+          }}
+        />
+      </div>
+    </>
   );
 };
 
