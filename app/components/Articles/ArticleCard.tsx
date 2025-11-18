@@ -1,13 +1,13 @@
-"use server";
+"use client";
 import Image from "next/image";
 import Link from "next/link";
 import { Article } from "../../lib/schemas";
 
-const ArticleCard = async ({ article }: { article: Article }) => {
+const ArticleCard = ({ article }: { article: Article }) => {
   return (
     <Link
       href={`/articles/${article?.slug}`}
-      className="flex flex-row gap-3 items-center p-2 mt-2"
+      className="flex flex-row gap-3 items-center p-2 mt-2 bg-white"
     >
       <Image
         src={

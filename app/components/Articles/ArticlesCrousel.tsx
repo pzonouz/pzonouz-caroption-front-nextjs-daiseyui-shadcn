@@ -4,17 +4,16 @@ import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/autoplay";
 
-import { Product } from "@/app/lib/schemas";
+import { Article } from "@/app/lib/schemas";
 import { Autoplay, Navigation } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
-import ProductCard from "./ProductCard";
 import ArticleCard from "../Articles/ArticleCard";
 
-const ProductCarousel = ({
-  products,
+const ArticleCarousel = ({
+  articles,
   className = "",
 }: {
-  products: Product[];
+  articles: Article[];
   className?: string;
 }) => {
   return (
@@ -51,13 +50,9 @@ const ProductCarousel = ({
           },
         }}
       >
-        {products?.map((product: Product) => (
-          <SwiperSlide key={product?.id} className="p-2">
-            {product?.type === "article" ? (
-              <ArticleCard article={product} />
-            ) : (
-              <ProductCard type="row" product={product} />
-            )}
+        {articles?.map((article: Article) => (
+          <SwiperSlide key={article?.id} className="p-2">
+            <ArticleCard article={article} />
           </SwiperSlide>
         ))}
       </Swiper>
@@ -65,4 +60,4 @@ const ProductCarousel = ({
   );
 };
 
-export { ProductCarousel };
+export { ArticleCarousel };
