@@ -18,6 +18,36 @@ export const columns: ColumnDef<Product>[] = [
     },
   },
   {
+    accessorKey: "position",
+    header: ({ column }) => (
+      <div className="text-right">
+        <Button
+          className="cursor-pointer"
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          مکان
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      </div>
+    ),
+    cell: ({ row }) => {
+      if (!row.getValue("position")) return null;
+      const position = row.getValue("position")?.toString();
+      return <div className="text-center font-medium">{position}</div>;
+    },
+  },
+  {
+    accessorKey: "count",
+    header: () => <div className="text-right">تعداد</div>,
+    cell: ({ row }) => {
+      if (!row.getValue("count")) return null;
+      const count = row.getValue("count")?.toString();
+      const formatted = count?.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+      return <div className="text-right font-medium">{formatted}</div>;
+    },
+  },
+  {
     accessorKey: "price",
     header: ({ column }) => (
       <div className="text-right">
@@ -35,21 +65,12 @@ export const columns: ColumnDef<Product>[] = [
       if (!row.getValue("price")) return null;
       const price = row.getValue("price")?.toString();
       const formatted = replacePersianDigits(
-        price?.replace(/\B(?=(\d{3})+(?!\d))/g, ","),
+        price?.replace(/\B(?=(\d{3})+(?!\d))/g, ",")
       );
       return <div className="text-right font-medium">{formatted}</div>;
     },
   },
-  {
-    accessorKey: "count",
-    header: () => <div className="text-right">تعداد</div>,
-    cell: ({ row }) => {
-      if (!row.getValue("count")) return null;
-      const count = row.getValue("count")?.toString();
-      const formatted = count?.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-      return <div className="text-right font-medium">{formatted}</div>;
-    },
-  },
+
   {
     id: "actions",
     cell: ({ row }) => <ProductActionsCell row={row} />,

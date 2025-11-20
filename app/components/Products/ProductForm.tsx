@@ -162,6 +162,12 @@ const ProductForm = ({
           register={register}
           error={errors?.info?.message?.toString()}
         />
+        <FormField
+          label=" مکان"
+          title="position"
+          register={register}
+          error={errors?.position?.message?.toString()}
+        />
         <TagsInput
           title="کلمات کلیدی"
           tags={keywords}

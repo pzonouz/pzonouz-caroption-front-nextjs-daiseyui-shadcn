@@ -30,6 +30,7 @@ const Page = () => {
           children.push(...c.children);
         }
       });
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setFilteredCategories(children);
     }
   }, [categories]);
@@ -48,6 +49,7 @@ const Page = () => {
         filtered = filtered.filter((p) => !p.generated);
       }
 
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setFilteredProducts(filtered);
     }
   }, [products, category, showGeneratedOnly, showNotGeneratedOnly]);

@@ -10,10 +10,7 @@ import {
 } from "react-hook-form";
 import { Category, ParameterGroup } from "../../lib/schemas";
 import { Combobox } from "../Shared/ComboBox";
-import {
-  useGetCategoriesQuery,
-  useGetParentCategoriesQuery,
-} from "@/app/lib/features/api";
+import { useGetParentCategoriesQuery } from "@/app/lib/features/api";
 import { useAppDispatch } from "@/app/lib/hooks";
 import { LoadingHide, LoadingShow } from "@/app/lib/features/LoadingSlice";
 interface ParameterGroupFormProp {
@@ -49,8 +46,8 @@ const ParameterGroupForm = ({
 
   // Category
   const category = watch("categoryId")?.toString() ?? "";
-  const updateCategory = (catgoryId: string) =>
-    setValue("categoryId", catgoryId);
+  const updateCategory = (categoryId: string) =>
+    setValue("categoryId", categoryId);
 
   return (
     <form
