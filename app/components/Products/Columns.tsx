@@ -48,6 +48,15 @@ export const columns: ColumnDef<Product>[] = [
     },
   },
   {
+    accessorKey: "code",
+    header: () => <div className="text-right">کد کالا</div>,
+    cell: ({ row }) => {
+      if (!row.getValue("code")) return null;
+      const code = row.getValue("code")?.toString();
+      return <div className="text-right font-medium">{code}</div>;
+    },
+  },
+  {
     accessorKey: "price",
     header: ({ column }) => (
       <div className="text-right">

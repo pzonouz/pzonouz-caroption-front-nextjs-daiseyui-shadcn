@@ -62,6 +62,7 @@ export const productSchema: z.ZodType<any> = z.lazy(() =>
     keywords: z.array(z.string()).optional().nullish(),
     show: z.boolean().optional().nullish().nullable(),
     position: z.string().optional().nullish(),
+    code: z.string().optional().nullish(),
   })
 );
 export const articleSchema: z.ZodType<any> = z.lazy(() =>

@@ -167,6 +167,12 @@ const ProductForm = ({
           title="position"
           register={register}
           error={errors?.position?.message?.toString()}
+        />{" "}
+        <FormField
+          label=" کد کالا"
+          title="code"
+          register={register}
+          error={errors?.code?.message?.toString()}
         />
         <TagsInput
           title="کلمات کلیدی"
@@ -191,7 +197,6 @@ const ProductForm = ({
           error={errors?.count?.message?.toString()}
         />
         <FormField register={register} title="description" hidden />
-
         <div className="flex flex-row gap-4 items-center">
           <Checkbox
             disabled={watch("generated")}
@@ -204,7 +209,6 @@ const ProductForm = ({
           <Checkbox checked={show} onCheckedChange={updateShow} />
           <p>نمایش</p>
         </div>
-
         <Combobox<Brand>
           value={brandId}
           setValue={updateBrandId}
@@ -219,14 +223,12 @@ const ProductForm = ({
           title="دسته بندی"
           disabled={watch("generated")}
         />
-
         <ParameterValues
           watch={watch}
           parameters={parameters}
           register={register}
           setValue={setValue}
         />
-
         {error && <p className="text-sm text-red-500">{error}</p>}
         <LoadingButton className="btn btn-primary" isLoading={isLoading}>
           ثبت
