@@ -116,7 +116,8 @@ export const entitySchema: z.ZodType<any> = z.lazy(() =>
     entitySlug: z.string().optional(),
     show: z.boolean().optional(),
     parentName: z.string().nullish(),
-    children: z.array(entitySchema).optional(),
+    children: z.array(entitySchema).optional().nullable().nullish(),
+    keywords: z.array(z.string()).optional().nullish(),
     created: z.string().datetime().nullish(),
     updated: z.string().datetime().nullish(),
   })

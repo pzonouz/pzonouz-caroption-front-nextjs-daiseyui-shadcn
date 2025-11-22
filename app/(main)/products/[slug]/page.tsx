@@ -5,8 +5,9 @@ import { Metadata } from "next";
 import { Parameter, Product } from "../../../lib/schemas";
 import PriceBlock from "@/app/components/Shared/PriceBlock";
 import Slider from "@/app/components/Shared/Slider";
-import ParamterValueShow from "@/app/components/Shared/ParamterValueShow";
 import { notFound } from "next/navigation";
+import { WithContext } from "schema-dts";
+import ParameterValueShow from "@/app/components/Shared/ParameterValueShow";
 
 // --- Generate static params for all products (SSG) ---
 export async function generateStaticParams() {
@@ -86,9 +87,26 @@ const Page = async ({ params }: { params: Promise<{ slug: string }> }) => {
   } catch {
     notFound();
   }
+  const jsonLd: WithContext<Product> = {
+    "@context": "https://schema.org",
+    "@type": "Product",
+    name: product?.name,
+    image: product?.imageUrl,
+    description: product?.description,
+  };
 
   return (
     <>
+      <section>
+        {/* Add JSON-LD to your page */}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify(jsonLd).replace(/</g, "\\u003c"),
+          }}
+        />
+        {/* ... */}
+      </section>
       <link
         rel="canonical"
         href={`${process.env.BASE_URL}/products/${product?.slug}`}
@@ -144,7 +162,7 @@ const Page = async ({ params }: { params: Promise<{ slug: string }> }) => {
 
             <div className="grid gap-2">
               {product?.parameters?.map((parameter: Parameter) => (
-                <ParamterValueShow
+                <ParameterValueShow
                   key={parameter.id}
                   parameter={parameter}
                   product={product}

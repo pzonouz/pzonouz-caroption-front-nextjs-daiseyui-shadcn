@@ -5,6 +5,19 @@ import { TopBar } from "../components/Navigation/TopBar";
 import { Toaster } from "sonner";
 import RecursiveMenu from "../components/Shared/RecursiveMenu";
 import { Category, Entity } from "../lib/schemas";
+import { Metadata } from "next";
+
+// This will make description appear on all pages using this layout
+export async function generateMetadata(): Promise<Metadata> {
+  return {
+    title: {
+      template: "کارآپشن | %s",
+      default: "کارآپشن",
+    },
+    description:
+      "نمایندگی مانیتور رست ویژن،نمایندگی ردیاب ایمورتال،نمایندگی کیلس تمدن،نمایندگی نوتاش",
+  };
+}
 
 const layout = async ({ children }: { children: ReactNode }) => {
   const parentCategoriesRes = await fetch(
@@ -24,6 +37,7 @@ const layout = async ({ children }: { children: ReactNode }) => {
   const modifiedCategories = [monitors, ...restCategories].filter(
     (i) => i.show
   );
+
   return (
     <div>
       <TopBar />

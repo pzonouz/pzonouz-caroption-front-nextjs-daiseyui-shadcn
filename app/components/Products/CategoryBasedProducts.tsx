@@ -11,7 +11,7 @@ const CategoryBasedProducts = async () => {
 
   const categories = await categoriesRes.json();
   const filteredCategories = categories.filter((c: Category) => {
-    return c?.parentId === null && c?.children?.length > 0;
+    return c?.show && c?.parentId === null && c?.children?.length > 0;
   });
 
   return Promise.all(

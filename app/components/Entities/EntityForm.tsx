@@ -13,6 +13,7 @@ import { Combobox } from "../Shared/ComboBox";
 import ImagesManager from "../Shared/ImageManager";
 import { Checkbox } from "@/components/ui/checkbox";
 import { CreateSlug } from "@/app/lib/utils";
+import TagsInput from "../Shared/TagsInput";
 interface EntityFormProp {
   register: UseFormRegister<Entity>;
   errors: FieldErrors<Entity>;
@@ -40,6 +41,10 @@ const EntityForm = ({
   // Main Image
   const imageId = watch("imageId") ?? "";
   const updateImageId = (value: string) => setValue("imageId", value);
+
+  // Tags
+  const keywords = watch("keywords") ?? [];
+  const updateKeywords = (keywords: string[]) => setValue("keywords", keywords);
 
   // Show
   const show = watch("show") ?? "";
@@ -75,7 +80,6 @@ const EntityForm = ({
           register={register}
           error={errors?.name?.message?.toString()}
         />
-
         <FormField
           label="مسیر"
           title="entitySlug"
@@ -93,6 +97,11 @@ const EntityForm = ({
           title="priority"
           register={register}
           error={errors?.priority?.message?.toString()}
+        />{" "}
+        <TagsInput
+          title="کلمات کلیدی"
+          tags={keywords}
+          setTags={updateKeywords}
         />
         <div className="flex flex-row gap-4 items-center">
           <Checkbox
@@ -102,7 +111,6 @@ const EntityForm = ({
           />
           <p>نمایش</p>
         </div>
-
         <Combobox<Entity>
           value={parentId}
           setValue={updateParent}

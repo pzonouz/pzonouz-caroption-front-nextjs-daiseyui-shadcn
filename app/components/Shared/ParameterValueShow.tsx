@@ -1,6 +1,6 @@
 import { Parameter, Product, ProductParameterValue } from "@/app/lib/schemas";
 
-const ParamterValueShow = ({
+const ParameterValueShow = ({
   parameter,
   product,
 }: {
@@ -8,7 +8,7 @@ const ParamterValueShow = ({
   product: Product;
 }) => {
   const value = product?.productParameterValues?.find(
-    (item: ProductParameterValue) => item?.parameterId === parameter?.id,
+    (item: ProductParameterValue) => item?.parameterId === parameter?.id
   );
 
   return (
@@ -24,4 +24,4 @@ const ParamterValueShow = ({
   );
 };
 
-export default ParamterValueShow;
+export default ParameterValueShow;
