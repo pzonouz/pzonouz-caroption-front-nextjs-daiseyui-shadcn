@@ -1,4 +1,4 @@
-import { Articles } from "@/app/components/Articles/Artciles";
+import { Articles } from "@/app/components/Articles/Articles";
 import { Article } from "@/app/lib/schemas";
 
 const page = async () => {
