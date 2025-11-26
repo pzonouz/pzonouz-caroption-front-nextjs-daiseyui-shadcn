@@ -9,6 +9,8 @@ export const translate = (input: string): string => {
       return "نام دسته بندی تکراری است.";
     case "person with this phone already exists.":
       return "شماره موبایل قبلا ثبت شده است";
+    case `ERROR: duplicate key value violates unique constraint "products_name_key" (SQLSTATE 23505)`:
+      return "نام کالا تکراری است";
     default:
       return "خطای ترجمه";
   }
@@ -17,10 +19,17 @@ export const translateRTKFetchBaseQueryErrors = (
   error: FetchBaseQueryError
 ) => {
   const errorData = error?.data as Record<string, string[]>;
-  const allMessages = Object?.values(errorData)?.flat();
-  const output = allMessages?.reduce((pre, value) => {
-    return `${pre}\n${translate(value)}`;
-  }, "");
+  let allMessages = null;
+  let output = null;
+  if (typeof errorData === "object") {
+    allMessages = Object?.values(errorData)?.flat();
+    output = allMessages?.reduce((pre, value) => {
+      return `${pre}\n${translate(value)}`;
+    }, "");
+  }
+  if (typeof errorData === "string") {
+    output = translate(errorData);
+  }
   return output;
 };
 
