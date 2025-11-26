@@ -51,14 +51,14 @@ export function Combobox<T extends { id?: string | number; name: string }>({
 
   return (
     <div className={`z-[10000] flex flex-row gap-4 items-center ${className}`}>
-      <p className=" text-black">{title}</p>
+      <p className=" text-black whitespace-nowrap">{title}</p>
       <Popover open={open} onOpenChange={setOpen}>
         <PopoverTrigger asChild>
           <Button
             disabled={disabled}
             role="combobox"
             aria-expanded={open}
-            className="w-1/2 text-start flex flex-row bg-white justify-center items-center !border-gray-800 !border  p-2"
+            className="w-auto min-w-max whitespace-nowrap text-start flex flex-row bg-white justify-center items-center !border-gray-800 !border  p-2"
           >
             {value
               ? options.find((item) => item.value === value)?.label
@@ -75,9 +75,17 @@ export function Combobox<T extends { id?: string | number; name: string }>({
                   {options?.map((item) => (
                     <CommandItem
                       key={item.value}
-                      value={item.value}
+                      value={item.label}
                       onSelect={(currentValue) => {
-                        setValue(currentValue === value ? "" : currentValue);
+                        const selected = options.find(
+                          (opt) => opt.label === currentValue
+                        );
+                        if (selected?.value === value) {
+                          // already selected → unselect
+                          setValue("");
+                        } else {
+                          setValue(selected?.value ?? "");
+                        }
                         setOpen(false);
                       }}
                     >
@@ -85,7 +93,7 @@ export function Combobox<T extends { id?: string | number; name: string }>({
                       <Check
                         className={cn(
                           "ml-auto",
-                          value === item.value ? "opacity-100" : "opacity-0",
+                          value === item.value ? "opacity-100" : "opacity-0"
                         )}
                       />
                     </CommandItem>

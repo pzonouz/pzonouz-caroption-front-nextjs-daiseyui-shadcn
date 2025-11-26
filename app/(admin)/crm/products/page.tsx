@@ -57,7 +57,7 @@ const Page = () => {
   return (
     <div className="pt-20 flex flex-col items-center justify-center w-full">
       <CreateProduct />
-      <div className="flex flex-col sm:flex-row gap-2 sm:gap-4">
+      <div className="flex flex-col sm:flex-row gap-2 sm:gap-4 py-4">
         <Combobox
           className="text-right z-1"
           title="دسته بندی"
@@ -90,7 +90,10 @@ const Page = () => {
         <div className="loading loading-spinner w-24 h-24 text-center"></div>
       ) : (
         <DataTable
-          filterColumns={[{ title: "نام", column: "name" }]}
+          filterColumns={[
+            { title: "نام", column: "name" },
+            { title: "کد کالا", column: "code" },
+          ]}
           columns={columns}
           data={filteredProducts}
         />
