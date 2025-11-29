@@ -15,21 +15,69 @@ export const translate = (input: string): string => {
       return "خطای ترجمه";
   }
 };
-export const translateRTKFetchBaseQueryErrors = (
-  error: FetchBaseQueryError
-) => {
-  const errorData = error?.data as Record<string, string[]>;
-  let allMessages = null;
-  let output = null;
-  if (typeof errorData === "object") {
-    allMessages = Object?.values(errorData)?.flat();
-    output = allMessages?.reduce((pre, value) => {
+// export const translateRTKFetchBaseQueryErrors = (
+//   error: FetchBaseQueryError
+// ) => {
+//   const errorData = error?.data as Record<string, string[]>;
+//   let allMessages = null;
+//   let output = null;
+//   if (typeof errorData === "object") {
+//     allMessages = Object?.values(errorData)?.flat();
+//     output = allMessages?.reduce((pre, value) => {
+//       return `${pre}\n${translate(value)}`;
+//     }, "");
+//   }
+//   if (typeof errorData === "string") {
+//     output = translate(errorData);
+//   }
+//   return output;
+// };
+export const translateRTKFetchBaseQueryErrors = (err: FetchBaseQueryError) => {
+  const errorData = err?.data as Record<string, string[]> | string | undefined;
+  let output: string | null = null;
+
+  // --- handle status-based errors ---
+  if (err.status === "PARSING_ERROR") {
+    if (typeof err.originalStatus === "number") {
+      switch (err.originalStatus) {
+        case 400:
+          if (
+            typeof errorData === "string" &&
+            containsAll(errorData, [
+              "update or delete on table",
+              "violates foreign key constraint",
+            ])
+          ) {
+            return "امکان حذف به دلیل وجود وابستگی وجود ندارد";
+          }
+          break;
+        case 401:
+        case 403:
+          return "دسترسی غیرمجاز";
+        case 404:
+          return "موردی یافت نشد";
+        case 500:
+          return "خطای داخلی سرور";
+        case 502:
+          return "ارتباط با سرور برقرار نشد";
+        default:
+          return `خطا با کد ${err.originalStatus}`;
+      }
+    }
+  } else if (err.status === "CUSTOM_ERROR") {
+    return "خطای سفارشی رخ داده است";
+  }
+
+  // --- handle validation errors ---
+  if (typeof errorData === "object" && errorData !== null) {
+    const allMessages = Object.values(errorData).flat();
+    output = allMessages.reduce((pre, value) => {
       return `${pre}\n${translate(value)}`;
     }, "");
-  }
-  if (typeof errorData === "string") {
+  } else if (typeof errorData === "string") {
     output = translate(errorData);
   }
+
   return output;
 };
 
@@ -131,7 +179,6 @@ export function containsAll(text: string, keywords: string[]): boolean {
 }
 
 export const handleFetchErrors = (err: FetchBaseQueryError) => {
-  console.log("FetchBaseQueryError:", err);
   if (err.status === "PARSING_ERROR") {
     if (typeof err.originalStatus === "number") {
       switch (err?.originalStatus) {

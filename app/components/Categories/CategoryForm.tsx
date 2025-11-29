@@ -62,7 +62,6 @@ const CategoryForm = ({
       onSubmit={submitHandler}
       className="w-full mt-10 grid grid-cols-1 md:grid-cols-2 items-start gap-6 mb-6"
     >
-      {" "}
       {/* ImageManager — left on md+, top on mobile */}
       <div className="order-1 md:order-1 flex justify-center md:justify-start w-full">
         <div className="w-full md:w-[90%]">
