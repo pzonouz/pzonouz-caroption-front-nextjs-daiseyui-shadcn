@@ -127,6 +127,7 @@ export const parameterSchema = z.object({
   name: z.string().min(1, { message: "نام را وارد کنید" }),
   type: z.string(),
   parameterGroupId: z.string(),
+  parameterGroup: z.string(),
   selectables: z.array(z.string()).optional().nullable().nullish(),
   priority: z.string().optional().nullable().nullish(),
 });

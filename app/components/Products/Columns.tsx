@@ -32,6 +32,18 @@ export const columns: ColumnDef<Product>[] = [
         </Button>
       </div>
     ),
+    sortingFn: (rowA, rowB, columnId) => {
+      const a = rowA.getValue(columnId);
+      const b = rowB.getValue(columnId);
+
+      // Treat nulls as greater (push them to bottom)
+      if (a == null && b == null) return 0;
+      if (a == null) return 1;
+      if (b == null) return -1;
+
+      // Normal string comparison
+      return String(a).localeCompare(String(b));
+    },
     cell: ({ row }) => {
       if (!row.getValue("position")) return null;
       const position = row.getValue("position")?.toString();
@@ -92,6 +104,11 @@ export const columns: ColumnDef<Product>[] = [
         </Button>
       </div>
     ),
+    sortingFn: (rowA, rowB, columnId) => {
+      const a = Number(String(rowA.getValue(columnId)).replace(/,/g, ""));
+      const b = Number(String(rowB.getValue(columnId)).replace(/,/g, ""));
+      return a - b;
+    },
     cell: ({ row }) => {
       if (!row.getValue("price")) return null;
       const price = row.getValue("price")?.toString();
