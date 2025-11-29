@@ -87,26 +87,9 @@ const Page = async ({ params }: { params: Promise<{ slug: string }> }) => {
   } catch {
     notFound();
   }
-  const jsonLd: WithContext<Product> = {
-    "@context": "https://schema.org",
-    "@type": "Product",
-    name: product?.name,
-    image: product?.imageUrl,
-    description: product?.description,
-  };
 
   return (
     <>
-      <section>
-        {/* Add JSON-LD to your page */}
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{
-            __html: JSON.stringify(jsonLd).replace(/</g, "\\u003c"),
-          }}
-        />
-        {/* ... */}
-      </section>
       <link
         rel="canonical"
         href={`${process.env.BASE_URL}/products/${product?.slug}`}
