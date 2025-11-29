@@ -1,5 +1,5 @@
 import { FetchBaseQueryError } from "@reduxjs/toolkit/query";
-import { SuccessToast } from "./Toasts";
+import { ErrorToast, SuccessToast } from "./Toasts";
 import { FieldValues, UseFormHandleSubmit } from "react-hook-form";
 import { SetStateAction } from "react";
 
@@ -125,4 +125,48 @@ export const CreateSlug = (input: string) => {
     .trim() // remove leading/trailing spaces
     .replace(/\s+/g, "_") // replace spaces/tabs/newlines with underscores
     .toLowerCase(); // optional: make lowercase
+};
+export function containsAll(text: string, keywords: string[]): boolean {
+  return keywords.every((k) => text.includes(k));
+}
+
+export const handleFetchErrors = (err: FetchBaseQueryError) => {
+  console.log("FetchBaseQueryError:", err);
+  if (err.status === "PARSING_ERROR") {
+    if (typeof err.originalStatus === "number") {
+      switch (err?.originalStatus) {
+        case 400:
+          if (
+            containsAll(err?.data as string, [
+              "update or delete on table",
+              "violates foreign key constraint",
+            ])
+          ) {
+            ErrorToast("امکان حذف به دلیل وجود وابستگی وجود ندارد");
+            return;
+          }
+          break;
+        case 401:
+          ErrorToast("دسترسی غیرمجاز");
+          break;
+        case 403:
+          ErrorToast("دسترسی غیرمجاز");
+          break;
+        case 404:
+          ErrorToast("موردی یافت نشد");
+          break;
+
+        case 500:
+          ErrorToast("خطای داخلی سرور");
+          break;
+        case 502:
+          ErrorToast("ارتباط با سرور برقرار نشد");
+          break;
+        default:
+          ErrorToast(`خطا با کد ${err.status}`);
+      }
+    }
+  } else if (err.status === "CUSTOM_ERROR") {
+    ErrorToast("خطای سفارشی رخ داده است");
+  }
 };

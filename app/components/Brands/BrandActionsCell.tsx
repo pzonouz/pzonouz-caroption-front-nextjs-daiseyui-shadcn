@@ -4,7 +4,8 @@ import DataTableActions from "../Shared/DataTableActions";
 import { Row } from "@tanstack/react-table";
 import { Brand } from "../../lib/schemas";
 import { useDeleteBrandMutation } from "../../lib/features/api";
-import { ErrorToast, SuccessToast } from "../../lib/Toasts";
+import { SuccessToast } from "../../lib/Toasts";
+import { handleFetchErrors } from "@/app/lib/utils";
 
 const BrandActionsCell = ({ row }: { row: Row<Brand> }) => {
   const [deleteBrandAction, { isLoading: deleteBrandIsLoading }] =
@@ -18,7 +19,7 @@ const BrandActionsCell = ({ row }: { row: Row<Brand> }) => {
         .unwrap()
         .then(() => SuccessToast())
 
-        .catch(() => ErrorToast("برای این شخص فاکتور ثبت شده است"));
+        .catch((err) => handleFetchErrors(err));
     }
   }, [selectedId, deleteBrandAction]);
 

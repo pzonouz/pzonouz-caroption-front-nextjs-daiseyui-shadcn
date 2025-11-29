@@ -5,6 +5,7 @@ import { Row } from "@tanstack/react-table";
 import { Person } from "../../lib/schemas";
 import { useDeletePersonMutation } from "../../lib/features/api";
 import { ErrorToast, SuccessToast } from "../../lib/Toasts";
+import { handleFetchErrors } from "@/app/lib/utils";
 
 const PersonActionsCell = ({ row }: { row: Row<Person> }) => {
   const [deletePersonAction, { isLoading: deletePersonIsLoading }] =
@@ -18,7 +19,7 @@ const PersonActionsCell = ({ row }: { row: Row<Person> }) => {
         .unwrap()
         .then(() => SuccessToast())
 
-        .catch(() => ErrorToast("برای این شخص فاکتور ثبت شده است"));
+        .catch((err) => handleFetchErrors(err));
     }
   }, [selectedId, deletePersonAction]);
 

@@ -6,6 +6,7 @@ import { Row } from "@tanstack/react-table";
 import { Category } from "../../lib/schemas";
 import { useDeleteCategoryMutation } from "../../lib/features/api";
 import { ErrorToast, SuccessToast } from "../../lib/Toasts";
+import { handleFetchErrors } from "@/app/lib/utils";
 
 const CategoryActionsCell = ({ row }: { row: Row<Category> }) => {
   const [category, setCategory] = useState<Category | null | undefined>();
@@ -20,8 +21,7 @@ const CategoryActionsCell = ({ row }: { row: Row<Category> }) => {
           SuccessToast();
         })
         .catch((err: FetchBaseQueryError) => {
-          if (err?.status == "PARSING_ERROR")
-            ErrorToast("برای این دسته بندی کالا یا زیرمجموعه تعریف شده است");
+          handleFetchErrors(err);
         });
   }, [selectedId, deleteCategoryAction]);
 

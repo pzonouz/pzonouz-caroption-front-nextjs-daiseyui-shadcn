@@ -15,6 +15,8 @@ import { MoreHorizontal } from "lucide-react";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import EditParameterGroupModal from "./EditParameterGroupModal";
+import { handleFetchErrors } from "@/app/lib/utils";
+import { SuccessToast } from "@/app/lib/Toasts";
 
 const ParameterGroupActionsCell = ({ row }: { row: Row<ParameterGroup> }) => {
   const [
@@ -28,32 +30,10 @@ const ParameterGroupActionsCell = ({ row }: { row: Row<ParameterGroup> }) => {
       deleteParameterGroupAction(selectedId)
         .unwrap()
         .then(() => {
-          toast("با موفقیت انجام شد", {
-            position: "top-center",
-            duration: 3000,
-            style: {
-              backgroundColor: "green",
-              color: "white",
-              padding: "1rem",
-              fontFamily: "IranSans",
-              fontWeight: "bold",
-            },
-          });
+          SuccessToast();
         })
         .catch((err: FetchBaseQueryError) => {
-          if (err?.status == 500) {
-            toast("برای این کالا فاکتور تعریف شده است", {
-              position: "top-center",
-              duration: 3000,
-              style: {
-                backgroundColor: "red",
-                color: "white",
-                padding: "1rem",
-                fontFamily: "IranSans",
-                fontWeight: "bold",
-              },
-            });
-          }
+          handleFetchErrors(err);
         });
     }
   }, [selectedId, deleteParameterGroupAction]);
