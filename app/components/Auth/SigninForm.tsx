@@ -10,9 +10,9 @@ export default function SignInForm() {
   const searchParams = useSearchParams();
   const callback = searchParams.get("callback") || "/profile";
   const router = useRouter();
-  const [messages, signinFormAction, ispending] = useActionState(
+  const [messages, signinFormAction, isPending] = useActionState(
     signinAction,
-    null,
+    null
   );
   const msg = messages as SignResponse | null;
 
@@ -24,19 +24,21 @@ export default function SignInForm() {
 
   return (
     <form
-      className="w-1/2 mx-auto mt-10 flex flex-col justify-center items-start gap-3 "
+      className="max-w-md min-w-xs mx-auto mt-10 flex flex-col items-center gap-3 mb-32 p-4"
       action={signinFormAction}
     >
       <input hidden name="callback" defaultValue={callback} />
-      <label className=" text-3xl my-3 text-center w-full">ورود</label>
-      <label className="floating-label w-full">
+
+      <label className="text-3xl my-3 text-center w-full">ورود</label>
+
+      <label className="floating-label w-full max-w-md">
         <span>ایمیل</span>
         <input
           defaultValue={msg?.data?.email?.toString()}
           name="email"
           type="text"
           placeholder="ایمیل خود را وارد کنید"
-          className={classNames("input input-md", {
+          className={classNames("input input-md w-full", {
             "input-error": msg?.errors?.email?.length,
           })}
         />
@@ -44,13 +46,14 @@ export default function SignInForm() {
           <p className="text-sm text-red-500">{msg?.errors?.email?.[0]}</p>
         )}
       </label>
-      <label className="floating-label w-full">
+
+      <label className="floating-label w-full max-w-md">
         <span>پسورد</span>
         <input
           name="password"
           placeholder="*******"
           type="password"
-          className={classNames("input input-md", {
+          className={classNames("input input-md w-full", {
             "input-error": msg?.errors?.password?.length,
           })}
         />
@@ -58,13 +61,15 @@ export default function SignInForm() {
           <p className="text-sm text-red-500">{msg?.errors?.password?.[0]}</p>
         )}
       </label>
+
       {msg?.error && <p className="text-sm text-red-500">{msg?.error}</p>}
 
-      <button type="submit" className="btn btn-primary w-full ">
-        {ispending && <span className="loading loading-spinner"></span>}
-        {!ispending && <span> ورود</span>}
+      <button type="submit" className="btn btn-primary w-full max-w-md">
+        {isPending && <span className="loading loading-spinner"></span>}
+        {!isPending && <span>ورود</span>}
       </button>
-      <div className="flex flex-row justify-between w-full -mt-2">
+
+      <div className="flex flex-row justify-between w-full max-w-md px-2">
         <Link href={"/signup"} className="link link-primary text-sm">
           ثبت نام
         </Link>

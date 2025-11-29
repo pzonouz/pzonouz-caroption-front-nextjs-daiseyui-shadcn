@@ -7,9 +7,9 @@ import classNames from "classnames";
 import { useActionState, useEffect } from "react";
 
 export default function PasswordReset() {
-  const [messages, PasswordResetFormAction, ispending] = useActionState(
+  const [messages, PasswordResetFormAction, isPending] = useActionState(
     PasswordResetRequestAction,
-    null,
+    null
   );
   const msg = messages as PasswordChangeRequestResponse | null;
   useEffect(() => {
@@ -20,7 +20,7 @@ export default function PasswordReset() {
 
   return (
     <form
-      className="w-1/2 mt-10 mx-auto flex flex-col justify-center items-start gap-3 "
+      className="max-w-md min-w-xs mx-auto mt-10 flex flex-col items-center gap-3 mb-32 p-4"
       action={PasswordResetFormAction}
     >
       <label className=" text-3xl my-3 text-center w-full">بازیابی پسورد</label>
@@ -42,8 +42,8 @@ export default function PasswordReset() {
       {msg?.error && <p className="text-sm text-red-500">{msg?.error}</p>}
 
       <button type="submit" className="btn btn-primary w-full ">
-        {ispending && <span className="loading loading-spinner"></span>}
-        {!ispending && <span>ارسال</span>}
+        {isPending && <span className="loading loading-spinner"></span>}
+        {!isPending && <span>ارسال</span>}
       </button>
       <div className="flex flex-row justify-between w-full -mt-2"></div>
     </form>
