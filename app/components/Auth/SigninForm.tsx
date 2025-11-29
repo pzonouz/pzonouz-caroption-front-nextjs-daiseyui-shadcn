@@ -31,14 +31,14 @@ export default function SignInForm() {
 
       <label className="text-3xl my-3 text-center w-full">ورود</label>
 
-      <label className="floating-label w-full max-w-md">
+      <label className="floating-label w-full">
         <span>ایمیل</span>
         <input
           defaultValue={msg?.data?.email?.toString()}
           name="email"
           type="text"
           placeholder="ایمیل خود را وارد کنید"
-          className={classNames("input input-md w-full", {
+          className={classNames("input w-full", {
             "input-error": msg?.errors?.email?.length,
           })}
         />
@@ -47,13 +47,13 @@ export default function SignInForm() {
         )}
       </label>
 
-      <label className="floating-label w-full max-w-md">
+      <label className="floating-label w-full">
         <span>پسورد</span>
         <input
           name="password"
           placeholder="*******"
           type="password"
-          className={classNames("input input-md w-full", {
+          className={classNames("input w-full", {
             "input-error": msg?.errors?.password?.length,
           })}
         />
@@ -62,14 +62,16 @@ export default function SignInForm() {
         )}
       </label>
 
-      {msg?.error && <p className="text-sm text-red-500">{msg?.error}</p>}
+      {msg?.error && (
+        <p className="text-sm text-red-500 self-start">{msg?.error}</p>
+      )}
 
-      <button type="submit" className="btn btn-primary w-full max-w-md">
+      <button type="submit" className="btn btn-primary w-full">
         {isPending && <span className="loading loading-spinner"></span>}
         {!isPending && <span>ورود</span>}
       </button>
 
-      <div className="flex flex-row justify-between w-full max-w-md px-2">
+      <div className="flex flex-row justify-between w-full px-2">
         <Link href={"/signup"} className="link link-primary text-sm">
           ثبت نام
         </Link>
