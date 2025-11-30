@@ -52,7 +52,7 @@ export function Combobox<T extends { id?: string | number; name: string }>({
   return (
     <div className={`z-[10000] flex flex-row gap-4 items-center ${className}`}>
       <p className=" text-black whitespace-nowrap">{title}</p>
-      <Popover open={open} onOpenChange={setOpen}>
+      <Popover open={open} onOpenChange={setOpen} modal={false}>
         <PopoverTrigger asChild>
           <Button
             disabled={disabled}
@@ -66,7 +66,7 @@ export function Combobox<T extends { id?: string | number; name: string }>({
           </Button>
         </PopoverTrigger>
         <Portal>
-          <PopoverContent className="w-full p-0 bg-white z-[100000]">
+          <PopoverContent className="w-full p-0 bg-white z-[1000000]">
             <Command>
               <CommandInput placeholder="جستجو" className="h-9" />
               <CommandList>

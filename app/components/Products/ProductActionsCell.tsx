@@ -13,7 +13,6 @@ import { FetchBaseQueryError } from "@reduxjs/toolkit/query";
 import { Row } from "@tanstack/react-table";
 import { MoreHorizontal } from "lucide-react";
 import { useEffect, useState } from "react";
-import { toast } from "sonner";
 import EditProductModal from "./EditProductModal";
 import { handleFetchErrors } from "@/app/lib/utils";
 import { SuccessToast } from "@/app/lib/Toasts";

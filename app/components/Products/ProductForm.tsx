@@ -214,14 +214,16 @@ const ProductForm = ({
           setValue={updateBrandId}
           array={brands ?? []}
           title="برند"
-          disabled={watch("generated")}
+          // disabled={watch("generated")}
+          disabled={false}
         />
         <Combobox<Category>
           value={categoryId}
           setValue={updateCategoryId}
           array={categories?.filter((c: Category) => c?.parentId != null) ?? []}
           title="دسته بندی"
-          disabled={watch("generated")}
+          // disabled={watch("generated")}
+          disabled={false}
         />
         <ParameterValues
           watch={watch}
