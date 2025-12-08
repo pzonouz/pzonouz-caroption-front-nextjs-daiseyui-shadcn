@@ -1,9 +1,9 @@
 "use client";
 
-import { columns } from "@/app/components/Persons/Columns";
-import { CreatePerson } from "@/app/components/Persons/CreatePerson";
+import { columns } from "@/app/components/Invoices/Columns";
+import { CreateInvoice } from "@/app/components/Invoices/CreateInvoice";
 import { DataTable } from "@/app/components/Shared/DataTable";
-import { useGetPersonsQuery } from "@/app/lib/features/api";
+import { useGetInvoicesQuery } from "@/app/lib/features/api";
 import { LoadingHide, LoadingShow } from "@/app/lib/features/LoadingSlice";
 import { useAppDispatch, useAppSelector } from "@/app/lib/hooks";
 import { useEffect } from "react";
@@ -11,7 +11,7 @@ import { useEffect } from "react";
 const Page = () => {
   const dispatch = useAppDispatch();
   const access = useAppSelector((state) => state?.access?.access);
-  const { data: persons, isFetching } = useGetPersonsQuery(undefined, {
+  const { data: invoices, isFetching } = useGetInvoicesQuery(undefined, {
     skip: !access,
   });
   useEffect(() => {
@@ -24,13 +24,13 @@ const Page = () => {
 
   return (
     <div className="pt-20 flex flex-col items-center justify-center w-full">
-      <CreatePerson />
+      <CreateInvoice type="buy" />
       <DataTable
         columns={columns}
-        data={persons ? persons : []}
+        data={invoices ? invoices : []}
         filterColumns={[
-          { title: "تلفن", column: "phoneNumber" },
-          { title: "نام خانوادگی", column: "lastName" },
+          { title: "نام مشتری", column: "personName" },
+          { title: "شماره فاکتور", column: "number" },
         ]}
       />
     </div>

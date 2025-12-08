@@ -29,10 +29,22 @@ const PersonForm = ({
   isLoading,
   error,
 }: PersonFormProp) => {
-  const phoneValue = watch("phone", "");
+  const phoneValue = watch("phoneNumber", "");
   const updatePhone = (e: React.ChangeEvent<HTMLInputElement>) => {
     const replaced = replacePersianDigits(e.target.value);
-    setValue("phone", replaced, { shouldValidate: true, shouldDirty: true });
+    setValue("phoneNumber", replaced, {
+      shouldValidate: true,
+      shouldDirty: true,
+    });
+  };
+
+  const addressValue = watch("address", "");
+  const updateAddress = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const replaced = replacePersianDigits(e.target.value);
+    setValue("address", replaced, {
+      shouldValidate: true,
+      shouldDirty: true,
+    });
   };
   return (
     <form
@@ -42,23 +54,31 @@ const PersonForm = ({
     >
       <FormField
         label="نام"
-        title="firstname"
+        title="firstName"
         register={register}
-        error={errors?.firstname?.message}
+        error={errors?.firstName?.message}
       />
       <FormField
-        label="نام خانوداگی"
-        title="lastname"
+        label="نام خانوادگی"
+        title="lastName"
         register={register}
-        error={errors?.lastname?.message}
+        error={errors?.lastName?.message}
       />
       <FormField
         label="شماره تماس"
-        title="phone"
+        title="phoneNumber"
         register={register}
         value={phoneValue}
         onChange={updatePhone}
-        error={errors?.phone?.message}
+        error={errors?.phoneNumber?.message}
+      />
+      <FormField
+        label="آدرس"
+        title="address"
+        register={register}
+        value={addressValue}
+        onChange={updateAddress}
+        error={errors?.address?.message}
       />
 
       {error && <p className="text-sm text-red-500">{error}</p>}

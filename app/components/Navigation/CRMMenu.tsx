@@ -69,7 +69,7 @@ const CRMMenu = ({ user }: { user: User | undefined }) => {
             </DropdownMenuTrigger>
             <DropdownMenuContent className="w-32 bg-white" align="start">
               <Link
-                href={"profile"}
+                href={"/profile"}
                 key={user?.id}
                 className="text-xs cursor-pointer"
               >
@@ -83,15 +83,47 @@ const CRMMenu = ({ user }: { user: User | undefined }) => {
                         {item?.text}
                       </DropdownMenuSubTrigger>
                       <DropdownMenuSubContent className="bg-white w-32">
-                        {item?.submenu?.map((subItem) => (
-                          <Link
-                            href={`${subItem?.link}`}
-                            key={subItem.text}
-                            className="cursor-pointer"
-                          >
-                            <DropdownMenuItem>{subItem?.text}</DropdownMenuItem>
-                          </Link>
-                        ))}
+                        {item?.submenu?.map((subItem) => {
+                          if (subItem.submenu?.length) {
+                            return (
+                              <DropdownMenuSub key={subItem.text}>
+                                <DropdownMenuSubTrigger>
+                                  {subItem?.text}
+                                </DropdownMenuSubTrigger>
+                                <DropdownMenuSubContent className="bg-white w-32">
+                                  {subItem?.submenu?.map((nested) => {
+                                    if (!nested?.link || !nested?.text)
+                                      return null;
+                                    return (
+                                      <Link
+                                        href={nested.link}
+                                        key={nested.text}
+                                        className="cursor-pointer"
+                                      >
+                                        <DropdownMenuItem>
+                                          {nested.text}
+                                        </DropdownMenuItem>
+                                      </Link>
+                                    );
+                                  })}
+                                </DropdownMenuSubContent>
+                              </DropdownMenuSub>
+                            );
+                          } else {
+                            if (!subItem?.link || !subItem?.text) return null;
+                            return (
+                              <Link
+                                href={subItem.link}
+                                key={subItem.text}
+                                className="cursor-pointer"
+                              >
+                                <DropdownMenuItem>
+                                  {subItem?.text}
+                                </DropdownMenuItem>
+                              </Link>
+                            );
+                          }
+                        })}
                       </DropdownMenuSubContent>
                     </DropdownMenuSub>
                   );

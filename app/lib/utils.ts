@@ -133,6 +133,7 @@ interface SubmitHandlerProps<T extends FieldValues> {
   handleSubmit: UseFormHandleSubmit<T>;
   setError: (error: string) => void;
   reset?: () => void;
+  reload?: (() => void) | null;
   setObject?: (obj: T | null) => void;
   transform?: (data: T) => T;
 }
@@ -141,6 +142,7 @@ export function submitHandler<T extends FieldValues>({
   handleSubmit,
   setError,
   reset,
+  reload = null,
   setObject,
   transform,
 }: SubmitHandlerProps<T>) {
@@ -151,6 +153,7 @@ export function submitHandler<T extends FieldValues>({
       .then(() => {
         setError("");
         if (reset) reset();
+        if (reload) reload();
         SuccessToast();
         if (setObject) setObject(null);
       })

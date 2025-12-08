@@ -2,9 +2,10 @@ import z, { nullish } from "zod/v4";
 
 export const personSchema = z.object({
   id: z.string().nullish(),
-  firstname: z.string().min(1, { message: "نام را وارد کنید" }),
-  lastname: z.string().min(1, "نام خانوادگی را وارد کنید"),
-  phone: z
+  firstName: z.string().min(1, { message: "نام را وارد کنید" }),
+  lastName: z.string().min(1, "نام خانوادگی را وارد کنید"),
+  address: z.string().optional().nullable().nullish(),
+  phoneNumber: z
     .string()
     .regex(/^09\d{9}$/, { message: "شماره را به درستی وارد کنید" }),
 });
@@ -81,20 +82,28 @@ export const articleSchema: z.ZodType<any> = z.lazy(() =>
 );
 
 export const invoiceItemSchema = z.object({
-  id: z.string().nullish(),
-  product: z.string(),
-  count: z.string().min(1, { message: "تعداد را وارد کنید" }),
-  price: z.string().min(1, { message: "قیمت را وارد کنید" }),
-  invoice: z.string(),
+  productId: z.string(),
+  price: z.number(),
+  count: z.number(),
+  discount: z.number().nullable().nullish().optional(),
+  total: z.number().nullable().nullish().optional(),
+  netTotal: z.number().nullable().nullish().optional(),
+  description: z.string().optional(),
 });
+
 export const invoiceSchema = z.object({
   id: z.string().nullish(),
-  person: z.string(),
-  personName: z.string(),
-  description: z.string().min(1, { message: "توضیح را وارد کنید" }),
-  total: z.string(),
-  invoiceItems: z.array(invoiceItemSchema),
+  personName: z.string().nullable().nullish().optional(),
+  personId: z.string().nullable().nullish().optional(),
+  number: z.number().nullable().nullish().optional(),
   type: z.string().nullish(),
+  total: z.number().nullable().nullish().optional(),
+  netTotal: z.number().nullable().nullish().optional(),
+  notes: z.string().nullable().nullish().optional(),
+  invoiceNumber: z.string().nullable().nullish().optional(),
+  items: z
+    .array(invoiceItemSchema)
+    .min(1, { message: "حداقل یک کالا باید انتخاب شود" }),
   created: z.string().datetime().nullish(),
   updated: z.string().datetime().nullish(),
 });

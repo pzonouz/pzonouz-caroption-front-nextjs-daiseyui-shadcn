@@ -61,7 +61,7 @@ export function Combobox<T extends { id?: string | number; name: string }>({
             className="w-auto min-w-max whitespace-nowrap text-start flex flex-row bg-white justify-center items-center !border-gray-800 !border  p-2"
           >
             {value
-              ? options.find((item) => item.value === value)?.label
+              ? options?.find((item) => item?.value === value)?.label
               : "انتخاب کنید"}
           </Button>
         </PopoverTrigger>

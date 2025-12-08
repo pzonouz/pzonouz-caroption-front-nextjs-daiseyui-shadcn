@@ -8,16 +8,16 @@ import PersonActionsCell from "./PersonActionsCell";
 
 export const columns: ColumnDef<Person>[] = [
   {
-    accessorKey: "firstname",
+    accessorKey: "firstName",
     header: () => <div className="text-right">نام</div>,
     cell: ({ row }) => {
-      const firstname = row.getValue("firstname");
-      const formatted = firstname?.toString();
+      const firstName = row.getValue("firstName");
+      const formatted = firstName?.toString();
       return <div className="text-right font-medium">{formatted}</div>;
     },
   },
   {
-    accessorKey: "lastname",
+    accessorKey: "lastName",
     header: ({ column }) => (
       <div className="text-right">
         <Button
@@ -31,17 +31,17 @@ export const columns: ColumnDef<Person>[] = [
       </div>
     ),
     cell: ({ row }) => {
-      const lastname = row.getValue("lastname");
-      const formatted = lastname?.toString();
+      const lastName = row.getValue("lastName");
+      const formatted = lastName?.toString();
       return <div className="text-right font-medium">{formatted}</div>;
     },
   },
   {
-    accessorKey: "phone",
+    accessorKey: "phoneNumber",
     header: () => <div className="text-right">تلفن</div>,
     cell: ({ row }) => {
-      const phone = row.getValue("phone");
-      const formatted = phone?.toString();
+      const phoneNumber = row.getValue("phoneNumber");
+      const formatted = phoneNumber?.toString();
       return <div className="text-right font-medium">{formatted}</div>;
     },
   },

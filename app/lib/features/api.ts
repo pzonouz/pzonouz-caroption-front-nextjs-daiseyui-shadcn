@@ -6,7 +6,6 @@ import {
   Entity,
   Image,
   Invoice,
-  InvoiceItem,
   Parameter,
   ParameterGroup,
   Person,
@@ -34,7 +33,6 @@ export const api = createApi({
   }),
   tagTypes: [
     "invoices",
-    "invoiceitems",
     "products",
     "persons",
     "categories",
@@ -104,28 +102,28 @@ export const api = createApi({
       }),
       invalidatesTags: ["invoices"],
     }),
-    createInvoiceItem: build.mutation<InvoiceItem, InvoiceItem>({
-      query: (data) => ({ url: `invoiceitems/`, method: "POST", body: data }),
-      invalidatesTags: ["invoices", "invoiceitems"],
-    }),
-    deleteInvoiceItem: build.mutation<
-      void,
-      Partial<InvoiceItem> & Pick<InvoiceItem, "id">
-    >({
-      query: (id) => ({
-        url: `invoiceitems/${id}`,
-        method: "DELETE",
-      }),
-      invalidatesTags: ["invoices", "invoiceitems"],
-    }),
-    editInvoiceItem: build.mutation<void, Partial<InvoiceItem>>({
-      query: (data) => ({
-        url: `invoiceitems/${data?.id}`,
-        method: "PATCH",
-        body: data,
-      }),
-      invalidatesTags: ["invoiceitems", "invoices"],
-    }),
+    // createInvoiceItem: build.mutation<InvoiceItem, InvoiceItem>({
+    //   query: (data) => ({ url: `invoiceitems/`, method: "POST", body: data }),
+    //   invalidatesTags: ["invoices", "invoiceitems"],
+    // }),
+    // deleteInvoiceItem: build.mutation<
+    //   void,
+    //   Partial<InvoiceItem> & Pick<InvoiceItem, "id">
+    // >({
+    //   query: (id) => ({
+    //     url: `invoiceitems/${id}`,
+    //     method: "DELETE",
+    //   }),
+    //   invalidatesTags: ["invoices", "invoiceitems"],
+    // }),
+    // editInvoiceItem: build.mutation<void, Partial<InvoiceItem>>({
+    //   query: (data) => ({
+    //     url: `invoiceitems/${data?.id}`,
+    //     method: "PATCH",
+    //     body: data,
+    //   }),
+    //   invalidatesTags: ["invoiceitems", "invoices"],
+    // }),
     getProducts: build.query<Product[], void>({
       query: () => `products/`,
       providesTags: ["products"],
@@ -416,9 +414,6 @@ export const {
   useCreateInvoiceMutation,
   useDeleteInvoiceMutation,
   useEditInvoiceMutation,
-  useCreateInvoiceItemMutation,
-  useDeleteInvoiceItemMutation,
-  useEditInvoiceItemMutation,
   useGetBrandsQuery,
   useCreateBrandMutation,
   useDeleteBrandMutation,

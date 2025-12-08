@@ -9,7 +9,6 @@ import {
   UseFormWatch,
 } from "react-hook-form";
 import { Brand } from "@/app/lib/schemas";
-import ImageUpload from "../Shared/ImageUpload";
 interface BrandFormProp {
   register: UseFormRegister<Brand>;
   errors: FieldErrors<Brand>;

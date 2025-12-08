@@ -1,9 +1,9 @@
 "use client";
 
-import { columns } from "@/app/components/Persons/Columns";
-import { CreatePerson } from "@/app/components/Persons/CreatePerson";
+import { columns } from "@/app/components/Brands/Columns";
+import { CreateBrand } from "@/app/components/Brands/CreateBrand";
 import { DataTable } from "@/app/components/Shared/DataTable";
-import { useGetPersonsQuery } from "@/app/lib/features/api";
+import { useGetBrandsQuery } from "@/app/lib/features/api";
 import { LoadingHide, LoadingShow } from "@/app/lib/features/LoadingSlice";
 import { useAppDispatch, useAppSelector } from "@/app/lib/hooks";
 import { useEffect } from "react";
@@ -11,7 +11,7 @@ import { useEffect } from "react";
 const Page = () => {
   const dispatch = useAppDispatch();
   const access = useAppSelector((state) => state?.access?.access);
-  const { data: persons, isFetching } = useGetPersonsQuery(undefined, {
+  const { data: brands, isFetching } = useGetBrandsQuery(undefined, {
     skip: !access,
   });
   useEffect(() => {
@@ -21,17 +21,13 @@ const Page = () => {
       dispatch(LoadingHide());
     }
   }, [isFetching, dispatch]);
-
   return (
     <div className="pt-20 flex flex-col items-center justify-center w-full">
-      <CreatePerson />
+      <CreateBrand />
       <DataTable
         columns={columns}
-        data={persons ? persons : []}
-        filterColumns={[
-          { title: "تلفن", column: "phoneNumber" },
-          { title: "نام خانوادگی", column: "lastName" },
-        ]}
+        data={brands ? brands : []}
+        filterColumns={[{ title: "نام", column: "name" }]}
       />
     </div>
   );

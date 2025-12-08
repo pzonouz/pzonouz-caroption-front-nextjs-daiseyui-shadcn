@@ -14,6 +14,7 @@ interface DataTableActionsProps<T> {
   isLoading: boolean;
   row: Row<T>;
 }
+
 const DataTableActions = <T,>({
   setSelectedId,
   isLoading,
@@ -35,8 +36,13 @@ const DataTableActions = <T,>({
       <DropdownMenuItem
         className="cursor-pointer text-error"
         onClick={() => {
-          // @ts-ignore
-          setSelectedId(row?.original?.id?.toString());
+          const confirmed = window.confirm(
+            "آیا مطمئن هستید که می‌خواهید این مورد را حذف کنید؟"
+          );
+          if (confirmed) {
+            // @ts-ignore
+            setSelectedId(row?.original?.id?.toString());
+          }
         }}
       >
         حذف
